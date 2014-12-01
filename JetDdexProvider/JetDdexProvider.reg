@@ -1,0 +1,150 @@
+Windows Registry Editor Version 5.00
+
+; For more informations see http://msdn.microsoft.com/en-us/library/bb163740.aspx
+
+
+;
+; The root registry key for the DDEX provider uniquely identifies the
+; provider, supplies various names, and registers the main assembly that
+; implements the provider using a code base.  It also associates the provider
+; with a runtime data technology (ADO .NET) and a specific ADO .NET provider.
+; Finally, it identifies the default DDEX data source associated with this
+; provider, allowing an implicit IVsDataSourceSpecializer support entity
+; implementation to be supplied by the DDEX runtime.
+;
+[%REGROOT%\DataProviders\%PROVIDERGUID%]
+@="JetDDEXProvider"
+
+; From MSDN: The GUID of the data source that this DDEX provider is associated with.
+"AssociatedSource"="{2BEB8DC0-79A2-42C3-89AB-2B3E5A4E1192}"
+
+"Codebase"="%CODEBASE%"
+"Description"="Provider_Description, JetDdexProvider.Properties.Resources"
+"DisplayName"="Provider_DisplayName, JetDdexProvider.Properties.Resources"
+"InvariantName"="JetEntityFrameworkProvider"
+"PlatformVersion"="2.0"
+"ShortDisplayName"="Provider_ShortDisplayName, JetDdexProvider.Properties.Resources"
+"Technology"="{77AB9A9D-78B9-4ba7-91AC-873F5338F1D2}"
+
+;
+; The SupportedObjects registry key allows a provider to specify which set of
+; DDEX support entities it supports in a declarative fashion.  This allows the
+; DDEX runtime to query capabilities of the provider without actually loading
+; it.  The set of support entities currently includes those that can be created
+; as standalone objects such as the IVsDataConnectionProperties support entity,
+; and also those support entities that represent connection services, such as
+; the IVsDataCommand support entity.
+;
+[%REGROOT%\DataProviders\%PROVIDERGUID%\SupportedObjects]
+
+;
+; This registry key indicates the existence of an IDSRefBuilder connection
+; service implementation from the DDEX Framework assembly.  The default value
+; is simply the full name of the type in the assembly that provides the
+; implementation.  Since this is not in the main provider assembly, an
+; Assembly value is used to qualify the type.
+;
+[%REGROOT%\DataProviders\%PROVIDERGUID%\SupportedObjects\IDSRefBuilder]
+@="Microsoft.VisualStudio.Data.Framework.DSRefBuilder"
+"Assembly"="Microsoft.VisualStudio.Data.Framework, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a"
+
+;
+; This registry key indicates the existence of an IVsDataAsyncCommand
+; connection service implementation that is built into the service provider
+; implemented as part of the AdoDotNetConnectionSupport implementation.  Given
+; that this is the case, the implementation does not need to be specified here.
+;
+[%REGROOT%\DataProviders\%PROVIDERGUID%\SupportedObjects\IVsDataAsyncCommand]
+
+[%REGROOT%\DataProviders\%PROVIDERGUID%\SupportedObjects\IVsDataCommand]
+
+;
+; This registry key indicates the existence of an IVsDataConnectionProperties
+; support entity implementation from the main assembly.  The DDEX Framework
+; assembly contains a number of base implementations of support entities for
+; DDEX providers based on a runtime ADO .NET provider; in this case, the
+; connection properties object is implemented in terms of an underlying
+; DbConnectionStringBuilder object supplied by the ADO .NET provider.
+;
+[%REGROOT%\DataProviders\%PROVIDERGUID%\SupportedObjects\IVsDataConnectionProperties]
+@="Microsoft.VisualStudio.Data.Framework.AdoDotNet.AdoDotNetConnectionProperties"
+"Assembly"="Microsoft.VisualStudio.Data.Framework, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a"
+
+[%REGROOT%\DataProviders\%PROVIDERGUID%\SupportedObjects\IVsDataConnectionSupport]
+@="Microsoft.VisualStudio.Data.Framework.AdoDotNet.AdoDotNetConnectionSupport"
+"Assembly"="Microsoft.VisualStudio.Data.Framework, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a"
+
+[%REGROOT%\DataProviders\%PROVIDERGUID%\SupportedObjects\IVsDataConnectionUIProperties]
+@="Microsoft.VisualStudio.Data.Framework.AdoDotNet.AdoDotNetConnectionProperties"
+"Assembly"="Microsoft.VisualStudio.Data.Framework, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a"
+
+[%REGROOT%\DataProviders\%PROVIDERGUID%\SupportedObjects\IVsDataMappedObjectConverter]
+
+[%REGROOT%\DataProviders\%PROVIDERGUID%\SupportedObjects\IVsDataObjectIdentifierConverter]
+
+;
+; This registry key indicates the existence of an
+; IVsDataObjectIdentifierResolver connection service implementation that is
+; customized by this provider.  The default value is simply the full name of
+; the type in the main provider assembly.
+;
+[%REGROOT%\DataProviders\%PROVIDERGUID%\SupportedObjects\IVsDataObjectIdentifierResolver]
+@="JetDdexProvider.JetObjectIdentifierResolver"
+
+[%REGROOT%\DataProviders\%PROVIDERGUID%\SupportedObjects\IVsDataObjectMemberComparer]
+
+[%REGROOT%\DataProviders\%PROVIDERGUID%\SupportedObjects\IVsDataObjectSelector]
+@="JetDdexProvider.JetObjectSelector"
+
+;
+; This registry key indicates the existence of an IVsDataObjectSupport
+; connection service implementation.  In this provider, a base implementation
+; from the DDEX Framework assembly is used that can be constructed given the
+; name of a resource and an assembly that contains an XML stream.  The DDEX
+; runtime reads the XmlResource and Assembly registry values and calls the
+; constructor with these values.
+;
+[%REGROOT%\DataProviders\%PROVIDERGUID%\SupportedObjects\IVsDataObjectSupport]
+@="Microsoft.VisualStudio.Data.Framework.DataObjectSupport"
+"Assembly"="Microsoft.VisualStudio.Data.Framework, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a"
+"XmlResource"="JetDdexProvider.JetObjectSupport"
+
+;
+; This registry key indicates the existence of an IVsDataSourceInformation
+; connection service implementation that is customized by this provider.  The
+; custom code does not, however, supply all the key/value pairs; most are
+; specified here for flexibility and are merged in by the DDEX runtime.
+;
+[%REGROOT%\DataProviders\%PROVIDERGUID%\SupportedObjects\IVsDataSourceInformation]
+@="JetDdexProvider.JetSourceInformation"
+"SupportsAnsi92Sql"="True"
+"SupportsQuotedIdentifierParts"="True"
+"IdentifierOpenQuote"="["
+"IdentifierCloseQuote"="]"
+"ServerSeparator"="."
+"CatalogSupported="False"
+"CatalogSupportedInDml="False"
+"SchemaSupported"="False"
+"SchemaSupportedInDml"="False"
+"SchemaSeparator"="."
+"ParameterPrefix"="@"
+"ParameterPrefixInName"="True"
+
+[%REGROOT%\DataProviders\%PROVIDERGUID%\SupportedObjects\IVsDataTransaction]
+
+[%REGROOT%\DataProviders\%PROVIDERGUID%\SupportedObjects\IVsDataViewSupport]
+@="Microsoft.VisualStudio.Data.Framework.DataViewSupport"
+"Assembly"="Microsoft.VisualStudio.Data.Framework, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a"
+"XmlResource"="JetDdexProvider.JetViewSupport"
+
+;
+; This registry key registers a mapping from the existing DDEX data source
+; for Jet to this provider as a supporting provider.
+;
+[%REGROOT%\DataSources\{2BEB8DC0-79A2-42C3-89AB-2B3E5A4E1192}]
+@="Jet provider with EF support"
+"DefaultProvider"="%PROVIDERGUID%"
+
+[%REGROOT%\DataSources\{2BEB8DC0-79A2-42C3-89AB-2B3E5A4E1192}\SupportingProviders\%PROVIDERGUID%]
+"DisplayName"="Provider_DisplayName, JetDdexProvider.Properties.Resources"
+

@@ -1,0 +1,94 @@
+﻿Abs 			The absolute value of a number (ignore negative sign).
+Asc 			The Ascii code of a character.
+AscW 			The Unicode of a character.
+Atn 			Display the ArcTan of an angle.
+CBool 			Convert to boolean.
+CByte 			Convert to byte.
+CCur 			Convert to currency (number)
+CDate 			Convert to Date.
+CDbl 			Convert to Double (number)
+CDec 			Convert to Decimal (number)
+Choose 			Return a value from a list based on position.
+Chr 			Return a character based on an ASCII code.
+CInt 			Convert to Integer (number)
+CLng 			Convert to Long (number)
+Cos 			Display Cosine of an angle.
+CSng 			Convert to Single (number.)
+CStr 			Convert to String.
+CVar 			Convert to a Variant.
+CVDate 			Convert to Date.
+Date 			The current date.
+DateAdd 		Add a time interval to a date.
+DateDiff 		The difference between two dates.
+DatePart 		Return part of a given date.
+DateSerial 		Return a date given a year, month, and day.
+DateValue 		Convert a string to a date.
+Day 			Return the day of the month.
+Eval 			Evaluate an expression.
+Exp 			Exponential e raised to the nth power.
+Fix 			Return the integer portion of a number.
+Format 			Format a Number/Date/Time.
+FV 				Future Value of an annuity.
+Hex 			Convert a number to Hex.
+Hour 			Return the hour of the day.
+IIf 			If-Then-Else function.
+InStr 			Return the position of one string within another.
+InstrRev 		Return the position of one string within another.
+Int 			Return the integer portion of a number.
+IPmt 			Interest payment for an annuity
+IsArray 		Test if an expression is an array
+IsDate 			Test if an expression is a date.
+IsEmpty 		Test if an expression is Empty.
+IsError 		Test if an expression is returning an error.
+IsNull 			Test for a NULL expression.
+IsNumeric 		Test for a valid Number.
+IsObject 		Test if an expression is an Object.
+LBound 			Return the smallest subscript from an array.
+LCase 			Convert a string to lower-case.
+Left 			Extract a substring from a string.
+Len 			Return the length of a string.
+LoadPicture 	Load a picture into an ActiveX control.
+Loc 			The current position within an open file.
+Log 			Return the natural logarithm of a number.
+LTrim 			Remove leading spaces from a string.
+Mid 			Extract a substring from a string.
+Minute 			Return the minute of the hour.
+MkDir 			Create directory.
+Month 			Return the month for a given date.
+MonthName 		Return a string representing the month.
+Next 			Continue a for loop.
+Now 			Return the current date and time.
+Nz 				Detect a NULL value.
+Oct 			Convert an integer to Octal.
+Replace 		Replace a sequence of characters in a string.
+RGB 			Convert an RGB color to a number.
+Right 			Extract a substring from a string.
+Rnd 			Generate a random number.
+Round 			Round a number to n decimal places.
+RTrim 			Remove trailing spaces from a string.
+Second 			Return the seconds of the minute.
+Sgn 			Return the sign of a number.
+Shell 			Run an executable program.
+Sin 			Display Sine of an angle.
+SLN 			Straight Line Depreciation.
+Space 			Return a number of spaces.
+Sqr 			Return the square root of a number.
+Str 			Return a string representation of a number.
+StrComp 		Compare two strings.
+StrConv 		Convert a string to Upper/lower case or Unicode.
+String 			Repeat a character n times.
+Switch 			Return one of several values.
+Tan 			Display Tangent of an angle.
+Time 			Return the current system time.
+Timer 			Return a number (single) of seconds since midnight.
+TimeSerial 		Return a time given an hour, minute, and second.
+TimeValue 		Convert a string to a Time.
+Trim 			Remove leading and trailing spaces from a string.
+TypeName 		Return the data type of a variable.
+UBound 			Return the largest subscript from an array.
+UCase 			Convert a string to upper-case.
+Val 			Extract a numeric value from a string.
+VarType 		Return a number indicating the data type of a variable.
+Weekday 		Return the weekday (1-7) from a date.
+WeekdayName 	Return the day of the week.
+Year 			Return the year for a given date.

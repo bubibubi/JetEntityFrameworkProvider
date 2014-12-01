@@ -1,0 +1,3 @@
+﻿The implementation needs DDEX provider
+http://msdn.microsoft.com/en-us/library/bb163624.aspx
+http://sourceforge.net/projects/firebirdddexproviderforvs2012/?source=directory

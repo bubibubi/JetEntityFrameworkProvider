@@ -1,0 +1,23 @@
+﻿Readings
+
+Fundamental Microsoft Jet SQL for Access 2000
+	DDL
+	DML
+	SQL
+http://msdn.microsoft.com/en-us/library/aa140011(v=office.10).aspx
+
+Intermediate Microsoft Jet SQL for Access 2000
+Summary
+	DDL
+	DML
+	Like syntax and escaping like
+http://msdn.microsoft.com/en-us/library/aa140015%28office.10%29.aspx
+
+
+Advanced Microsoft Jet SQL for Access 2000
+Summary
+	Stored procedures (available only if connected to SQL?)
+	Security
+	Advanced DML
+http://msdn.microsoft.com/en-us/library/aa139977(v=office.10).aspx
+

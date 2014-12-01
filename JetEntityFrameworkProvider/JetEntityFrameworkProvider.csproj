@@ -1,0 +1,166 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{EBA0B8A0-6C00-44C2-A8F0-394069B9486B}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>JetEntityFrameworkProvider</RootNamespace>
+    <AssemblyName>JetEntityFrameworkProvider</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>JetEntityFrameworkProvider.snk</AssemblyOriginatorKeyFile>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>ExtendedDesignGuidelineRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.6.1.1\lib\net40\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="GeneratorDdl\JetDdlBuilder.cs" />
+    <Compile Include="GeneratorDdl\JetMigrationSqlGenerator.cs" />
+    <Compile Include="GeneratorSql\IllegalDbExpressionException.cs" />
+    <Compile Include="JetDataReader.cs" />
+    <Compile Include="JetStoreSchemaDefinitionRetrieve.cs" />
+    <Compile Include="JetTransaction.cs" />
+    <Compile Include="LiteralHelpers.cs" />
+    <Compile Include="OleDbColumnFlagEnum.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="SetupInfo.cs" />
+    <Compile Include="TypeUsageHelper.cs" />
+    <Compile Include="JetCommand.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="JetConnection.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="JetDataTypeAlias.cs" />
+    <Compile Include="JetDataTypeAliasCollection.cs" />
+    <Compile Include="JetProviderFactory.cs" />
+    <Compile Include="GeneratorDdl\JetCreateDatabaseSqlGenerator.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="JetProviderManifest.cs" />
+    <Compile Include="JetProviderServices.cs" />
+    <Compile Include="JetFunctions.cs" />
+    <Compile Include="GeneratorDml\JetDmlBuilder.cs" />
+    <Compile Include="GeneratorSql\ISqlFragment.cs" />
+    <Compile Include="GeneratorSql\JoinSymbol.cs" />
+    <Compile Include="GeneratorSql\MetadataHelpers.cs" />
+    <Compile Include="GeneratorSql\SqlBuilder.cs" />
+    <Compile Include="GeneratorSql\SqlGenerator.cs" />
+    <Compile Include="GeneratorSql\SqlSelectStatement.cs" />
+    <Compile Include="GeneratorSql\SqlWriter.cs" />
+    <Compile Include="GeneratorSql\Symbol.cs" />
+    <Compile Include="GeneratorSql\SymbolPair.cs" />
+    <Compile Include="GeneratorSql\SymbolTable.cs" />
+    <Compile Include="GeneratorSql\TopClause.cs" />
+    <Compile Include="XmlObjectSerializer.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\JetProviderServices.StoreSchemaDefinition.ssdl">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\JetProviderServices.StoreSchemaMapping.msl" />
+    <EmbeddedResource Include="Resources\JetProviderServices.ProviderManifest.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="JetEntityFrameworkProvider.snk" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Documentation\CanonicalFunctions.txt" />
+    <Content Include="Documentation\DbFirstImplementation.txt" />
+    <Content Include="Documentation\JetSQL.txt" />
+    <Content Include="Documentation\JetSQLFunctions.txt" />
+    <None Include="Resources\StoreSchemaDefinition.IndexColumns.xml" />
+    <None Include="Resources\StoreSchemaDefinition.Indexes.xml" />
+    <None Include="Resources\StoreSchemaDefinition.Views.xml" />
+    <None Include="Resources\StoreSchemaDefinition.ViewForeignKeys.xml" />
+    <None Include="Resources\StoreSchemaDefinition.ViewConstraints.xml" />
+    <None Include="Resources\StoreSchemaDefinition.ViewConstraintColumns.xml" />
+    <None Include="Resources\StoreSchemaDefinition.ViewColumns.xml" />
+    <None Include="Resources\StoreSchemaDefinition.Tables.xml" />
+    <None Include="Resources\StoreSchemaDefinition.TableColumns.xml" />
+    <None Include="Resources\StoreSchemaDefinition.Procedures.xml" />
+    <None Include="Resources\StoreSchemaDefinition.ProcedureParameters.xml" />
+    <None Include="Resources\StoreSchemaDefinition.Functions.xml" />
+    <None Include="Resources\StoreSchemaDefinition.FunctionReturnTableColumns.xml" />
+    <None Include="Resources\StoreSchemaDefinition.FunctionParameters.xml" />
+    <None Include="Resources\StoreSchemaDefinition.ForeignKeys.xml" />
+    <None Include="Resources\StoreSchemaDefinition.ForeignKeyConstraints.xml" />
+    <None Include="Resources\StoreSchemaDefinition.Constraints.xml" />
+    <None Include="Resources\StoreSchemaDefinition.ConstraintColumns.xml" />
+    <None Include="Resources\StoreSchemaDefinition.CheckConstraints.xml" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>Echo Registering $(TargetPath)
+"%25ProgramFiles%25\Microsoft SDKs\Windows\v8.0A\Bin\NETFX 4.0 Tools\gacutil.exe" /if "$(TargetPath)"</PostBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PreBuildEvent>Echo Unregistering $(TargetName)
+"%25ProgramFiles%25\Microsoft SDKs\Windows\v8.0A\Bin\NETFX 4.0 Tools\gacutil.exe" /u "$(TargetName)"</PreBuildEvent>
+  </PropertyGroup>
+</Project>
