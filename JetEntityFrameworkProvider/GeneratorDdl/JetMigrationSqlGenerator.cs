@@ -200,7 +200,8 @@ namespace JetEntityFrameworkProvider
 
             ddlBuilder.AppendIdentifier(column.Name);
             ddlBuilder.AppendSql(" ");
-            ddlBuilder.AppendType(column.TypeUsage, column.IsNullable ?? true, column.IsIdentity);
+            TypeUsage storeType = JetProviderManifest.Instance.GetStoreType(column.TypeUsage);
+            ddlBuilder.AppendType(storeType, column.IsNullable ?? true, column.IsIdentity);
             ddlBuilder.AppendNewLine();
 
 
