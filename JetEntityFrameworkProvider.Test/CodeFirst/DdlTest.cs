@@ -12,7 +12,7 @@ namespace JetEntityFrameworkProvider.Test.CodeFirst
         [Test]
         public void CheckIfTablesExists()
         {
-            bool exists = SetUpCodeFirst.Connection.TableExists("Students");
+            bool exists = ((JetConnection)SetUpCodeFirst.Connection).TableExists("Students");
             Assert.IsTrue(exists);
         }
     }

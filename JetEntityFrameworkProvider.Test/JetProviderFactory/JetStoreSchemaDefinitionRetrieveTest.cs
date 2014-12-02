@@ -12,58 +12,58 @@ namespace JetEntityFrameworkProvider.Test.JetProviderFactory
     public class JetStoreSchemaDefinitionRetrieveTest
     {
 
-        JetConnection _jetConnection;
+        DbConnection _connection;
 
         [SetUp]
         public void Init()
         {
-            _jetConnection = Helpers.GetJetConnection();
+            _connection = Helpers.GetConnection();
         }
 
         [TearDown]
         public void TearDown()
         {
-            _jetConnection.Dispose();
+            _connection.Dispose();
         }
 
         [Test]
         public void Show()
         {
-            Helpers.ShowDataReaderContent(_jetConnection, "show tables");
-            Helpers.ShowDataReaderContent(_jetConnection, "show tablecolumns");
-            Helpers.ShowDataReaderContent(_jetConnection, "show indexes");
-            Helpers.ShowDataReaderContent(_jetConnection, "show indexcolumns");
-            Helpers.ShowDataReaderContent(_jetConnection, "show views");
-            Helpers.ShowDataReaderContent(_jetConnection, "show viewcolumns");
-            Helpers.ShowDataReaderContent(_jetConnection, "show constraints");
-            Helpers.ShowDataReaderContent(_jetConnection, "show checkconstraints");
-            Helpers.ShowDataReaderContent(_jetConnection, "show constraintcolumns");
-            Helpers.ShowDataReaderContent(_jetConnection, "show foreignKeyconstraints");
-            Helpers.ShowDataReaderContent(_jetConnection, "show foreignKeys");
-            Helpers.ShowDataReaderContent(_jetConnection, "show viewconstraints");
-            Helpers.ShowDataReaderContent(_jetConnection, "show viewconstraintcolumns");
-            Helpers.ShowDataReaderContent(_jetConnection, "show viewforeignkeys");
+            Helpers.ShowDataReaderContent(_connection, "show tables");
+            Helpers.ShowDataReaderContent(_connection, "show tablecolumns");
+            Helpers.ShowDataReaderContent(_connection, "show indexes");
+            Helpers.ShowDataReaderContent(_connection, "show indexcolumns");
+            Helpers.ShowDataReaderContent(_connection, "show views");
+            Helpers.ShowDataReaderContent(_connection, "show viewcolumns");
+            Helpers.ShowDataReaderContent(_connection, "show constraints");
+            Helpers.ShowDataReaderContent(_connection, "show checkconstraints");
+            Helpers.ShowDataReaderContent(_connection, "show constraintcolumns");
+            Helpers.ShowDataReaderContent(_connection, "show foreignKeyconstraints");
+            Helpers.ShowDataReaderContent(_connection, "show foreignKeys");
+            Helpers.ShowDataReaderContent(_connection, "show viewconstraints");
+            Helpers.ShowDataReaderContent(_connection, "show viewconstraintcolumns");
+            Helpers.ShowDataReaderContent(_connection, "show viewforeignkeys");
         }
 
         [Test]
         public void ShowWithWhere()
         {
-            Helpers.ShowDataReaderContent(_jetConnection, "show indexes where Name like 'PK*'");
-            Helpers.ShowDataReaderContent(_jetConnection, "show indexcolumns where index like 'PK*'");
+            Helpers.ShowDataReaderContent(_connection, "show indexes where Name like 'PK*'");
+            Helpers.ShowDataReaderContent(_connection, "show indexcolumns where index like 'PK*'");
         }
 
         [Test]
         public void ShowWithWhereOrder()
         {
-            Helpers.ShowDataReaderContent(_jetConnection, "show indexes where Name like 'PK*' order by Name");
-            Helpers.ShowDataReaderContent(_jetConnection, "show indexcolumns where index like 'PK*' order by Index, Ordinal");
+            Helpers.ShowDataReaderContent(_connection, "show indexes where Name like 'PK*' order by Name");
+            Helpers.ShowDataReaderContent(_connection, "show indexcolumns where index like 'PK*' order by Index, Ordinal");
         }
 
         [Test]
         public void ShowWithOrder()
         {
-            Helpers.ShowDataReaderContent(_jetConnection, "show indexes order by Name");
-            Helpers.ShowDataReaderContent(_jetConnection, "show indexcolumns order by Index, Ordinal");
+            Helpers.ShowDataReaderContent(_connection, "show indexes order by Name");
+            Helpers.ShowDataReaderContent(_connection, "show indexcolumns order by Index, Ordinal");
         }
 
     }

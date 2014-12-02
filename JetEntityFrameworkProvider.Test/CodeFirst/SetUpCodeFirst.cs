@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Data.Entity.Core.EntityClient;
 using System.Data.OleDb;
 using System.Data.SqlClient;
@@ -15,15 +16,16 @@ namespace JetEntityFrameworkProvider.Test.CodeFirst
     public class SetUpCodeFirst
     {
 
-        public static JetConnection Connection;
+        public static DbConnection Connection;
 
         [SetUp]
         public void Init()
         {
 
-            JetEntityFrameworkProvider.JetCommand.ShowSqlStatements = true;
+            // This is the only reason why we include the Provider
+            JetEntityFrameworkProvider.JetConnection.ShowSqlStatements = true;
 
-            Connection = Helpers.GetJetConnection();
+            Connection = Helpers.GetConnection();
 
             Context context = new Context(SetUpCodeFirst.Connection);
 

@@ -24,9 +24,10 @@ namespace JetEntityFrameworkProvider.Test
 
         }
 
-        public static void ShowDataReaderContent(JetConnection jetConnection, string sqlStatement)
+        public static void ShowDataReaderContent(DbConnection dbConnection, string sqlStatement)
         {
-            DbCommand command = jetConnection.CreateCommand(sqlStatement);
+            DbCommand command = dbConnection.CreateCommand();
+            command.CommandText = sqlStatement;
             DbDataReader dataReader = command.ExecuteReader();
 
             bool first = true;
@@ -93,13 +94,25 @@ namespace JetEntityFrameworkProvider.Test
         }
 
 
-        public static JetConnection GetJetConnection()
+        public static DbConnection GetConnection()
         {
-            JetConnection jetConnection = new JetConnection(GetJetConnectionString());
-            return jetConnection;
+            // Take care because according to this article
+            // http://msdn.microsoft.com/en-us/library/dd0w4a2z(v=vs.110).aspx
+            // to make the following line work the provider must be installed in the GAC and we also need an entry in machine.config
+            /*
+            DbProviderFactory providerFactory = System.Data.Common.DbProviderFactories.GetFactory("JetEntityFrameworkProvider");
+            
+            DbConnection connection = providerFactory.CreateConnection();
+            */
+
+            DbConnection connection = new JetConnection();
+
+            connection.ConnectionString = GetConnectionString();
+            return connection;
+
         }
 
-        public static string GetJetConnectionString()
+        public static string GetConnectionString()
         {
             OleDbConnectionStringBuilder oleDbConnectionStringBuilder = new OleDbConnectionStringBuilder();
             oleDbConnectionStringBuilder.Provider = "Microsoft.Jet.OLEDB.4.0";

@@ -21,7 +21,7 @@ namespace JetEntityFrameworkProvider.Test.DbFirst
         public void Init()
         {
 
-            JetEntityFrameworkProvider.JetCommand.ShowSqlStatements = true;
+            JetEntityFrameworkProvider.JetConnection.ShowSqlStatements = true;
 
             //EntityConnection ec = GetSqlServerEntityConnection();
             EntityConnection = GetJetEntityConnection();

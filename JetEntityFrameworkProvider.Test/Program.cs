@@ -24,10 +24,11 @@ namespace JetEntityFrameworkProvider.Test
 
             Console.SetWindowSize(210, 80);
 
-            JetEntityFrameworkProvider.JetCommand.ShowSqlStatements = true;
+            // This is the only reason why we need to include the provider
+            JetEntityFrameworkProvider.JetConnection.ShowSqlStatements = true;
 
-            JetConnection jetConnection = Helpers.GetJetConnection();
-            Context context = new Context(jetConnection);
+            DbConnection connection = Helpers.GetConnection();
+            Context context = new Context(connection);
 
 
             Console.WriteLine("DB First ======================================================================");
@@ -142,8 +143,8 @@ namespace JetEntityFrameworkProvider.Test
 
             Console.WriteLine("Schema test with where and order by ==============================================");
 
-            Helpers.ShowDataReaderContent(jetConnection, "show tablecolumns where ParentId = 'Students'");
-            Helpers.ShowDataReaderContent(jetConnection, "show indexcolumns where index like 'PK*' order by Index, Ordinal");
+            Helpers.ShowDataReaderContent(connection, "show tablecolumns where ParentId = 'Students'");
+            Helpers.ShowDataReaderContent(connection, "show indexcolumns where index like 'PK*' order by Index, Ordinal");
 
             /*           
             // Retrieve some oledb schema infos
