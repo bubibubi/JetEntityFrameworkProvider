@@ -5,18 +5,12 @@ using System.Data.OleDb;
 
 namespace JetEntityFrameworkProvider
 {
-    public class JetCommand : DbCommand, ICloneable
+    class JetCommand : DbCommand, ICloneable
     {
         private DbCommand _WrappedCommand;
         private JetConnection _Connection;
         private JetTransaction _Transaction;
         private bool _DesignTimeVisible;
-
-
-        static JetCommand()
-        {
-            IndentSqlStatements = true;
-        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="JetCommand"/> class.
@@ -55,23 +49,6 @@ namespace JetEntityFrameworkProvider
         {
             Initialize(commandText, connection, transaction);
         }
-
-
-        /// <summary>
-        /// Gets or sets a value indicating whether show SQL statements.
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> to show SQL statements; otherwise, <c>false</c>.
-        /// </value>
-        static public bool ShowSqlStatements;
-
-        /// <summary>
-        /// Gets or sets a value indicating whether SQL statements should be indented
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> to indent SQL statements; otherwise, <c>false</c>.
-        /// </value>
-        static public bool IndentSqlStatements;
 
         private void Initialize(string commandText, JetConnection connection, DbTransaction transaction)
         {
@@ -216,10 +193,10 @@ namespace JetEntityFrameworkProvider
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether [design time visible].
+        /// Gets or sets a value indicating whether is design time visible.
         /// </summary>
         /// <value>
-        ///   <c>true</c> if [design time visible]; otherwise, <c>false</c>.
+        ///   <c>true</c> if design time visible; otherwise, <c>false</c>.
         /// </value>
         public override bool DesignTimeVisible
         {
@@ -343,7 +320,7 @@ namespace JetEntityFrameworkProvider
 
         private void ShowCommandText(string caller)
         {
-            if (!ShowSqlStatements)
+            if (!JetConnection.ShowSqlStatements)
                 return;
 
             Console.WriteLine("{0}==========\r\n{1}", caller, _WrappedCommand.CommandText);

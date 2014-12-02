@@ -8,6 +8,23 @@ namespace JetEntityFrameworkProvider
     public partial class JetConnection : DbConnection, IDisposable, ICloneable
     {
 
+        /// <summary>
+        /// Gets or sets a value indicating whether show SQL statements.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> to show SQL statements; otherwise, <c>false</c>.
+        /// </value>
+        static public bool ShowSqlStatements = false;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether SQL statements should be indented
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> to indent SQL statements; otherwise, <c>false</c>.
+        /// </value>
+        static public bool IndentSqlStatements = true;
+
+
         internal DbConnection WrappedConnection { get; private set; }
 
         /// <summary>
@@ -270,7 +287,7 @@ namespace JetEntityFrameworkProvider
             return tableExists;
         }
 
-        public JetCommand CreateCommand(string commandText, int? commandTimeout = null)
+        public DbCommand CreateCommand(string commandText, int? commandTimeout = null)
         {
             if (string.IsNullOrEmpty(commandText))
                 // SqlCommand will complain if the command text is empty

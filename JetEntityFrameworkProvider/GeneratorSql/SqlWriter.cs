@@ -46,7 +46,7 @@ namespace JetEntityFrameworkProvider
             }
             else
             {
-                if (_atBeginningOfLine && JetCommand.IndentSqlStatements)
+                if (_atBeginningOfLine && JetConnection.IndentSqlStatements)
                 {
                     if (Indent > 0)
                         base.Write(new string('\t', Indent));
