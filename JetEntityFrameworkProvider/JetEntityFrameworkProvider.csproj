@@ -56,8 +56,12 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EntityFramework">
-      <HintPath>..\packages\EntityFramework.6.1.1\lib\net40\EntityFramework.dll</HintPath>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\CloseUp\packages\EntityFramework.6.1.2\lib\net40\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\..\CloseUp\packages\EntityFramework.6.1.2\lib\net40\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
@@ -71,6 +75,7 @@
     <Compile Include="GeneratorDdl\JetDdlBuilder.cs" />
     <Compile Include="GeneratorDdl\JetMigrationSqlGenerator.cs" />
     <Compile Include="GeneratorSql\IllegalDbExpressionException.cs" />
+    <Compile Include="JetConnectionFactory.cs" />
     <Compile Include="JetDataReader.cs" />
     <Compile Include="JetStoreSchemaDefinitionRetrieve.cs" />
     <Compile Include="JetTransaction.cs" />
@@ -126,13 +131,13 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="JetEntityFrameworkProvider.snk" />
-    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Documentation\CanonicalFunctions.txt" />
     <Content Include="Documentation\DbFirstImplementation.txt" />
     <Content Include="Documentation\JetSQL.txt" />
     <Content Include="Documentation\JetSQLFunctions.txt" />
+    <None Include="packages.config" />
     <None Include="Resources\StoreSchemaDefinition.IndexColumns.xml" />
     <None Include="Resources\StoreSchemaDefinition.Indexes.xml" />
     <None Include="Resources\StoreSchemaDefinition.Views.xml" />

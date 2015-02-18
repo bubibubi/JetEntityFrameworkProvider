@@ -39,6 +39,16 @@ namespace JetEntityFrameworkProvider
         /// <summary>
         /// Initializes a new instance of the <see cref="JetConnection"/> class.
         /// </summary>
+        /// <param name="connection">The underling OleDb connection.</param>
+        public JetConnection(OleDbConnection connection)
+        {
+            WrappedConnection = connection;
+            WrappedConnection.StateChange += WrappedConnection_StateChange;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="JetConnection"/> class.
+        /// </summary>
         /// <param name="connectionString">The connection string.</param>
         public JetConnection(string connectionString) : this()
         {

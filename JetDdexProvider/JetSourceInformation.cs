@@ -57,12 +57,6 @@ namespace JetDdexProvider
 			return base.RetrieveValue(propertyName);
 		}
 
-#warning remove
-        protected override Type GetType(string propertyName)
-        {
-            return base.GetType(propertyName);
-        }
-
 		#endregion
 	}
 }
