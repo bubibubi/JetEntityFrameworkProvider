@@ -380,6 +380,8 @@ namespace JetEntityFrameworkProvider
 
                 case PrimitiveTypeKind.DateTime: // datetime
                     return TypeUsage.CreateDefaultTypeUsage(StoreTypeNameToStorePrimitiveType["datetime"]);
+                case PrimitiveTypeKind.Time: // time
+                    return TypeUsage.CreateDefaultTypeUsage(StoreTypeNameToStorePrimitiveType["time"]);
                 default:
                     throw new NotSupportedException(String.Format("There is no store type corresponding to the EDM type '{0}' of primitive type '{1}'.", edmType, primitiveType.PrimitiveTypeKind));
             }
