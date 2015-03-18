@@ -35,8 +35,7 @@ namespace JetEntityFrameworkProvider
             // Adding a DbMigrationSqlGenerator, all the tables are created in this way
             AddDependencyResolver(new SingletonDependencyResolver<Func<MigrationSqlGenerator>>(() => new JetMigrationSqlGenerator(), PROVIDERINVARIANTNAME));
 
-#warning in framework 6.1 delivered on Dec 2014 there is not TableExistenceChecker. It's only in the source code of EF6.1
-            //AddDependencyResolver(new SingletonDependencyResolver<System.Data.Entity.Infrastructure.TableExistenceChecker>(new JetTableExistenceChecker()));
+            AddDependencyResolver(new SingletonDependencyResolver<System.Data.Entity.Infrastructure.TableExistenceChecker>(new JetTableExistenceChecker()));
 
         }
 

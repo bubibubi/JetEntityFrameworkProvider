@@ -22,7 +22,7 @@ namespace JetEntityFrameworkProvider.Test
         static void Main(string[] args)
         {
 
-            Console.SetWindowSize(210, 80);
+            //Console.SetWindowSize(210, 80);
 
             // This is the only reason why we need to include the provider
             JetEntityFrameworkProvider.JetConnection.ShowSqlStatements = true;

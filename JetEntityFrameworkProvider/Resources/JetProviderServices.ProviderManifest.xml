@@ -57,67 +57,17 @@ PROCESS
         <FixedLength DefaultValue="false" Constant="true" />
       </FacetDescriptions>
     </Type>
-    <Type Name="varbinary(max)" PrimitiveTypeKind="Binary">
-      <FacetDescriptions>
-        <MaxLength DefaultValue="2147483647" Constant="true" />
-        <FixedLength DefaultValue="false" Constant="true" />
-      </FacetDescriptions>
-    </Type>
     <Type Name="image" PrimitiveTypeKind="Binary" >
       <FacetDescriptions>
         <MaxLength DefaultValue="2147483647" Constant="true" />
         <FixedLength DefaultValue="false" Constant="true" />
       </FacetDescriptions>
     </Type>
-    <Type Name="timestamp" PrimitiveTypeKind="Binary">
-      <FacetDescriptions>
-        <MaxLength DefaultValue="8" Constant="true" />
-        <FixedLength DefaultValue="true" Constant="true" />
-      </FacetDescriptions>
-    </Type>
-    <Type Name="rowversion" PrimitiveTypeKind="Binary">
-      <FacetDescriptions>
-        <MaxLength DefaultValue="8" Constant="true" />
-        <FixedLength DefaultValue="true" Constant="true" />
-      </FacetDescriptions>
-    </Type>
     <Type Name="bit" PrimitiveTypeKind="Boolean">
-    </Type>
-    <Type Name="smalldatetime" PrimitiveTypeKind="DateTime">
-      <FacetDescriptions>
-        <Precision DefaultValue="0" Constant="true" />          
-      </FacetDescriptions>
     </Type>
     <Type Name="datetime" PrimitiveTypeKind="DateTime">
       <FacetDescriptions>
           <Precision DefaultValue="3" Constant="true" />
-      </FacetDescriptions>
-    </Type>
-    <Type Name="datetime2" PrimitiveTypeKind="DateTime">
-      <FacetDescriptions>
-        <Precision Minimum="0" Maximum="7" DefaultValue="7" Constant="false" />              
-      </FacetDescriptions>
-    </Type>
-    <Type Name="date" PrimitiveTypeKind="DateTime">
-      <FacetDescriptions>
-        <Precision DefaultValue="0" Constant="true" />
-      </FacetDescriptions>
-    </Type>
-    <Type Name="time" PrimitiveTypeKind="Time">
-      <FacetDescriptions>
-        <Precision Minimum="0" Maximum="7" DefaultValue="7" Constant="false" />
-      </FacetDescriptions>
-    </Type>
-    <Type Name="datetimeoffset" PrimitiveTypeKind="DateTimeOffset">
-      <FacetDescriptions>
-        <Precision Minimum="0" Maximum="7" DefaultValue="7" Constant="false" />
-      </FacetDescriptions>
-    </Type>
-    <Type Name="nvarchar" PrimitiveTypeKind="String">
-      <FacetDescriptions>
-        <MaxLength Minimum="1" Maximum="255" DefaultValue="50" Constant="false" />
-        <Unicode DefaultValue="true" Constant="true" />
-        <FixedLength DefaultValue="false" Constant="true" />
       </FacetDescriptions>
     </Type>
     <Type Name="varchar" PrimitiveTypeKind="String">
@@ -134,47 +84,10 @@ PROCESS
         <FixedLength DefaultValue="true" Constant="true" />
       </FacetDescriptions>
     </Type>
-    <Type Name="nchar" PrimitiveTypeKind="String">
-      <FacetDescriptions>
-        <MaxLength Minimum="1" Maximum="255" DefaultValue="50" Constant="false" />
-        <Unicode DefaultValue="true" Constant="true" />
-        <FixedLength DefaultValue="true" Constant="true" />
-      </FacetDescriptions>
-    </Type>
-    <Type Name="varchar(max)" PrimitiveTypeKind="String">
-      <FacetDescriptions>
-        <MaxLength DefaultValue="2147483647" Constant="true" />
-        <Unicode DefaultValue="false" Constant="true" />
-        <FixedLength DefaultValue="false" Constant="true" />
-      </FacetDescriptions>
-    </Type>
-    <Type Name="nvarchar(max)" PrimitiveTypeKind="String">
-      <FacetDescriptions>
-        <MaxLength DefaultValue="1073741823" Constant="true" />
-        <Unicode DefaultValue="true" Constant="true" />
-        <FixedLength DefaultValue="false" Constant="true" />
-      </FacetDescriptions>
-    </Type>
-    <Type Name="ntext" PrimitiveTypeKind="String" >
-      <FacetDescriptions>
-        <MaxLength DefaultValue="1073741823" Constant="true" />
-        <Unicode DefaultValue="true" Constant="true" />
-        <FixedLength DefaultValue="false" Constant="true" />
-      </FacetDescriptions>
-    </Type>
     <Type Name="text" PrimitiveTypeKind="String" >
       <FacetDescriptions>
         <MaxLength DefaultValue="2147483647" Constant="true" />
         <Unicode DefaultValue="false" Constant="true" />
-        <FixedLength DefaultValue="false" Constant="true" />
-      </FacetDescriptions>
-    </Type>
-    <Type Name="uniqueidentifier" PrimitiveTypeKind="Guid">
-    </Type>
-    <Type Name="xml" PrimitiveTypeKind="String" >
-      <FacetDescriptions>
-        <MaxLength DefaultValue="1073741823" Constant="true" />
-        <Unicode DefaultValue="true" Constant="true" />
         <FixedLength DefaultValue="false" Constant="true" />
       </FacetDescriptions>
     </Type>
