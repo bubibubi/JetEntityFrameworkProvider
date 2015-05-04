@@ -182,46 +182,6 @@ namespace JetEntityFrameworkProvider.Test
 
 
 
-        private static void ShowCourses(String showString, IEnumerable<Course> courses)
-        {
-            Console.WriteLine(showString);
-            foreach (Course course in courses)
-            {
-                Console.WriteLine("CourseID:{0,-10} CourseTitle:{1,-15} Department:{2,-10}",
-                    course.CourseID, course.Title, course.DepartmentID);
-            }
-        }
-
-        /// <summary>
-        /// Use the Entity SQL to implement the Between operation
-        /// </summary>
-        /// <returns></returns>
-        private static List<Course> GetCoursesByEntitySQL(EntityConnection ec)
-        {
-            School school = new School(ec);
-            return school.Courses.Where(c => c.CourseID.StartsWith("C2")).ToList();
-        }
-
-        /// <summary>
-        /// Use the Entity SQL to implement the Between operation
-        /// </summary>
-        /// <returns></returns>
-        private static List<Course> GetCoursesByEntityEscapedLikeSQL(EntityConnection ec)
-        {
-            School school = new School(ec);
-            return school.Courses.Where(c => c.CourseID.StartsWith("%")).ToList();
-        }
-
-        /// <summary>
-        /// Use the extension method to implement the Between operation
-        /// </summary>
-        /// <returns></returns>
-        private static List<Course> GetCoursesByExtension(EntityConnection ec)
-        {
-            School school = new School(ec);
-            return school.Courses.Between(c => c.CourseID, "C1050", "C3141").ToList();
-        }
-
 
     }
 }
