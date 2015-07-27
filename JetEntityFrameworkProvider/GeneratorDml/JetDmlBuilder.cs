@@ -2,9 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
-using System.IO;
 using System.Text;
-using System.Data;
 using System.Data.Common;
 using System.Data.OleDb;
 using System.Data.Entity.Core.Common.CommandTrees;
@@ -99,36 +97,42 @@ namespace JetEntityFrameworkProvider
 
             commandText.Append("insert into ");
             tree.Target.Expression.Accept(translator);
-            
-            // (c1, c2, c3, ...)
-            commandText.Append("(");
-            bool first = true;
-            foreach (DbSetClause setClause in tree.SetClauses)
+
+
+            if (tree.SetClauses.Count != 0)
             {
-                if (first) 
-                    first = false;
-                else 
-                    commandText.Append(", ");
-                
-                setClause.Property.Accept(translator);
+                // (c1, c2, c3, ...)
+                commandText.Append("(");
+                bool first = true;
+                foreach (DbSetClause setClause in tree.SetClauses)
+                {
+                    if (first)
+                        first = false;
+                    else
+                        commandText.Append(", ");
+
+                    setClause.Property.Accept(translator);
+                }
+                commandText.AppendLine(")");
+
+                // values c1, c2, ...
+                first = true;
+                commandText.Append("values (");
+                foreach (DbSetClause setClause in tree.SetClauses)
+                {
+                    if (first)
+                        first = false;
+                    else
+                        commandText.Append(", ");
+
+                    setClause.Value.Accept(translator);
+
+                    translator.RegisterMemberValue(setClause.Property, setClause.Value);
+                }
+                commandText.AppendLine(");");
             }
-            commandText.AppendLine(")");
-
-            // values c1, c2, ...
-            first = true;
-            commandText.Append("values (");
-            foreach (DbSetClause setClause in tree.SetClauses)
-            {
-                if (first) 
-                    first = false;
-                else 
-                    commandText.Append(", ");
-
-                setClause.Value.Accept(translator);
-
-                translator.RegisterMemberValue(setClause.Property, setClause.Value);
-            }
-            commandText.AppendLine(");");
+            else
+                commandText.AppendLine(" default values;");
 
             // generate returning sql
             GenerateReturningSql(commandText, tree, translator, tree.Returning); 
@@ -390,25 +394,24 @@ namespace JetEntityFrameworkProvider
             /// <param name="commandTree">Command tree generating SQL</param>
             /// <param name="preserveMemberValues">Indicates whether the translator should preserve
             /// member values while compiling sql expression</param>
+            /// <param name="insertParametersValuesInSql">if set to <c>true</c> parameters values are inserted directly in SQL statement.</param>
             internal ExpressionTranslator(StringBuilder commandText, DbModificationCommandTree commandTree, bool preserveMemberValues, bool insertParametersValuesInSql)
             {
                 Debug.Assert(commandText != null);
                 Debug.Assert(commandTree != null);
                 
                 _commandText = commandText;
-                _commandTree = commandTree;
                 _parameters = new List<DbParameter>();
                 _memberValues = preserveMemberValues ? new Dictionary<EdmMember, DbParameter>() : null;
                 _insertParametersValuesInSql = insertParametersValuesInSql;
             }
 
             private readonly StringBuilder _commandText;
-            private readonly DbModificationCommandTree _commandTree;
             private readonly List<DbParameter> _parameters;
             private readonly Dictionary<EdmMember, DbParameter> _memberValues;
             private readonly bool _insertParametersValuesInSql;
 
-            private int parameterNameCount = 0;
+            private int _parameterNameCount = 0;
 
             internal List<DbParameter> Parameters { get { return _parameters; } }
             internal Dictionary<EdmMember, DbParameter> MemberValues { get { return _memberValues; } }
@@ -417,12 +420,12 @@ namespace JetEntityFrameworkProvider
             internal OleDbParameter CreateParameter(object value, TypeUsage type)
             {
                 var parameter = JetProviderServices.CreateJetParameter(
-                    string.Concat("@p", parameterNameCount.ToString(CultureInfo.InvariantCulture)),
+                    string.Concat("@p", _parameterNameCount.ToString(CultureInfo.InvariantCulture)),
                     type,
                     ParameterMode.In,
                     value);
 
-                parameterNameCount++;
+                _parameterNameCount++;
                 _parameters.Add(parameter);
 
                 return parameter;
@@ -527,7 +530,7 @@ namespace JetEntityFrameworkProvider
                     {
                         case PrimitiveTypeKind.Int32:
                         case PrimitiveTypeKind.Byte:
-                            result.Append(expressionValue.ToString());
+                            result.Append(expressionValue);
                             break;
 
                         case PrimitiveTypeKind.Binary:
@@ -589,13 +592,13 @@ namespace JetEntityFrameworkProvider
                             break;
                         case PrimitiveTypeKind.Int16:
                         case PrimitiveTypeKind.Int64:
-                            result.Append(expressionValue.ToString());
+                            result.Append(expressionValue);
                             break;
                         case PrimitiveTypeKind.String:
                             result.Append(LiteralHelpers.ToSqlString(expressionValue as string));
                             break;
 
-                        case PrimitiveTypeKind.Guid:
+                        //case PrimitiveTypeKind.Guid:
                         default:
                             // all known scalar types should been handled already.
                             throw new NotSupportedException("Primitive type kind " + typeKind + " is not supported by the Jet Provider");

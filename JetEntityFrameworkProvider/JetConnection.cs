@@ -5,7 +5,7 @@ using System.Data.OleDb;
 
 namespace JetEntityFrameworkProvider
 {
-    public partial class JetConnection : DbConnection, IDisposable, ICloneable
+    public class JetConnection : DbConnection, IDisposable, ICloneable
     {
 
         /// <summary>
@@ -313,7 +313,7 @@ namespace JetEntityFrameworkProvider
         /// <summary>
         /// Occurs when the component is disposed by a call to the <see cref="M:System.ComponentModel.Component.Dispose" /> method.
         /// </summary>
-        public event EventHandler Disposed;
+        public new event EventHandler Disposed;
 
         /// <summary>
         /// Raises the <see cref="E:Disposed" /> event.

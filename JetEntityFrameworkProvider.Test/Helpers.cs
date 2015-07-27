@@ -115,7 +115,8 @@ namespace JetEntityFrameworkProvider.Test
         public static string GetConnectionString()
         {
             OleDbConnectionStringBuilder oleDbConnectionStringBuilder = new OleDbConnectionStringBuilder();
-            oleDbConnectionStringBuilder.Provider = "Microsoft.Jet.OLEDB.4.0";
+            //oleDbConnectionStringBuilder.Provider = "Microsoft.Jet.OLEDB.4.0";
+            oleDbConnectionStringBuilder.Provider = "Microsoft.ACE.OLEDB.12.0";
             oleDbConnectionStringBuilder.DataSource = @".\Empty.mdb";
             return oleDbConnectionStringBuilder.ToString();
         }

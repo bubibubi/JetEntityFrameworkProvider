@@ -2190,6 +2190,9 @@ namespace JetEntityFrameworkProvider
             string separator = "";
             bool isLeftMostInput = true;
             int inputCount = inputs.Count;
+
+            result.From.Append("(");
+
             for (int idx = 0; idx < inputCount; idx++)
             {
                 DbExpressionBinding input = inputs[idx];
@@ -2242,6 +2245,8 @@ namespace JetEntityFrameworkProvider
             {
                 selectStatementStack.Pop();
             }
+
+            result.From.Append(")");
 
             return result;
         }
