@@ -24,11 +24,8 @@ namespace JetEntityFrameworkProvider
         /// </returns>
         object IServiceProvider.GetService(Type serviceType)
         {
-            //if (serviceType.IsAssignableFrom(typeof(DbProviderServices)))
-            //    return JetProviderServices.Instance;
             // Actually there is a mismatch between EF6 DbProviderServices and EF in Framework 4 DbProviderServices
-#warning Possible malfunctioning in future releases
-            if (serviceType.Name == "DbProviderServices")
+            if (serviceType.IsAssignableFrom(typeof(DbProviderServices)))
                 return JetProviderServices.Instance;
             else
                 return null;
