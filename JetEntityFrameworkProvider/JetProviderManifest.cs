@@ -181,6 +181,7 @@ namespace JetEntityFrameworkProvider
                 case "bit":
                 case "uniqueidentifier":
                 case "int":
+                case "guid":
                     return TypeUsage.CreateDefaultTypeUsage(edmPrimitiveType);
                 
                 case "nvarchar":
@@ -317,7 +318,7 @@ namespace JetEntityFrameworkProvider
                     return TypeUsage.CreateDefaultTypeUsage(StoreTypeNameToStorePrimitiveType["int"]);
 
                 case PrimitiveTypeKind.Guid:
-                    return TypeUsage.CreateDefaultTypeUsage(StoreTypeNameToStorePrimitiveType["int"]);
+                    return TypeUsage.CreateDefaultTypeUsage(StoreTypeNameToStorePrimitiveType["guid"]);
 
                 case PrimitiveTypeKind.Double:
                     return TypeUsage.CreateDefaultTypeUsage(StoreTypeNameToStorePrimitiveType["float"]);

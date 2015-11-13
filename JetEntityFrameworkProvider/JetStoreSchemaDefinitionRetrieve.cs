@@ -628,7 +628,8 @@ namespace JetEntityFrameworkProvider
                         return "char";
                     else
                         return "varchar";
-
+                case OleDbType.Guid:
+                    return "guid";
                 case OleDbType.BSTR:
                 case OleDbType.Variant:
                 case OleDbType.VarWChar:
@@ -637,7 +638,6 @@ namespace JetEntityFrameworkProvider
                 case OleDbType.DBTime:
                 case OleDbType.Empty:
                 case OleDbType.Filetime:
-                case OleDbType.Guid:
                 case OleDbType.IDispatch:
                 case OleDbType.IUnknown:
                 case OleDbType.UnsignedBigInt:

@@ -21,6 +21,8 @@ PROCESS
     </Type>
     <Type Name="real" PrimitiveTypeKind="Single">
     </Type>
+    <Type Name="guid" PrimitiveTypeKind="Guid">
+    </Type>
     <Type Name="decimal" PrimitiveTypeKind="Decimal">
       <FacetDescriptions>
         <Precision Minimum="1" Maximum="38" DefaultValue="18" Constant="false" />

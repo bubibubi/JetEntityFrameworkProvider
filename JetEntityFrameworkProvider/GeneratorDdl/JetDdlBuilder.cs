@@ -84,8 +84,14 @@ namespace JetEntityFrameworkProvider
             AppendSql(jetLength);
             AppendSql(isNullable ? " null" : " not null");
 
-            if (!isTimestamp && isIdentity)
-                    AppendSql(" identity(1,1)");
+            if (isTimestamp)
+                ;// nothing to generate for identity
+            else if (isIdentity && jetTypeName == "guid")
+                AppendSql(" default GenGUID()");
+                //AppendSql(" counter");
+                //AppendSql(" autoincrement");
+            else if (isIdentity)
+                AppendSql(" identity(1,1)");
         }
 
         /// <summary>

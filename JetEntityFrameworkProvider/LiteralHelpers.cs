@@ -35,6 +35,12 @@ namespace JetEntityFrameworkProvider
             return "'" + value.Replace("'", "''") + "'";
         }
 
+        public static string ToSqlString(Guid value)
+        {
+            // In Jet everything's unicode
+            return "'P" + value.ToString() + "'";
+        }
+
         /// <summary>
         /// Transform the given <see cref="System.DateTime"/> value in a string formatted in a valid format, 
         /// that represents a date and a time

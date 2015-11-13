@@ -242,13 +242,24 @@ namespace JetEntityFrameworkProvider
                         DbCommand command;
                         command = (DbCommand)((ICloneable)this._WrappedCommand).Clone();
                         int identityPosition = commandText.ToLower().IndexOf("@@identity");
+                        int guidPosition = commandText.ToLower().IndexOf("@@guid");
                         if (identityPosition >= 0)
                         {
                             // Need to split again
                             command.CommandText = "Select @@identity";
-                            int identity = Convert.ToInt32(command.ExecuteScalar());
+                            object identity = command.ExecuteScalar();
+                            int iIdentity = Convert.ToInt32(identity);
                             command = (DbCommand)((ICloneable)this._WrappedCommand).Clone();
-                            command.CommandText = commandText.Remove(identityPosition, 10).Insert(identityPosition, identity.ToString(System.Globalization.CultureInfo.InvariantCulture));
+                            command.CommandText = commandText.Remove(identityPosition, 10).Insert(identityPosition, iIdentity.ToString(System.Globalization.CultureInfo.InvariantCulture));
+                        }
+                        else if (guidPosition >= 0)
+                        {
+                            // Need to split again
+                            command.CommandText = "Select @@guid";
+                            object identity = command.ExecuteScalar();
+                            int iIdentity = Convert.ToInt32(identity);
+                            command = (DbCommand)((ICloneable)this._WrappedCommand).Clone();
+                            command.CommandText = commandText.Remove(guidPosition, 6).Insert(guidPosition, iIdentity.ToString(System.Globalization.CultureInfo.InvariantCulture));
                         }
                         else
                             command.CommandText = commandText;
@@ -354,6 +365,12 @@ namespace JetEntityFrameworkProvider
                 this._WrappedCommand.UpdatedRowSource = value;
             }
         }
+
+        public static implicit operator OleDbCommand(JetCommand command)
+        {
+            return (OleDbCommand)command._WrappedCommand;
+        }
+
 
         /// <summary>
         /// Clones this instance.

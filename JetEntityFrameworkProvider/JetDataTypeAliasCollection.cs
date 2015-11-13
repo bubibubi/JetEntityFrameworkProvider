@@ -58,7 +58,8 @@ namespace JetEntityFrameworkProvider
             Add("smallint");
             Add("integer", "int");
             Add("bigint", "int"); // JET does not support bigint at all
-            Add("uniqueidentifier", "int"); // JET does not support guid at all
+            Add("guid");
+            Add("uniqueidentifier", "guid");
             Add("int");
                 
         }

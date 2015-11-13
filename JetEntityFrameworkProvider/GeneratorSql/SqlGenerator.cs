@@ -843,10 +843,10 @@ namespace JetEntityFrameworkProvider
 
                 case PrimitiveTypeKind.Boolean:
                     return new SqlBuilder("CBool(IIf(IsNull(", argument, "),0,", argument, "))");
-
+                case PrimitiveTypeKind.Guid:
+                    // TODO: Guid - Cast
                 case PrimitiveTypeKind.DateTimeOffset:
                 case PrimitiveTypeKind.Decimal:
-                case PrimitiveTypeKind.Guid:
                 case PrimitiveTypeKind.SByte:
                 case PrimitiveTypeKind.Binary:
 
@@ -3664,7 +3664,7 @@ namespace JetEntityFrameworkProvider
                     break;
 
                 case PrimitiveTypeKind.Guid:
-                    typeName = "uniqueidentifier";
+                    typeName = "guid";
                     break;
 
                 default:
