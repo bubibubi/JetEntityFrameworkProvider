@@ -24,10 +24,18 @@ namespace JetEntityFrameworkProvider
 
         public void AppendIdentifier(string identifier)
         {
-            if (identifier.ToLower().StartsWith("dbo."))
-                AppendSql(JetProviderManifest.QuoteIdentifier(identifier.Substring(4)));
-            else
-                AppendSql(JetProviderManifest.QuoteIdentifier(identifier));
+            string correctIdentifier;
+
+            correctIdentifier = identifier.ToLower().StartsWith("dbo.") ? identifier.Substring(4) : identifier;
+
+            if (correctIdentifier.Length > JetProviderManifest.MaxObjectNameLength)
+            {
+                string guid = Guid.NewGuid().ToString().Replace("-", "");
+                correctIdentifier = correctIdentifier.Substring(0, JetProviderManifest.MaxObjectNameLength - guid.Length) + guid;
+            }
+
+    
+            AppendSql(JetProviderManifest.QuoteIdentifier(correctIdentifier));
         }
 
 
