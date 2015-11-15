@@ -101,7 +101,12 @@ namespace JetEntityFrameworkProvider
 
         public override Guid GetGuid(int ordinal)
         {
-            return _wrappedDataReader.GetGuid(ordinal);
+            // Fix for discussion https://jetentityframeworkprovider.codeplex.com/discussions/647028
+            object value = _wrappedDataReader.GetValue(ordinal);
+            if (value is byte[])
+                return new Guid((byte[])value);
+            else
+                return _wrappedDataReader.GetGuid(ordinal);
         }
 
         public override short GetInt16(int ordinal)
@@ -111,7 +116,16 @@ namespace JetEntityFrameworkProvider
 
         public override int GetInt32(int ordinal)
         {
-            return _wrappedDataReader.GetInt32(ordinal);
+            // Fix for discussion https://jetentityframeworkprovider.codeplex.com/discussions/647028
+            object value = _wrappedDataReader.GetValue(ordinal);
+            if (value is string)
+            {
+                byte[] buffer = Encoding.Unicode.GetBytes((string)value);
+                int intValue = BitConverter.ToInt32(buffer, 0);
+                return intValue;
+            }
+            else
+                return _wrappedDataReader.GetInt32(ordinal);
         }
 
         public override long GetInt64(int ordinal)
