@@ -82,14 +82,6 @@ namespace JetDdexProvider
 			return identifier;
 		}
 
-#warning Delete
-        public override object[] ContractIdentifier(string typeName, object[] fullIdentifier)
-        {
-            object[] contractIdentifier = base.ContractIdentifier(typeName, fullIdentifier);
-            return contractIdentifier;
-        }
-
-
 
 	}
 }

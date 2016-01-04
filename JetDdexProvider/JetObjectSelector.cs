@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.Common;
 using System.Data.OleDb;
 using System.Diagnostics;
@@ -24,9 +25,6 @@ namespace JetDdexProvider
         { }
 
         #region Queries
-
-        private const string rootEnumerationSql =
-            "SELECT '{0}' AS [File] FROM (SELECT COUNT(*) FROM MSysRelationships)";
 
         private const string tableEnumerationSql =
             "SHOW Tables " +
@@ -163,23 +161,35 @@ namespace JetDdexProvider
 			if (typeName == null)
 				throw new ArgumentNullException("typeName");
 
-			// Execute a SQL statement to get the property values
+
+            // Choose and format SQL based on the type
+		    if (typeName.Equals(JetObjectTypes.Root, StringComparison.OrdinalIgnoreCase))
+		    {
+                string fileName = null;
+
+                try
+                {
+                    fileName = new OleDbConnectionStringBuilder(Site.DisplayConnectionString).DataSource;
+                }
+                catch (Exception)
+                { }
+
+                if (string.IsNullOrWhiteSpace(fileName))
+                    fileName = "Unknown";
+
+                DataTable dataTable = new DataTable();
+		        dataTable.Columns.Add("File", typeof (string));
+		        DataRow dataRow = dataTable.NewRow();
+		        dataRow["File"] = fileName;
+		        dataTable.Rows.Add(dataRow);
+                return new AdoDotNetReader(dataTable.CreateDataReader());
+		    }
+
+		    // Execute a SQL statement to get the property values
             DbConnection connection = Site.GetLockedProviderObject() as DbConnection;
 
             if (connection == null)
 				throw new InvalidOperationException("Invalid provider object");
-
-            string fileName = null;
-
-            try
-            {
-                fileName = new OleDbConnectionStringBuilder(connection.ConnectionString).DataSource;
-            }
-            catch (Exception)
-            {}
-
-            if (string.IsNullOrWhiteSpace(fileName))
-                fileName = "Unknown";
 
             try
 			{
@@ -187,13 +197,12 @@ namespace JetDdexProvider
 				if (Site.State != DataConnectionState.Open)
 					Site.Open();
 
+
+
 				// Create a command object
 				DbCommand command = (DbCommand)connection.CreateCommand();
 
-				// Choose and format SQL based on the type
-				if (typeName.Equals(JetObjectTypes.Root, StringComparison.OrdinalIgnoreCase))
-					command.CommandText = string.Format(rootEnumerationSql, fileName.Replace("'", "''"));
-                else if (typeName.Equals(JetObjectTypes.Table, StringComparison.OrdinalIgnoreCase))
+                if (typeName.Equals(JetObjectTypes.Table, StringComparison.OrdinalIgnoreCase))
                 {
                     command.CommandText = FormatSqlString(
                         tableEnumerationSql,

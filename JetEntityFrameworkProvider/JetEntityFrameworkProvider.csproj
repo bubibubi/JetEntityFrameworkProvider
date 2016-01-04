@@ -166,7 +166,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>rem "%25ProgramFiles%25\Microsoft SDKs\Windows\v8.0A\Bin\NETFX 4.0 Tools\gacutil.exe" /if "$(TargetPath)"</PostBuildEvent>
+    <PostBuildEvent>"%25ProgramFiles%25\Microsoft SDKs\Windows\v8.0A\Bin\NETFX 4.0 Tools\gacutil.exe" /if "$(TargetPath)"</PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
     <PreBuildEvent>"%25ProgramFiles%25\Microsoft SDKs\Windows\v8.0A\Bin\NETFX 4.0 Tools\gacutil.exe" /u "$(TargetName)"</PreBuildEvent>

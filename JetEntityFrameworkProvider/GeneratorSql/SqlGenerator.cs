@@ -2100,7 +2100,7 @@ namespace JetEntityFrameworkProvider
                 Cast(collectionType.TypeUsage.GetPrimitiveTypeKind(), null);
                 resultSql.Append(GetSqlPrimitiveType(collectionType.TypeUsage));
                 // We need to append the "DUAL" table because of access
-                resultSql.Append(" AS X FROM (SELECT 1 FROM (SELECT COUNT(*) FROM MSysRelationships)) AS Y WHERE 1=0");
+                resultSql.Append(" AS X FROM (SELECT 1 FROM " + JetConnection.DUAL + ") AS Y WHERE 1=0");
             }
 
             foreach (DbExpression arg in e.Arguments)
@@ -2110,7 +2110,7 @@ namespace JetEntityFrameworkProvider
                 resultSql.Append(arg.Accept(this));
                 // For scalar elements, we need to append alias and to append the "DUAL" table because access does not support SELECT without FROM
                 if (isScalarElement)
-                    resultSql.Append(" AS X FROM (SELECT COUNT(*) FROM MSysRelationships) ");
+                    resultSql.Append(" AS X FROM " + JetConnection.DUAL + " ");
 
                 separator = " UNION ALL ";
             }
