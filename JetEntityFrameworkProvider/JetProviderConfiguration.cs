@@ -62,7 +62,7 @@ namespace JetEntityFrameworkProvider
                 set
                 {
                     if (string.IsNullOrWhiteSpace(value))
-                        throw new ArgumentNullException("Invalid conditional scalar utility table name.");
+                        throw new ArgumentNullException("Invalid dual table name.");
 
                     _dualTable = value;
                 }
