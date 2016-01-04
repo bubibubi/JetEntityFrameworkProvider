@@ -69,7 +69,7 @@ namespace JetEntityFrameworkProvider
         private string GenerateSqlStatementConcrete(HistoryOperation migrationOperation)
         {
             JetDdlBuilder ddlBuilder = new JetDdlBuilder();
-            
+
             foreach (DbModificationCommandTree commandTree in migrationOperation.CommandTrees)
             {
                 List<DbParameter> parameters;
@@ -261,11 +261,18 @@ namespace JetEntityFrameworkProvider
 
         private string GenerateSqlStatementConcrete(AddPrimaryKeyOperation migrationOperation)
         {
+
             JetDdlBuilder ddlBuilder = new JetDdlBuilder();
             ddlBuilder.AppendSql("ALTER TABLE ");
             ddlBuilder.AppendIdentifier(migrationOperation.Table);
             ddlBuilder.AppendSql(" ADD CONSTRAINT ");
-            ddlBuilder.AppendIdentifier(ddlBuilder.CreateConstraintName("PK", migrationOperation.Table)); // Take care because here names starts with "dbo."
+
+            // respect name given to primary keys in migrations
+            var pkName = migrationOperation.HasDefaultName ?
+                ddlBuilder.CreateConstraintName("PK", migrationOperation.Table) : // Take care because here names starts with "dbo."
+                migrationOperation.Name;
+
+            ddlBuilder.AppendIdentifier(pkName);
             ddlBuilder.AppendSql(" PRIMARY KEY (");
             ddlBuilder.AppendIdentifierList(migrationOperation.Columns);
             ddlBuilder.AppendSql(")");

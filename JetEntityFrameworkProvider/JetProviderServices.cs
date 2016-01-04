@@ -169,10 +169,10 @@ namespace JetEntityFrameworkProvider
             if (providerManifestToken == null)
                 throw new ArgumentNullException("providerManifestToken must not be null");
 
-            if( storeItemCollection == null)
+            if (storeItemCollection == null)
                 throw new ArgumentNullException("storeItemCollection must not be null");
 
-            return JetCreateDatabaseSqlGenerator.CreateObjectsScript(storeItemCollection);            
+            return JetCreateDatabaseSqlGenerator.CreateObjectsScript(storeItemCollection);
         }
 
         /// <summary>
@@ -260,7 +260,7 @@ namespace JetEntityFrameworkProvider
 
             // No database handling provided for Jet but we need to know if there is at least the migration history table
             return jetConnection.TableExists(System.Data.Entity.Migrations.History.HistoryContext.DefaultTableName);
-        }       
+        }
 
         protected override void DbDeleteDatabase(DbConnection connection, int? commandTimeout, StoreItemCollection storeItemCollection)
         {

@@ -258,6 +258,11 @@ namespace JetEntityFrameworkProvider
         /// </summary>
         private bool isVarRefSingle = false;
 
+        /// <summary>
+        /// Configuration settings to change the default behavior of multiple areas in the provider.
+        /// </summary>
+        private JetProviderConfiguration providerConfig = JetProviderConfiguration.Instance;
+
         #endregion
 
         #region Statics
@@ -314,14 +319,14 @@ namespace JetEntityFrameworkProvider
             functionHandlers.Add("Hour", HandleFunctionDefaultCastToInt);
             functionHandlers.Add("Minute", HandleFunctionDefaultCastToInt);
             functionHandlers.Add("Second", HandleFunctionDefaultCastToInt);
-            
+
             functionHandlers.Add("CurrentDateTime", HandleCanonicalFunctionCurrentDateTime);
             functionHandlers.Add("CurrentUtcDateTime", HandleCanonicalFunctionCurrentDateTime); // No UTC support
-            
+
             functionHandlers.Add("CreateDateTime", HandleCanonicalFunctionCreateDateTime);
             functionHandlers.Add("CreateTime", HandleCanonicalFunctionCreateTime);
 
-            
+
             functionHandlers.Add("AddYears", HandleCanonicalFunctionDateAdd);
             functionHandlers.Add("AddMonths", HandleCanonicalFunctionDateAdd);
             functionHandlers.Add("AddDays", HandleCanonicalFunctionDateAdd);
@@ -844,7 +849,7 @@ namespace JetEntityFrameworkProvider
                 case PrimitiveTypeKind.Boolean:
                     return new SqlBuilder("CBool(IIf(IsNull(", argument, "),0,", argument, "))");
                 case PrimitiveTypeKind.Guid:
-                    // TODO: Guid - Cast
+                // TODO: Guid - Cast
                 case PrimitiveTypeKind.DateTimeOffset:
                 case PrimitiveTypeKind.Decimal:
                 case PrimitiveTypeKind.SByte:
@@ -2100,7 +2105,9 @@ namespace JetEntityFrameworkProvider
                 Cast(collectionType.TypeUsage.GetPrimitiveTypeKind(), null);
                 resultSql.Append(GetSqlPrimitiveType(collectionType.TypeUsage));
                 // We need to append the "DUAL" table because of access
-                resultSql.Append(" AS X FROM (SELECT 1 FROM (SELECT COUNT(*) FROM MSysRelationships)) AS Y WHERE 1=0");
+                resultSql.Append(" AS X FROM (SELECT 1 FROM (SELECT COUNT(*) FROM [");
+                resultSql.Append(providerConfig.CommandGeneration.DualTable);
+                resultSql.Append("])) AS Y WHERE 1 = 0");
             }
 
             foreach (DbExpression arg in e.Arguments)
@@ -2110,7 +2117,11 @@ namespace JetEntityFrameworkProvider
                 resultSql.Append(arg.Accept(this));
                 // For scalar elements, we need to append alias and to append the "DUAL" table because access does not support SELECT without FROM
                 if (isScalarElement)
-                    resultSql.Append(" AS X FROM (SELECT COUNT(*) FROM MSysRelationships) ");
+                {
+                    resultSql.Append(" AS X FROM (SELECT COUNT(*) FROM [");
+                    resultSql.Append(providerConfig.CommandGeneration.DualTable);
+                    resultSql.Append("]) ");
+                }
 
                 separator = " UNION ALL ";
             }
@@ -3589,7 +3600,7 @@ namespace JetEntityFrameworkProvider
                         length = "max";
                     }
                     else
-                    { 
+                    {
                         length = maxLength.ToString(CultureInfo.InvariantCulture);
                         isFixedLength = type.GetIsFixedLength(false);
                         typeName = (isFixedLength ? "binary(" : "varbinary(") + length + ")";
