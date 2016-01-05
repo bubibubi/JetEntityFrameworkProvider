@@ -27,8 +27,18 @@ namespace JetEntityFrameworkProvider
         // JetConnection.DUAL = "Dual";
         //
         // For more information see also https://en.wikipedia.org/wiki/DUAL_table
+        /// <summary>
+        /// The DUAL table or query
+        /// </summary>
         public static string DUAL = "(SELECT COUNT(*) FROM MSysRelationships)";
 
+        /// <summary>
+        /// Gets or sets a value indicating whether append random number for foreign key names.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if append random number for foreign key names; otherwise, <c>false</c>.
+        /// </value>
+        public static bool AppendRandomNumberForForeignKeyNames = true;
 
         /// <summary>
         /// Gets or sets a value indicating whether show SQL statements.

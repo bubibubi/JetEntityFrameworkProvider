@@ -34,7 +34,7 @@ namespace JetEntityFrameworkProvider
                 correctIdentifier = correctIdentifier.Substring(0, JetProviderManifest.MaxObjectNameLength - guid.Length) + guid;
             }
 
-    
+
             AppendSql(JetProviderManifest.QuoteIdentifier(correctIdentifier));
         }
 
@@ -96,8 +96,8 @@ namespace JetEntityFrameworkProvider
                 ;// nothing to generate for identity
             else if (isIdentity && jetTypeName == "guid")
                 AppendSql(" default GenGUID()");
-                //AppendSql(" counter");
-                //AppendSql(" autoincrement");
+            //AppendSql(" counter");
+            //AppendSql(" autoincrement");
             else if (isIdentity)
                 AppendSql(" identity(1,1)");
         }
@@ -136,10 +136,14 @@ namespace JetEntityFrameworkProvider
                 objectName = objectName.Substring(4);
 
             string name = string.Format("{0}_{1}", constraint, objectName);
-            if (name.Length + 9 > JetProviderManifest.MaxObjectNameLength)
-                name = name.Substring(0, JetProviderManifest.MaxObjectNameLength - 9);
 
-            name += "_" + GetRandomString();
+            if (JetConnection.AppendRandomNumberForForeignKeyNames)
+            {
+                if (name.Length + 9 > JetProviderManifest.MaxObjectNameLength)
+                    name = name.Substring(0, JetProviderManifest.MaxObjectNameLength - 9);
+
+                name += "_" + GetRandomString();
+            }
 
             return name;
         }
