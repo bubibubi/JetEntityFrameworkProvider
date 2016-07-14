@@ -9,12 +9,24 @@ namespace JetEntityFrameworkProvider
     class JetDataReader : DbDataReader
     {
 
+
         public JetDataReader(DbDataReader dataReader)
         {
             _wrappedDataReader = dataReader;
         }
 
+
+        public JetDataReader(DbDataReader dataReader, int skipCount)
+        {
+            _wrappedDataReader = dataReader;
+            for (int i = 0; i < skipCount; i++)
+            {
+                _wrappedDataReader.Read();
+            }
+        }
+
         private DbDataReader _wrappedDataReader;
+
 
         public override void Close()
         {

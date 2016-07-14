@@ -1466,7 +1466,7 @@ namespace JetEntityFrameworkProvider
                 AddFromSymbol(result, "top", fromSymbol, false);
             }
 
-            ISqlFragment topCount = HandleCountExpression(e.Limit);
+            int topCount = HandleCountExpression(e.Limit);
 
             if (e.WithTies)
                 throw new NotImplementedException("WITH TIES not implemented in Jet");
@@ -1741,105 +1741,35 @@ namespace JetEntityFrameworkProvider
         }
 
         /// <summary>
-        /// The translation in here is for SQL Server 9 and is this fashion...
-        /// SELECT Y.x1, Y.x2, ..., Y.xn
-        /// FROM (
-        ///     SELECT X.x1, X.x2, ..., X.xn, row_number() OVER (ORDER BY sk1, sk2, ...) AS [row_number] 
-        ///     FROM input as X 
-        ///     ) as Y
-        /// WHERE Y.[row_number] > count 
-        /// ORDER BY sk1, sk2, ...
-        /// 
-        /// For Jet we could translate it in this way
-        /// 
-        /// SELECT *
-        /// FROM myTable x
-        /// WHERE x.ID NOT IN (SELECT Top 10 id FROM myTable ORDER BY ....)
-        /// ORDER BY ...
+        /// The translation in here is for the JetCommand that will skip records on the DbDataReader.
         /// </summary>
         /// <param name="e"></param>
         /// <returns>A <see cref="SqlBuilder"/></returns>
         public override ISqlFragment Visit(DbSkipExpression e)
         {
+
             Debug.Assert(e.Count is DbConstantExpression || e.Count is DbParameterReferenceExpression, "DbSkipExpression.Count is of invalid expression type");
 
             //Visit the input
             Symbol fromSymbol;
-            SqlSelectStatement input = VisitInputExpression(e.Input.Expression, e.Input.VariableName, e.Input.VariableType, out fromSymbol);
+            SqlSelectStatement result = VisitInputExpression(e.Input.Expression, e.Input.VariableName, e.Input.VariableType, out fromSymbol);
 
-            // Skip is not compatible with anything that OrderBy is not compatible with, as well as with distinct
-            if (!IsCompatible(input, e.ExpressionKind))
-                input = CreateNewSelectStatement(input, e.Input.VariableName, e.Input.VariableType, out fromSymbol);
+            if (!(e.Count is DbConstantExpression) &&
+            !(e.Count is DbParameterReferenceExpression))
+                throw new InvalidOperationException("DbSkipExpression.Count is of invalid expression type");
 
-            selectStatementStack.Push(input);
-            symbolTable.EnterScope();
 
-            AddFromSymbol(input, e.Input.VariableName, fromSymbol);
+            if (!IsCompatible(result, e.ExpressionKind))
+                result = CreateNewSelectStatement(result, e.Input.VariableName, e.Input.VariableType, out fromSymbol);
 
-            //Add the default columns
-            Debug.Assert(input.Select.IsEmpty);
-            List<Symbol> inputColumns = AddDefaultColumns(input);
+            int skipCount = HandleCountExpression(e.Count);
 
-            input.Select.Append(", row_number() OVER (ORDER BY ");
-            AddSortKeys(input.Select, e.SortOrder);
-            input.Select.Append(") AS ");
+            result.Skip = new SkipClause(skipCount);
 
-            Symbol row_numberSymbol = new Symbol("row_number", null);
-
-            input.Select.Append(row_numberSymbol);
-
-            //The inner statement is complete, its scopes need not be valid any longer
-            symbolTable.ExitScope();
-            selectStatementStack.Pop();
-
-            //Create the resulting statement 
-            //See CreateNewSelectStatement, it is very similar
-
-            SqlSelectStatement result = new SqlSelectStatement();
-            result.From.Append("( ");
-            result.From.Append(input);
-            result.From.AppendLine();
-            result.From.Append(") ");
-
-            //Create a symbol for the input
-            Symbol resultFromSymbol = null;
-
-            if (input.FromExtents.Count == 1)
-            {
-                JoinSymbol oldJoinSymbol = input.FromExtents[0] as JoinSymbol;
-                if (oldJoinSymbol != null)
-                {
-                    // Note: input.FromExtents will not do, since it might
-                    // just be an alias of joinSymbol, and we want an actual JoinSymbol.
-                    JoinSymbol newJoinSymbol = new JoinSymbol(e.Input.VariableName, e.Input.VariableType, oldJoinSymbol.ExtentList);
-                    // This indicates that the oldStatement is a blocking scope
-                    // i.e. it hides/renames extent columns
-                    newJoinSymbol.IsNestedJoin = true;
-                    newJoinSymbol.ColumnList = inputColumns;
-                    newJoinSymbol.FlattenedExtentList = oldJoinSymbol.FlattenedExtentList;
-
-                    resultFromSymbol = newJoinSymbol;
-                }
-            }
-
-            if (resultFromSymbol == null)
-            {
-                // This is just a simple extent/SqlSelectStatement,
-                // and we can get the column list from the type.
-                resultFromSymbol = new Symbol(e.Input.VariableName, e.Input.VariableType);
-            }
-            //Add the ORDER BY part
             selectStatementStack.Push(result);
             symbolTable.EnterScope();
 
-            AddFromSymbol(result, e.Input.VariableName, resultFromSymbol);
-
-            //Add the predicate 
-            result.Where.Append(resultFromSymbol);
-            result.Where.Append(".");
-            result.Where.Append(row_numberSymbol);
-            result.Where.Append(" > ");
-            result.Where.Append(HandleCountExpression(e.Count));
+            AddFromSymbol(result, e.Input.VariableName, fromSymbol);
 
             AddSortKeys(result.OrderBy, e.SortOrder);
 
@@ -1847,6 +1777,7 @@ namespace JetEntityFrameworkProvider
             selectStatementStack.Pop();
 
             return result;
+
         }
 
         /// <summary>
@@ -1863,9 +1794,7 @@ namespace JetEntityFrameworkProvider
             // OrderBy is compatible with Filter
             // and nothing else
             if (!IsCompatible(result, e.ExpressionKind))
-            {
                 result = CreateNewSelectStatement(result, e.Input.VariableName, e.Input.VariableType, out fromSymbol);
-            }
 
             selectStatementStack.Push(result);
             symbolTable.EnterScope();
@@ -3675,30 +3604,17 @@ namespace JetEntityFrameworkProvider
         }
 
         /// <summary>
-        /// Handles the expression represending DbLimitExpression.Limit and DbSkipExpression.Count.
-        /// If it is a constant expression, it simply does to string thus avoiding casting it to the specific value
-        /// (which would be done if <see cref="Visit(DbConstantExpression)"/> is called)
+        /// Handles the expression representing DbLimitExpression.Limit and DbSkipExpression.Count.
+        /// If must be a constant expression
         /// </summary>
         /// <param name="e"></param>
         /// <returns></returns>
-        private ISqlFragment HandleCountExpression(DbExpression e)
+        private int HandleCountExpression(DbExpression e)
         {
-            ISqlFragment result;
+            if (e.ExpressionKind != DbExpressionKind.Constant)
+                throw new InvalidOperationException("DbLimitExpression and DbSkipExpression must be constants");
 
-            if (e.ExpressionKind == DbExpressionKind.Constant)
-            {
-                //For constant expression we should not cast the value, 
-                // thus we don't go throught the default DbConstantExpression handling
-                SqlBuilder sqlBuilder = new SqlBuilder();
-                sqlBuilder.Append(((DbConstantExpression)e).Value.ToString());
-                result = sqlBuilder;
-            }
-            else
-            {
-                result = e.Accept(this);
-            }
-
-            return result;
+            return Convert.ToInt32(((DbConstantExpression) e).Value);
         }
 
         /// <summary>

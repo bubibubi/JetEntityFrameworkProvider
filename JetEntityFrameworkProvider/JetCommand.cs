@@ -227,6 +227,9 @@ namespace JetEntityFrameworkProvider
 
             if (_WrappedCommand.CommandType == System.Data.CommandType.Text && !string.IsNullOrWhiteSpace(_WrappedCommand.CommandText))
             {
+
+                #region Multiple commands (and @@guid)
+
                 string[] commandTextList = _WrappedCommand.CommandText.Split(new string[] { ";\r\n" }, StringSplitOptions.None);
                 if (commandTextList.Length > 1)
                 {
@@ -241,25 +244,25 @@ namespace JetEntityFrameworkProvider
 
                         DbCommand command;
                         command = (DbCommand)((ICloneable)this._WrappedCommand).Clone();
-                        int identityPosition = commandText.ToLower().IndexOf("@@identity");
-                        int guidPosition = commandText.ToLower().IndexOf("@@guid");
-                        if (identityPosition >= 0)
+                        int indexOfIdentity = commandText.ToLower().IndexOf("@@identity");
+                        int indexOfGuid = commandText.ToLower().IndexOf("@@guid");
+                        if (indexOfIdentity >= 0)
                         {
                             // Need to split again
                             command.CommandText = "Select @@identity";
                             object identity = command.ExecuteScalar();
                             int iIdentity = Convert.ToInt32(identity);
                             command = (DbCommand)((ICloneable)this._WrappedCommand).Clone();
-                            command.CommandText = commandText.Remove(identityPosition, 10).Insert(identityPosition, iIdentity.ToString(System.Globalization.CultureInfo.InvariantCulture));
+                            command.CommandText = commandText.Remove(indexOfIdentity, 10).Insert(indexOfIdentity, iIdentity.ToString(System.Globalization.CultureInfo.InvariantCulture));
                         }
-                        else if (guidPosition >= 0)
+                        else if (indexOfGuid >= 0)
                         {
                             // Need to split again
                             command.CommandText = "Select @@guid";
                             object identity = command.ExecuteScalar();
                             int iIdentity = Convert.ToInt32(identity);
                             command = (DbCommand)((ICloneable)this._WrappedCommand).Clone();
-                            command.CommandText = commandText.Remove(guidPosition, 6).Insert(guidPosition, iIdentity.ToString(System.Globalization.CultureInfo.InvariantCulture));
+                            command.CommandText = commandText.Remove(indexOfGuid, 6).Insert(indexOfGuid, iIdentity.ToString(System.Globalization.CultureInfo.InvariantCulture));
                         }
                         else
                             command.CommandText = commandText;
@@ -268,7 +271,29 @@ namespace JetEntityFrameworkProvider
                     }
                     return new JetDataReader(dataReader);
                 }
+                #endregion
+
+                #region SKIP clause
+
+                var indexOfSkip = _WrappedCommand.CommandText.ToLower().IndexOf(" skip ");
+                if (indexOfSkip != -1)
+                {
+                    string stringSkipCount = _WrappedCommand.CommandText.Substring(indexOfSkip + 5).Trim();
+                    int skipCount;
+                    if (int.TryParse(stringSkipCount, out skipCount))
+                    {
+
+                        DbCommand command;
+                        command = (DbCommand)((ICloneable)this._WrappedCommand).Clone();
+                        command.CommandText = _WrappedCommand.CommandText.Remove(indexOfSkip);
+                        return new JetDataReader(command.ExecuteReader(behavior), skipCount);
+                    }
+                }
+
+                #endregion
             }
+
+            
 
             return new JetDataReader(_WrappedCommand.ExecuteReader(behavior));
         }

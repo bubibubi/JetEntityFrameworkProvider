@@ -54,9 +54,9 @@ namespace JetEntityFrameworkProvider
         /// <value>
         /// <c>true</c> if this SELECT is SELECT DISTINCT; otherwise, <c>false</c>.
         /// </value>
-        internal bool IsDistinct {get; set;}
+        internal bool IsDistinct { get; set; }
 
-        internal List<Symbol> AllJoinExtents {get; set;}
+        internal List<Symbol> AllJoinExtents { get; set; }
 
         private List<Symbol> _fromExtents;
         internal List<Symbol> FromExtents
@@ -82,7 +82,8 @@ namespace JetEntityFrameworkProvider
             }
         }
 
-        internal TopClause Top {get; set;}
+        internal TopClause Top { get; set; }
+        internal SkipClause Skip { get; set; }
 
         private SqlBuilder _select = new SqlBuilder();
         internal SqlBuilder Select
@@ -140,7 +141,7 @@ namespace JetEntityFrameworkProvider
         /// <value>
         /// <c>true</c> if this select is the top most; otherwise, <c>false</c>.
         /// </value>
-        internal bool IsTopMost {get; set;}
+        internal bool IsTopMost { get; set; }
 
         #region ISqlFragment Implementation
 
@@ -174,19 +175,19 @@ namespace JetEntityFrameworkProvider
                     {
                         foreach (Symbol symbol in joinSymbol.FlattenedExtentList)
                         {
-                            if (outerExtentAliases == null) 
+                            if (outerExtentAliases == null)
                                 outerExtentAliases = new List<string>();
                             outerExtentAliases.Add(symbol.NewName);
                         }
                     }
                     else
                     {
-                        if (outerExtentAliases == null) 
-                            outerExtentAliases = new List<string>(); 
+                        if (outerExtentAliases == null)
+                            outerExtentAliases = new List<string>();
                         outerExtentAliases.Add(outerExtent.NewName);
                     }
                 }
-            }        
+            }
 
             // An then rename each of the FromExtents we have
             // If AllJoinExtents is non-null - it has precedence.
@@ -233,7 +234,12 @@ namespace JetEntityFrameworkProvider
                 writer.Write("DISTINCT ");
 
             if (this.Top != null)
+            {
+                if (this.Skip != null)
+                    this.Top.Skip = this.Skip.SkipCount;
+
                 this.Top.WriteSql(writer, sqlGenerator);
+            }
 
             if (this._select == null || this.Select.IsEmpty)
             {
@@ -261,12 +267,15 @@ namespace JetEntityFrameworkProvider
                 this.GroupBy.WriteSql(writer, sqlGenerator);
             }
 
-            if (this._orderBy != null && !this.OrderBy.IsEmpty && (this.IsTopMost || this.Top != null))
+            if (this._orderBy != null && !this.OrderBy.IsEmpty && (this.IsTopMost || this.Top != null || this.Skip != null))
             {
                 writer.WriteLine();
                 writer.Write("ORDER BY ");
                 this.OrderBy.WriteSql(writer, sqlGenerator);
             }
+
+            if (this.Skip != null)
+                this.Skip.WriteSql(writer, sqlGenerator);
 
             --writer.Indent;
         }

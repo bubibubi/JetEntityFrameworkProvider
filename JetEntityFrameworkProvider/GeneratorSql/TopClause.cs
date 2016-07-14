@@ -10,34 +10,31 @@ namespace JetEntityFrameworkProvider
     /// </summary>
     class TopClause : ISqlFragment
     {
-        ISqlFragment topCount;
-        bool withTies;
+        readonly int _topCount;
+        readonly bool _withTies;
+
+        /// <summary>
+        /// Gets or sets the skip value (if there is a skip clause)
+        /// </summary>
+        /// <value>
+        /// The skip.
+        /// </value>
+        public int? Skip { get; set; }
 
         /// <summary>
         /// Do we need to add a WITH_TIES to the top statement
         /// </summary>
         internal bool WithTies
         {
-            get { return withTies; }
+            get { return _withTies; }
         }
 
         /// <summary>
         /// How many top rows should be selected.
         /// </summary>
-        internal ISqlFragment TopCount
+        internal int TopCount
         {
-            get { return topCount; }
-        }
-
-        /// <summary>
-        /// Creates a TopClause with the given topCount and withTies.
-        /// </summary>
-        /// <param name="topCount"></param>
-        /// <param name="withTies"></param>
-        internal TopClause(ISqlFragment topCount, bool withTies)
-        {
-            this.topCount = topCount;
-            this.withTies = withTies;
+            get { return _topCount; }
         }
 
         /// <summary>
@@ -47,10 +44,8 @@ namespace JetEntityFrameworkProvider
         /// <param name="withTies"></param>
         internal TopClause(int topCount, bool withTies)
         {
-            SqlBuilder sqlBuilder = new SqlBuilder();
-            sqlBuilder.Append(topCount.ToString(CultureInfo.InvariantCulture));
-            this.topCount = sqlBuilder;
-            this.withTies = withTies;
+            this._topCount = topCount;
+            this._withTies = withTies;
         }
 
         #region ISqlFragment Members
@@ -64,8 +59,7 @@ namespace JetEntityFrameworkProvider
         public void WriteSql(SqlWriter writer, SqlGenerator sqlGenerator)
         {
             writer.Write("TOP ");
-            this.TopCount.WriteSql(writer, sqlGenerator);
-
+            writer.Write((_topCount + Skip.GetValueOrDefault(0)).ToString(CultureInfo.InvariantCulture));
             writer.Write(" ");
 
             if (this.WithTies)

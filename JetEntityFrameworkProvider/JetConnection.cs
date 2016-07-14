@@ -30,7 +30,17 @@ namespace JetEntityFrameworkProvider
         /// <summary>
         /// The DUAL table or query
         /// </summary>
-        public static string DUAL = "(SELECT COUNT(*) FROM MSysRelationships)";
+        public static string DUAL = DUALForAccdb;
+
+        /// <summary>
+        /// The dual table for accdb
+        /// </summary>
+        public const string DUALForMdb = "(SELECT COUNT(*) FROM MSysRelationships)";
+
+        /// <summary>
+        /// The dual table for accdb
+        /// </summary>
+        public const string DUALForAccdb = "(SELECT COUNT(*) FROM MSysAccessStorage)";
 
         /// <summary>
         /// Gets or sets a value indicating whether append random number for foreign key names.
