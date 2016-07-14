@@ -66,6 +66,27 @@ namespace JetEntityFrameworkProvider
         /// </value>
         static public bool IndentSqlStatements = true;
 
+        private static object _integerNullValue = int.MinValue;
+
+        /// <summary>
+        /// Gets or sets the integer null value returned by queries. This should solve a Jet issue
+        /// that if I do a UNION ALL of null, int and null the Jet raises an error
+        /// </summary>
+        /// <value>
+        /// The integer null value.
+        /// </value>
+        public static object IntegerNullValue
+        {
+            get { return _integerNullValue; }
+            set
+            {
+                if (!(value is int) && value != null)
+                    throw new ArgumentOutOfRangeException("value", "IntegerNullValue should be an int or null");
+                _integerNullValue = value;
+            }
+        }
+
+
 
         internal DbConnection WrappedConnection { get; private set; }
 

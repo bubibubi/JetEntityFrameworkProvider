@@ -187,7 +187,11 @@ namespace JetEntityFrameworkProvider
 
         public override bool IsDBNull(int ordinal)
         {
-            return _wrappedDataReader.IsDBNull(ordinal);
+            if (_wrappedDataReader.IsDBNull(ordinal))
+                return true;
+            if (JetConnection.IntegerNullValue != null && ((int)JetConnection.IntegerNullValue).Equals(GetValue(ordinal)))
+                return true;
+            return false;
         }
 
         public override bool NextResult()

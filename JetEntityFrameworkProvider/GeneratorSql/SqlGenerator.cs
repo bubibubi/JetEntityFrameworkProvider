@@ -1553,7 +1553,10 @@ namespace JetEntityFrameworkProvider
         public override ISqlFragment Visit(DbNullExpression e)
         {
             // Need a cast on the primitive type of the result type? (GetSqlPrimitiveType(e.ResultType))
-            return new SqlBuilder("(null)");
+            if (JetConnection.IntegerNullValue == null || MetadataHelpers.GetEdmType<PrimitiveType>(e.ResultType).PrimitiveTypeKind != PrimitiveTypeKind.Int32)
+                return new SqlBuilder("(null)");
+            else
+                return new SqlBuilder(((int)JetConnection.IntegerNullValue).ToString(NumberFormatInfo.InvariantInfo));
         }
 
         /// <summary>
