@@ -111,6 +111,12 @@ namespace JetEntityFrameworkProvider
         /// <exception cref="System.ArgumentException">informationType</exception>
         protected override XmlReader GetDbInformation(string informationType)
         {
+            if (informationType == DbProviderManifest.StoreSchemaDefinition)
+                return GetStoreSchemaDescription();
+
+            if (informationType == DbProviderManifest.StoreSchemaMapping)
+                return GetStoreSchemaMapping();
+
             if (informationType == DbProviderManifest.StoreSchemaDefinitionVersion3)
                 return GetStoreSchemaDescription();
 
