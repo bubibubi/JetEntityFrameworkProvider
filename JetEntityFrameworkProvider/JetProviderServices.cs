@@ -22,7 +22,7 @@ namespace JetEntityFrameworkProvider
     /// - retrieving point of the provider manifest
     /// - database handling not supported by Jet
     /// </summary>
-    class JetProviderServices : DbProviderServices
+    public class JetProviderServices : DbProviderServices
     {
         internal static readonly JetProviderServices Instance = new JetProviderServices();
 

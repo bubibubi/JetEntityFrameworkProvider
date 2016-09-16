@@ -13,7 +13,7 @@ namespace JetEntityFrameworkProvider
     /// <summary>
     /// Migration Ddl generator for Jet
     /// </summary>
-    sealed class JetMigrationSqlGenerator : MigrationSqlGenerator
+    public class JetMigrationSqlGenerator : MigrationSqlGenerator
     {
 
         const string BATCHTERMINATOR = ";\r\n";
