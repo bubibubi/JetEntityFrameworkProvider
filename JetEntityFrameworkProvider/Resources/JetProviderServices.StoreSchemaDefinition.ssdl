@@ -172,11 +172,10 @@
     <Key>
       <PropertyRef Name="Id" />
     </Key>
-    <Property Name="Id" Nullable="false" Type="text" />
+    <Property Name="Id" Nullable="false" Type="varchar" MaxLength="255" />
     <Property Name="CatalogName" Type="varchar" MaxLength="255" />
     <Property Name="SchemaName" Type="varchar" MaxLength="255" />
     <Property Name="Name" Nullable="false" Type="varchar" MaxLength="255" />
-    <!--Added-->
     <Property Name="Type" Type="varchar" MaxLength="10" />
   </EntityType>
 
@@ -184,9 +183,8 @@
     <Key>
       <PropertyRef Name="Id" />
     </Key>
-    <Property Name="Id" Nullable="false" Type="text"/>
-    <Property Name="ParentId" Nullable="false" Type="text"/>
-    <!--Added-->
+    <Property Name="Id" Nullable="false" Type="varchar" MaxLength="255"/>
+    <Property Name="ParentId" Nullable="false" Type="varchar" MaxLength="255"/>
     <Property Name="Table" Type="varchar" MaxLength="255"/>
     <Property Name="Name" Nullable="false" Type="varchar" MaxLength="255"/>
     <Property Name="Ordinal" Nullable="false" Type="int" />
@@ -212,7 +210,7 @@
     <Key>
       <PropertyRef Name="Id" />
     </Key>
-    <Property Name="Id" Nullable="false" Type="text" />
+    <Property Name="Id" Nullable="false" Type="varchar" MaxLength="255" />
     <Property Name="CatalogName" Type="varchar" MaxLength="255" />
     <Property Name="SchemaName" Type="varchar" MaxLength="255" />
     <Property Name="Name" Nullable="false" Type="varchar" MaxLength="255" />
@@ -224,8 +222,8 @@
     <Key>
       <PropertyRef Name="Id" />
     </Key>
-    <Property Name="Id" Nullable="false" Type="text"/>
-    <Property Name="ParentId" Nullable="false" Type="text"/>
+    <Property Name="Id" Nullable="false" Type="varchar" MaxLength="255"/>
+    <Property Name="ParentId" Nullable="false" Type="varchar" MaxLength="255"/>
     <Property Name="Name" Nullable="false" Type="varchar" MaxLength="255"/>
     <Property Name="Ordinal" Nullable="false" Type="int" />
     <Property Name="IsNullable" Nullable="false" Type="bit" />
@@ -250,7 +248,7 @@
     <Key>
       <PropertyRef Name="Id" />
     </Key>
-    <Property Name="Id" Nullable="false" Type="text"/>
+    <Property Name="Id" Nullable="false" Type="varchar" MaxLength="255"/>
     <Property Name="CatalogName" Type="varchar" MaxLength="255"/>
     <Property Name="SchemaName" Type="varchar" MaxLength="255"/>
     <Property Name="Name" Nullable="false" Type="varchar" MaxLength="255"/>
@@ -276,7 +274,7 @@
     <Key>
       <PropertyRef Name="Id" />
     </Key>
-    <Property Name="Id" Nullable="false" Type="text"/>
+    <Property Name="Id" Nullable="false" Type="varchar" MaxLength="255"/>
     <Property Name="CatalogName" Type="varchar" MaxLength="255"/>
     <Property Name="SchemaName" Type="varchar" MaxLength="255"/>
     <Property Name="Name" Nullable="false" Type="varchar" MaxLength="255"/>
@@ -286,9 +284,9 @@
     <Key>
       <PropertyRef Name="Id" />
     </Key>
-    <Property Name="Id" Nullable="false" Type="text"/>
-    <Property Name="ParentId" Nullable="false" Type="text"/>
-    <Property Name="Name" Nullable="false" Type="text" />
+    <Property Name="Id" Nullable="false" Type="varchar" MaxLength="255"/>
+    <Property Name="ParentId" Nullable="false" Type="varchar" MaxLength="255"/>
+    <Property Name="Name" Nullable="false" Type="varchar" MaxLength="255" />
     <Property Name="Ordinal" Nullable="false" Type="int"/>
     <Property Name="TypeName" Nullable="false" Type="varchar" MaxLength="255" />
     <Property Name="MaxLength" Nullable="true" Type="int" />
@@ -310,8 +308,8 @@
     <Key>
       <PropertyRef Name="Id" />
     </Key>
-    <Property Name="Id" Nullable="false" Type="text"/>
-    <Property Name="ParentId" Nullable="false" Type="text"/>
+    <Property Name="Id" Nullable="false" Type="varchar" MaxLength="255"/>
+    <Property Name="ParentId" Nullable="false" Type="varchar" MaxLength="255"/>
     <Property Name="Name" Nullable="false" Type="varchar" MaxLength="255"/>
     <Property Name="Ordinal" Nullable="false" Type="int" />
     <Property Name="IsNullable" Nullable="false" Type="bit" />
@@ -336,8 +334,8 @@
     <Key>
       <PropertyRef Name="Id" />
     </Key>
-    <Property Name="Id" Nullable="false" Type="text" />
-    <Property Name="ParentId" Nullable="false" Type="text" />
+    <Property Name="Id" Nullable="false" Type="varchar" MaxLength="255" />
+    <Property Name="ParentId" Nullable="false" Type="varchar" MaxLength="255" />
     <Property Name="Name" Nullable="false" MaxLength="255" Type="varchar" />
     <Property Name="IsDeferrable" Nullable="false" Type="bit" />
     <Property Name="IsInitiallyDeferred" Nullable="false" Type="bit" />
@@ -348,7 +346,7 @@
     <Key>
       <PropertyRef Name="Id" />
     </Key>
-    <Property Name="Id" Nullable="false" Type="text" />
+    <Property Name="Id" Nullable="false" Type="varchar" MaxLength="255" />
     <Property Name="Expression" Nullable="true" Type="text" />
   </EntityType>
   
@@ -357,15 +355,15 @@
       <PropertyRef Name="ConstraintId" />
       <PropertyRef Name="ColumnId" />
     </Key>
-    <Property Name="ConstraintId" Nullable="false" Type="text" />
-    <Property Name="ColumnId" Nullable="false" Type="text" />
+    <Property Name="ConstraintId" Nullable="false" Type="varchar" MaxLength="255" />
+    <Property Name="ColumnId" Nullable="false" Type="varchar" MaxLength="255" />
   </EntityType>
 
   <EntityType Name="ForeignKeyConstraint">
     <Key>
       <PropertyRef Name="Id" />
     </Key>
-    <Property Name="Id" Nullable="false" Type="text" />
+    <Property Name="Id" Nullable="false" Type="varchar" MaxLength="255" />
     <Property Name="UpdateRule" Nullable="false" MaxLength="11" Type="varchar" />
     <Property Name="DeleteRule" Nullable="false" MaxLength="11" Type="varchar" />
   </EntityType>
@@ -374,19 +372,19 @@
     <Key>
       <PropertyRef Name="Id" />
     </Key>
-    <Property Name="Id" Nullable="false" Type="text" />
+    <Property Name="Id" Nullable="false" Type="varchar" MaxLength="255" />
     <Property Name="Ordinal" Nullable="false" Type="int" />
-    <Property Name="ConstraintId" Nullable="false" Type="text" />
-    <Property Name="FromColumnId" Nullable="false" Type="text" />
-    <Property Name="ToColumnId" Nullable="false" Type="text" />
+    <Property Name="ConstraintId" Nullable="false" Type="varchar" MaxLength="255" />
+    <Property Name="FromColumnId" Nullable="false" Type="varchar" MaxLength="255" />
+    <Property Name="ToColumnId" Nullable="false" Type="varchar" MaxLength="255" />
   </EntityType>
 
   <EntityType Name="ViewConstraint">
     <Key>
       <PropertyRef Name="Id" />
     </Key>
-    <Property Name="Id" Nullable="false" Type="text" />
-    <Property Name="ParentId" Nullable="false" Type="text" />
+    <Property Name="Id" Nullable="false" Type="varchar" MaxLength="255" />
+    <Property Name="ParentId" Nullable="false" Type="varchar" MaxLength="255" />
     <Property Name="Name" Nullable="false" MaxLength="255" Type="varchar" />
     <Property Name="IsDeferrable" Nullable="false" Type="bit" />
     <Property Name="IsInitiallyDeferred" Nullable="false" Type="bit" />
