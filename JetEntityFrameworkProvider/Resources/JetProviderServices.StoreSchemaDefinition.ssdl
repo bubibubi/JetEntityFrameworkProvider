@@ -176,6 +176,8 @@
     <Property Name="CatalogName" Type="varchar" MaxLength="255" />
     <Property Name="SchemaName" Type="varchar" MaxLength="255" />
     <Property Name="Name" Nullable="false" Type="varchar" MaxLength="255" />
+    <!--Added-->
+    <Property Name="Type" Type="varchar" MaxLength="10" />
   </EntityType>
 
   <EntityType Name="TableColumn" >
@@ -184,6 +186,8 @@
     </Key>
     <Property Name="Id" Nullable="false" Type="text"/>
     <Property Name="ParentId" Nullable="false" Type="text"/>
+    <!--Added-->
+    <Property Name="Table" Type="varchar" MaxLength="255"/>
     <Property Name="Name" Nullable="false" Type="varchar" MaxLength="255"/>
     <Property Name="Ordinal" Nullable="false" Type="int" />
     <Property Name="IsNullable" Nullable="false" Type="bit" />

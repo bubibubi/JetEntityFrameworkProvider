@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Data;
-using System.Data.Common;
-using System.Data.Entity.Core;
 using System.Data.Entity.Core.Common;
 using System.Data.Entity.Core.Metadata.Edm;
 using System.Diagnostics;
@@ -52,10 +49,11 @@ namespace JetEntityFrameworkProvider
             return GetXmlResource("JetEntityFrameworkProvider.Resources.JetProviderServices.StoreSchemaMapping.msl");
         }
 
-        private XmlReader GetStoreSchemaDescription()
+        internal static XmlReader GetStoreSchemaDescription()
         {
             return GetXmlResource("JetEntityFrameworkProvider.Resources.JetProviderServices.StoreSchemaDefinition.ssdl");
         }
+
         private static XmlReader GetXmlResource(string resourceName)
         {
             Assembly executingAssembly = Assembly.GetExecutingAssembly();

@@ -81,7 +81,11 @@
     <Compile Include="GeneratorSql\SkipClause.cs" />
     <Compile Include="JetConnectionFactory.cs" />
     <Compile Include="JetDataReader.cs" />
-    <Compile Include="JetStoreSchemaDefinitionRetrieve.cs" />
+    <Compile Include="JetStoreSchemaDefinition\Column.cs" />
+    <Compile Include="JetStoreSchemaDefinition\ColumnCollection.cs" />
+    <Compile Include="JetStoreSchemaDefinition\JetStoreSchemaDefinitionRetrieve.cs" />
+    <Compile Include="JetStoreSchemaDefinition\SystemTable.cs" />
+    <Compile Include="JetStoreSchemaDefinition\SystemTableCollection.cs" />
     <Compile Include="JetTableExistenceChecker.cs" />
     <Compile Include="JetTransaction.cs" />
     <Compile Include="LiteralHelpers.cs" />
@@ -92,6 +96,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="SetupInfo.cs" />
+    <Compile Include="StringHelpers.cs" />
     <Compile Include="TypeUsageHelper.cs" />
     <Compile Include="JetCommand.cs">
       <SubType>Component</SubType>

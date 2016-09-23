@@ -218,10 +218,12 @@ namespace JetEntityFrameworkProvider
         {
             ShowCommandText("ExecuteDbDataReader");
 
-            if (_WrappedCommand.CommandType == System.Data.CommandType.Text && _WrappedCommand.CommandText.Trim().ToLower().StartsWith("show "))
+            DbDataReader dataReader;
+            
+            if (JetStoreSchemaDefinitionRetrieve.TryGetDataReaderFromShowCommand(_WrappedCommand, out dataReader))
             {
                 // Retrieve of store schema definition
-                return JetStoreSchemaDefinitionRetrieve.GetDbDataReader(_WrappedCommand.Connection, _WrappedCommand.CommandText);
+                return dataReader;
             }
 
 
@@ -233,7 +235,7 @@ namespace JetEntityFrameworkProvider
                 string[] commandTextList = _WrappedCommand.CommandText.Split(new string[] { ";\r\n" }, StringSplitOptions.None);
                 if (commandTextList.Length > 1)
                 {
-                    DbDataReader dataReader = null;
+                    dataReader = null;
 
                     // Set of commands
                     // The returned value will be the latest command result

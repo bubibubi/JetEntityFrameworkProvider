@@ -1,6 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Globalization;
 using System.Text;
 
 namespace JetEntityFrameworkProvider
@@ -8,6 +7,11 @@ namespace JetEntityFrameworkProvider
     static class LiteralHelpers
     {
         static private readonly char[] hexDigits = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F' };
+
+        public static string ToSqlString(int value)
+        {
+            return value.ToString(NumberFormatInfo.InvariantInfo);
+        }
 
         public static string ToSqlString(byte[] value)
         {

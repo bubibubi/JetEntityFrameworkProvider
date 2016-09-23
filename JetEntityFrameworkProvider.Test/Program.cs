@@ -31,6 +31,32 @@ namespace JetEntityFrameworkProvider.Test
             Context context = new Context(connection);
 
 
+            
+            Console.WriteLine("Schema test ======================================================================");
+
+            Helpers.ShowDataReaderContent(connection, "show tables");
+            Helpers.ShowDataReaderContent(connection, "show tablecolumns");
+            Helpers.ShowDataReaderContent(connection, "show views");
+            Helpers.ShowDataReaderContent(connection, "show viewcolumns");
+            Helpers.ShowDataReaderContent(connection, "show constraints");
+            Helpers.ShowDataReaderContent(connection, "show checkconstraints");
+            Helpers.ShowDataReaderContent(connection, "show constraintcolumns");
+            Helpers.ShowDataReaderContent(connection, "show foreignKeyconstraints");
+            Helpers.ShowDataReaderContent(connection, "show foreignKeys");
+            Helpers.ShowDataReaderContent(connection, "show viewconstraints");
+            Helpers.ShowDataReaderContent(connection, "show viewconstraintcolumns");
+            Helpers.ShowDataReaderContent(connection, "show viewforeignkeys");
+
+            Helpers.ShowDataReaderContent(connection, "select * from show tables");
+
+
+            Console.WriteLine("Schema test with where and order by ==============================================");
+
+            Helpers.ShowDataReaderContent(connection, "show tablecolumns where ParentId = 'Students'");
+            Helpers.ShowDataReaderContent(connection, "show indexcolumns where index like 'PK*' order by Index, Ordinal");
+
+
+
             Console.WriteLine("DB First ======================================================================");
 
             /*
@@ -123,28 +149,6 @@ namespace JetEntityFrameworkProvider.Test
             Console.WriteLine(context.TableWithSeveralFieldsTypes.Where(c => c.MyString.EndsWith(stringEnd)).First());
 
             context.Students.Where(s => !(new int[] { 1, 2, 3, 4 }).Contains(s.StudentID)).FirstOrDefault();
-
-            /*
-            Console.WriteLine("Schema test ======================================================================");
-
-            Helpers.ShowDataReaderContent(jetConnection, "show tables");
-            Helpers.ShowDataReaderContent(jetConnection, "show tablecolumns");
-            Helpers.ShowDataReaderContent(jetConnection, "show views");
-            Helpers.ShowDataReaderContent(jetConnection, "show viewcolumns");
-            Helpers.ShowDataReaderContent(jetConnection, "show constraints");
-            Helpers.ShowDataReaderContent(jetConnection, "show checkconstraints");
-            Helpers.ShowDataReaderContent(jetConnection, "show constraintcolumns");
-            Helpers.ShowDataReaderContent(jetConnection, "show foreignKeyconstraints");
-            Helpers.ShowDataReaderContent(jetConnection, "show foreignKeys");
-            Helpers.ShowDataReaderContent(jetConnection, "show viewconstraints");
-            Helpers.ShowDataReaderContent(jetConnection, "show viewconstraintcolumns");
-            Helpers.ShowDataReaderContent(jetConnection, "show viewforeignkeys");
-            */
-
-            Console.WriteLine("Schema test with where and order by ==============================================");
-
-            Helpers.ShowDataReaderContent(connection, "show tablecolumns where ParentId = 'Students'");
-            Helpers.ShowDataReaderContent(connection, "show indexcolumns where index like 'PK*' order by Index, Ordinal");
 
             /*           
             // Retrieve some oledb schema infos

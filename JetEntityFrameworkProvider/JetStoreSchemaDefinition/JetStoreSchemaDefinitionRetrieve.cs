@@ -4,9 +4,8 @@ using System.Data;
 using System.Data.Common;
 using System.Data.OleDb;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
+using JetEntityFrameworkProvider.JetStoreSchemaDefinition;
 
 namespace JetEntityFrameworkProvider
 {
@@ -17,10 +16,183 @@ namespace JetEntityFrameworkProvider
     /// </summary>
     static class JetStoreSchemaDefinitionRetrieve
     {
+        static Regex _regExParseShowCommand;
 
-        static Regex _regExParseShowCommand = null;
+        static SystemTableCollection _systemTables;
 
-        internal static System.Data.Common.DbDataReader GetDbDataReader(DbConnection connection, string commandText)
+        static JetStoreSchemaDefinitionRetrieve()
+        {
+            _regExParseShowCommand = new Regex(
+                @"^\s*show\s*(?<object>\w*)\s*(where\s+(?<condition>.+?))?\s*(order\s+by\s+(?<order>.+))?$",
+                RegexOptions.IgnoreCase);
+
+            _systemTables = new SystemTableCollection();
+            _systemTables.Refresh();
+
+        }
+
+        public static bool TryGetDataReaderFromShowCommand(DbCommand command, out DbDataReader dataReader)
+        {
+            if (command.CommandType == System.Data.CommandType.Text && command.CommandText.Trim().StartsWith("show ", StringComparison.InvariantCultureIgnoreCase))
+            {
+                dataReader = GetDbDataReaderFromSimpleStatement(command.Connection, command.CommandText);
+                return true;
+            }
+
+            if (command.CommandType == System.Data.CommandType.Text && command.CommandText.IndexOf("show ",0, StringComparison.InvariantCultureIgnoreCase) != 0)
+            {
+                bool isSchemaTable = false;
+                foreach (SystemTable table in _systemTables)
+                {
+                    isSchemaTable = command.CommandText.IndexOf("show " + table.Name, 0, StringComparison.InvariantCultureIgnoreCase) != -1;
+                    if (isSchemaTable)
+                        break;
+                }
+                if (isSchemaTable)
+                {
+                    dataReader = GetDbDataReaderFromComplexStatement(command.Connection, command.CommandText);
+                    return true;
+                }
+            }
+
+            dataReader = null;
+            return false;
+        }
+
+        private static DbDataReader GetDbDataReaderFromComplexStatement(DbConnection connection, string commandText)
+        {
+
+            ConnectionState oldConnectionState = connection.State;
+
+            if (oldConnectionState != ConnectionState.Open)
+                connection.Open();
+
+            ClearAllSystemTables(connection);
+
+            List<SystemTable> tablesToCreate = new List<SystemTable>();
+            foreach (SystemTable table in _systemTables)
+            {
+                int showStatementPosition = commandText.IndexOf("show " + table.Name, 0, StringComparison.InvariantCultureIgnoreCase);
+                if (showStatementPosition == -1)
+                    continue;
+
+                commandText = commandText.ReplaceCaseInsensitive("\\(\\s*show " + table.Name + "\\s*\\)", "[" + table.TableName + "]");
+                commandText = commandText.ReplaceCaseInsensitive("show " + table.Name, "[" + table.TableName + "]");
+                tablesToCreate.Add(table);
+            }
+
+            foreach (SystemTable table in tablesToCreate)
+            {
+                try
+                {
+                    DbCommand command = connection.CreateCommand();
+                    command.CommandText = table.CreateStatement;
+                    command.ExecuteNonQuery();
+                }
+                catch (Exception)
+                {
+                    // ignored
+                }
+
+                DataTable dataTable = table.GetDataTable((OleDbConnection)connection);
+
+                foreach (DataRow row in dataTable.Rows)
+                {
+                    DbCommand command = connection.CreateCommand();
+                    command.CommandText = GetInsertStatement(table.TableName, row);
+                    command.ExecuteNonQuery();
+                }
+            }
+
+            OleDbDataAdapter dataAdapter = new OleDbDataAdapter(commandText, (OleDbConnection) connection);
+            DataSet dataSet = new DataSet();
+            dataAdapter.Fill(dataSet);
+            DataTable resultDataTable = dataSet.Tables[0];
+            DropAllSystemTables(connection);
+
+            if (oldConnectionState != ConnectionState.Open)
+                connection.Close();
+
+            return resultDataTable.CreateDataReader();
+        }
+
+        private static string GetInsertStatement(string tableName, DataRow row)
+        {
+            string columns = "";
+            string values = "";
+
+            foreach (DataColumn column in row.Table.Columns)
+            {
+                if (row[column] != DBNull.Value)
+                {
+                    if (!string.IsNullOrWhiteSpace(columns))
+                    {
+                        columns += ", ";
+                        values += ", ";
+                    }
+
+                    columns += string.Format("[{0}]", column.ColumnName);
+                    dynamic value = row[column];
+                    values += LiteralHelpers.ToSqlString(value);
+                }
+            }
+            return string.Format("INSERT INTO [{0}] ({1}) VALUES ({2})", tableName, columns, values);
+        }
+
+        [DebuggerStepThrough]
+        private static void ClearAllSystemTables(DbConnection connection)
+        {
+            ConnectionState oldConnectionState = connection.State;
+
+            if (oldConnectionState != ConnectionState.Open)
+                connection.Open();
+
+            foreach (SystemTable table in _systemTables)
+            {
+                try
+                {
+                    var command = connection.CreateCommand();
+                    command.CommandText = table.ClearStatement;
+                    command.ExecuteNonQuery();
+                }
+                catch (Exception)
+                {
+                    // ignored
+                }
+            }
+
+            if (oldConnectionState != ConnectionState.Open)
+                connection.Close();
+        }
+
+        [DebuggerStepThrough]
+        private static void DropAllSystemTables(DbConnection connection)
+        {
+            ConnectionState oldConnectionState = connection.State;
+
+            if (oldConnectionState != ConnectionState.Open)
+                connection.Open();
+
+            foreach (SystemTable table in _systemTables)
+            {
+                try
+                {
+                    var command = connection.CreateCommand();
+                    command.CommandText = table.DropStatement;
+                    command.ExecuteNonQuery();
+                }
+                catch (Exception)
+                {
+                    // ignored
+                }
+            }
+
+            if (oldConnectionState != ConnectionState.Open)
+                connection.Close();
+        }
+
+
+        private static DbDataReader GetDbDataReaderFromSimpleStatement(DbConnection connection, string commandText)
         {
             // Command text format is
             // show <what> [where <condition>] [order by <order>]
@@ -60,14 +232,6 @@ namespace JetEntityFrameworkProvider
             //          viewforeignkeys | vfk
 
 
-
-
-
-            if (_regExParseShowCommand == null)
-                _regExParseShowCommand = new Regex(
-                    @"^\s*show\s*(?<object>\w*)\s*(where\s+(?<condition>.+?))?\s*(order\s+by\s+(?<order>.+))?$",
-                    RegexOptions.IgnoreCase);
-
             Match match = _regExParseShowCommand.Match(commandText);
 
             if (!match.Success)
@@ -83,85 +247,55 @@ namespace JetEntityFrameworkProvider
 
             ConnectionState oldConnectionState = connection.State;
 
+            SystemTable systemTable = null;
+            try
+            {
+                systemTable = _systemTables[dbObject];
+            }
+            catch
+            {
+                // ignored
+            }
+            
+            if (systemTable == null)
+            {
+                try
+                {
+                    if (oldConnectionState != ConnectionState.Open)
+                        connection.Open();
+
+                    // Check if is a table not handled by SchemaDefinition
+                    switch (dbObject.ToLower())
+                    {
+                        case "ix":
+                        case "indexes":
+                            dataTable = GetIndexes(oleDbConnection);
+                            break;
+                        case "ixc":
+                        case "indexcolumns":
+                            dataTable = GetIndexColumns(oleDbConnection);
+                            break;
+                        default:
+                            throw new Exception(string.Format("Unknown system table {0}", dbObject));
+                    }
+                    return dataTable.CreateDataReader();
+                }
+                finally
+                {
+                    if (oldConnectionState != ConnectionState.Open)
+                        connection.Close();
+                }
+            }
+
+            if (systemTable == null)
+                throw new Exception(string.Format("Unknown system table {0}", dbObject));
+
             if (oldConnectionState != ConnectionState.Open)
                 connection.Open();
 
             try
             {
-                switch (dbObject.ToLower())
-                {
-                    case "tables":
-                        dataTable = GetTables(oleDbConnection);
-                        break;
-                    case "tablecolumns":
-                        dataTable = GetTableColumns(oleDbConnection);
-                        break;
-                    case "ix":
-                    case "indexes":
-                        dataTable = GetIndexes(oleDbConnection);
-                        break;
-                    case "ixc":
-                    case "indexcolumns":
-                        dataTable = GetIndexColumns(oleDbConnection);
-                        break;
-                    case "views":
-                        dataTable = GetViews(oleDbConnection);
-                        break;
-                    case "viewcolumns":
-                        dataTable = GetViewColumns(oleDbConnection);
-                        break;
-                    case "functions":
-                        dataTable = (DataTable)XmlObjectSerializer.GetObject(Properties.Resources.StoreSchemaDefinition_Functions, typeof(DataTable));
-                        break;
-                    case "functionparameters":
-                        dataTable = (DataTable)XmlObjectSerializer.GetObject(Properties.Resources.StoreSchemaDefinition_FunctionParameters, typeof(DataTable));
-                        break;
-                    case "functionreturntablecolumns":
-                        dataTable = (DataTable)XmlObjectSerializer.GetObject(Properties.Resources.StoreSchemaDefinition_FunctionReturnTableColumns, typeof(DataTable));
-                        break;
-                    case "procedures":
-                        dataTable = (DataTable)XmlObjectSerializer.GetObject(Properties.Resources.StoreSchemaDefinition_Procedures, typeof(DataTable));
-                        break;
-                    case "procedureparameters":
-                        dataTable = (DataTable)XmlObjectSerializer.GetObject(Properties.Resources.StoreSchemaDefinition_ProcedureParameters, typeof(DataTable));
-                        break;
-                    case "constraints":
-                        dataTable = GetConstraints(oleDbConnection);
-                        break;
-                    case "constraintcolumns":
-                        dataTable = GetConstraintColumns(oleDbConnection);
-                        break;
-                    case "cc":
-                    case "checkconstraints":
-                        dataTable = GetCheckConstraints(oleDbConnection);
-                        break;
-                    case "foreignkeyconstraints":
-                    case "fkc":
-                        dataTable = GetForeignKeyConstraints(oleDbConnection);
-                        break;
-                    case "foreignkeys":
-                    case "fk":
-                        dataTable = GetForeignKeyConstraintColumns(oleDbConnection);
-                        break;
-                    case "viewconstraints":
-                    case "vc":
-                        dataTable = (DataTable)XmlObjectSerializer.GetObject(Properties.Resources.StoreSchemaDefinition_ViewConstraints, typeof(DataTable));
-                        break;
-                    case "viewconstraintcolumns":
-                    case "vcc":
-                        dataTable = (DataTable)XmlObjectSerializer.GetObject(Properties.Resources.StoreSchemaDefinition_ViewConstraintColumns, typeof(DataTable));
-                        break;
-                    case "viewforeignkeys":
-                    case "vfk":
-                        dataTable = (DataTable)XmlObjectSerializer.GetObject(Properties.Resources.StoreSchemaDefinition_ViewForeignKeys, typeof(DataTable));
-                        break;
-                    default:
-                        throw new Exception(string.Format("Unknown metadata object type {0}", dbObject));
-                }
-            }
-            catch (Exception)
-            {
-                throw;
+                dataTable = systemTable.GetDataTable(oleDbConnection);
             }
             finally
             {
@@ -188,10 +322,13 @@ namespace JetEntityFrameworkProvider
             return selectedDataTable.CreateDataReader();
         }
 
+
         #region Tables
 
-        private static DataTable GetTables(OleDbConnection connection)
+        public static DataTable GetTables(OleDbConnection connection)
         {
+            bool includeSystemTables = false;
+
             DataTable dataTable = (DataTable)XmlObjectSerializer.GetObject(Properties.Resources.StoreSchemaDefinition_Tables, typeof(DataTable));
 
             DataTable schemaTable = connection.GetOleDbSchemaTable(
@@ -199,19 +336,31 @@ namespace JetEntityFrameworkProvider
               new object[] { null, null, null, "TABLE" });
 
             foreach (System.Data.DataRow table in schemaTable.Rows)
-                dataTable.Rows.Add(
-                    table["TABLE_NAME"], 
-                    "Jet", 
-                    "Jet", 
-                    table["TABLE_NAME"], 
-                    table["TABLE_NAME"].ToString().ToLower().StartsWith("msys") ? "SYSTEM" : "USER");
+            {
+                if (!IsSystemTable(table["TABLE_NAME"].ToString()) || includeSystemTables)
+                {
+                    dataTable.Rows.Add(
+                        table["TABLE_NAME"],
+                        "Jet",
+                        "Jet",
+                        table["TABLE_NAME"],
+                        IsSystemTable(table["TABLE_NAME"].ToString()) ? "SYSTEM" : "USER");
+                }                
+            }
 
             dataTable.AcceptChanges();
 
             return dataTable;
         }
 
-        private static DataTable GetTableColumns(OleDbConnection connection)
+        private static bool IsSystemTable(string tableName)
+        {
+            return
+                tableName.StartsWith("msys", StringComparison.InvariantCultureIgnoreCase) ||
+                tableName.StartsWith("#", StringComparison.InvariantCultureIgnoreCase);
+        }
+
+        public static DataTable GetTableColumns(OleDbConnection connection)
         {
             DataTable dataTable = (DataTable)XmlObjectSerializer.GetObject(Properties.Resources.StoreSchemaDefinition_TableColumns, typeof(DataTable));
             Dictionary<string, string> objectsToGet = GetTablesOrViewDictionary(connection, true);
@@ -226,13 +375,13 @@ namespace JetEntityFrameworkProvider
 
         #region Indexes
 
-        private static DataTable GetIndexes(OleDbConnection connection)
+        public static DataTable GetIndexes(OleDbConnection connection)
         {
             DataTable dataTable = (DataTable)XmlObjectSerializer.GetObject(Properties.Resources.StoreSchemaDefinition_Indexes, typeof(DataTable));
 
             DataTable schemaTable = connection.GetOleDbSchemaTable(
               System.Data.OleDb.OleDbSchemaGuid.Indexes,
-              new object[] {});
+              new object[] { });
 
             foreach (System.Data.DataRow table in schemaTable.Rows)
                 if (
@@ -252,7 +401,7 @@ namespace JetEntityFrameworkProvider
             return dataTable;
         }
 
-        private static DataTable GetIndexColumns(OleDbConnection connection)
+        public static DataTable GetIndexColumns(OleDbConnection connection)
         {
             DataTable dataTable = (DataTable)XmlObjectSerializer.GetObject(Properties.Resources.StoreSchemaDefinition_IndexColumns, typeof(DataTable));
 
@@ -261,15 +410,15 @@ namespace JetEntityFrameworkProvider
               new object[] { });
 
             foreach (System.Data.DataRow table in schemaTable.Rows)
-                    dataTable.Rows.Add(
-                        (string)table["TABLE_NAME"] + "." + (string)table["INDEX_NAME"] + "." + (string)table["COLUMN_NAME"], // Id
-                        table["TABLE_NAME"] + "." + (string)table["INDEX_NAME"], // ParentId
-                        table["TABLE_NAME"] + "." + table["COLUMN_NAME"], // ColumnId
-                        table["TABLE_NAME"], // Table
-                        table["INDEX_NAME"], // Index
-                        table["COLUMN_NAME"], // Name
-                        Convert.ToInt32(table["ORDINAL_POSITION"]) // Ordinal
-                    );
+                dataTable.Rows.Add(
+                    (string)table["TABLE_NAME"] + "." + (string)table["INDEX_NAME"] + "." + (string)table["COLUMN_NAME"], // Id
+                    table["TABLE_NAME"] + "." + (string)table["INDEX_NAME"], // ParentId
+                    table["TABLE_NAME"] + "." + table["COLUMN_NAME"], // ColumnId
+                    table["TABLE_NAME"], // Table
+                    table["INDEX_NAME"], // Index
+                    table["COLUMN_NAME"], // Name
+                    Convert.ToInt32(table["ORDINAL_POSITION"]) // Ordinal
+                );
 
             dataTable.AcceptChanges();
 
@@ -278,11 +427,9 @@ namespace JetEntityFrameworkProvider
 
         #endregion
 
-
-
         #region Views
 
-        private static DataTable GetViews(OleDbConnection connection)
+        public static DataTable GetViews(OleDbConnection connection)
         {
             DataTable dataTable = (DataTable)XmlObjectSerializer.GetObject(Properties.Resources.StoreSchemaDefinition_Views, typeof(DataTable));
 
@@ -302,7 +449,7 @@ namespace JetEntityFrameworkProvider
         /// </summary>
         /// <param name="connection">The connection.</param>
         /// <returns></returns>
-        private static DataTable GetViewsViaGetOleDbSchemaTable(OleDbConnection connection)
+        public static DataTable GetViewsViaGetOleDbSchemaTable(OleDbConnection connection)
         {
             DataTable dataTable = (DataTable)XmlObjectSerializer.GetObject(Properties.Resources.StoreSchemaDefinition_Views, typeof(DataTable));
 
@@ -318,7 +465,7 @@ namespace JetEntityFrameworkProvider
             return dataTable;
         }
 
-        private static DataTable GetViewColumns(OleDbConnection connection)
+        public static DataTable GetViewColumns(OleDbConnection connection)
         {
             DataTable dataTable = (DataTable)XmlObjectSerializer.GetObject(Properties.Resources.StoreSchemaDefinition_ViewColumns, typeof(DataTable));
             Dictionary<string, string> objectsToGet = GetTablesOrViewDictionary(connection, false);
@@ -329,13 +476,28 @@ namespace JetEntityFrameworkProvider
         }
 
 
+        public static DataTable GetViewForeignKeys(OleDbConnection connection)
+        {
+            return (DataTable)XmlObjectSerializer.GetObject(Properties.Resources.StoreSchemaDefinition_ViewForeignKeys, typeof(DataTable));
+        }
+
+        public static DataTable GetViewConstraintColumns(OleDbConnection connection)
+        {
+            return (DataTable)XmlObjectSerializer.GetObject(Properties.Resources.StoreSchemaDefinition_ViewConstraintColumns, typeof(DataTable));
+        }
+
+        public static DataTable GetViewConstraints(OleDbConnection connection)
+        {
+            return (DataTable)XmlObjectSerializer.GetObject(Properties.Resources.StoreSchemaDefinition_ViewConstraints, typeof(DataTable));
+        }
+
 
         #endregion
 
         #region Constraints
 
 
-        private static DataTable GetConstraints(OleDbConnection connection)
+        public static DataTable GetConstraints(OleDbConnection connection)
         {
             DataTable dataTable = (DataTable)XmlObjectSerializer.GetObject(Properties.Resources.StoreSchemaDefinition_Constraints, typeof(DataTable));
 
@@ -351,7 +513,7 @@ namespace JetEntityFrameworkProvider
                     false   // IsIntiallyDeferred
                     );
 
-            schemaTable = connection.GetOleDbSchemaTable(OleDbSchemaGuid.Foreign_Keys, new object[] {});
+            schemaTable = connection.GetOleDbSchemaTable(OleDbSchemaGuid.Foreign_Keys, new object[] { });
 
             foreach (System.Data.DataRow table in schemaTable.Rows)
                 if (Convert.ToInt32(table["ORDINAL"]) == 1)
@@ -381,7 +543,7 @@ namespace JetEntityFrameworkProvider
 
             foreach (System.Data.DataRow table in schemaTable.Rows)
                 if (
-                    Convert.ToInt32(table["ORDINAL_POSITION"]) == 1  &&  // Only the first field of the index
+                    Convert.ToInt32(table["ORDINAL_POSITION"]) == 1 &&  // Only the first field of the index
                     Convert.ToBoolean(table["PRIMARY_KEY"]) == false && // Not a primary key
                     Convert.ToBoolean(table["UNIQUE"]) == true           // Unique constraint
                     )
@@ -401,7 +563,7 @@ namespace JetEntityFrameworkProvider
 
 
 
-        private static DataTable GetConstraintColumns(OleDbConnection connection)
+        public static DataTable GetConstraintColumns(OleDbConnection connection)
         {
             DataTable dataTable = (DataTable)XmlObjectSerializer.GetObject(Properties.Resources.StoreSchemaDefinition_ConstraintColumns, typeof(DataTable));
 
@@ -444,7 +606,7 @@ namespace JetEntityFrameworkProvider
 
         #region CheckConstraints
 
-        private static DataTable GetCheckConstraints(OleDbConnection connection)
+        public static DataTable GetCheckConstraints(OleDbConnection connection)
         {
             DataTable dataTable = (DataTable)XmlObjectSerializer.GetObject(Properties.Resources.StoreSchemaDefinition_CheckConstraints, typeof(DataTable));
 
@@ -466,7 +628,7 @@ namespace JetEntityFrameworkProvider
         #region Foreign Key Constraint
 
 
-        private static DataTable GetForeignKeyConstraints(OleDbConnection connection)
+        public static DataTable GetForeignKeyConstraints(OleDbConnection connection)
         {
             DataTable dataTable = (DataTable)XmlObjectSerializer.GetObject(Properties.Resources.StoreSchemaDefinition_ForeignKeyConstraints, typeof(DataTable));
 
@@ -488,7 +650,8 @@ namespace JetEntityFrameworkProvider
             return dataTable;
         }
 
-        private static DataTable GetForeignKeyConstraintColumns(OleDbConnection connection)
+        // GetForeignKeyConstraintColumns
+        public static DataTable GetForeignKeys(OleDbConnection connection)
         {
             DataTable dataTable = (DataTable)XmlObjectSerializer.GetObject(Properties.Resources.StoreSchemaDefinition_ForeignKeys, typeof(DataTable));
 
@@ -499,7 +662,7 @@ namespace JetEntityFrameworkProvider
                     table["FK_NAME"] + "." + table["ORDINAL"], // Id
                     table["PK_TABLE_NAME"] + "." + table["PK_COLUMN_NAME"], // ToColumnId
                     table["FK_TABLE_NAME"] + "." + table["FK_COLUMN_NAME"], // FromColumnId
-                    table["PK_TABLE_NAME"] , // ToTable
+                    table["PK_TABLE_NAME"], // ToTable
                     table["PK_COLUMN_NAME"], // ToColumn
                     table["FK_TABLE_NAME"], // FromTable
                     table["FK_COLUMN_NAME"], // FromColumn
@@ -511,6 +674,39 @@ namespace JetEntityFrameworkProvider
             dataTable.AcceptChanges();
 
             return dataTable;
+        }
+
+        #endregion
+
+        #region Procedures
+
+        public static DataTable GetProcedureParameters(OleDbConnection connection)
+        {
+            return (DataTable)XmlObjectSerializer.GetObject(Properties.Resources.StoreSchemaDefinition_ProcedureParameters, typeof(DataTable));
+        }
+
+        public static DataTable GetProcedures(OleDbConnection oleDbConnection)
+        {
+            return (DataTable)XmlObjectSerializer.GetObject(Properties.Resources.StoreSchemaDefinition_Procedures, typeof(DataTable));
+        }
+
+        #endregion
+
+        #region Functions
+
+        public static DataTable GetFunctionReturnTableColumns(OleDbConnection connection)
+        {
+            return (DataTable)XmlObjectSerializer.GetObject(Properties.Resources.StoreSchemaDefinition_FunctionReturnTableColumns, typeof(DataTable));
+        }
+
+        public static DataTable GetFunctionParameters(OleDbConnection connection)
+        {
+            return (DataTable)XmlObjectSerializer.GetObject(Properties.Resources.StoreSchemaDefinition_FunctionParameters, typeof(DataTable));
+        }
+
+        public static DataTable GetFunctions(DbConnection connection)
+        {
+            return (DataTable)XmlObjectSerializer.GetObject(Properties.Resources.StoreSchemaDefinition_Functions, typeof(DataTable));
         }
 
         #endregion
@@ -683,8 +879,8 @@ namespace JetEntityFrameworkProvider
                     dataReader = command.ExecuteReader(CommandBehavior.KeyInfo);
 
                     _lastStructureDataTable = dataReader.GetSchemaTable();
-                }                    
-                    
+                }
+
                 finally
                 {
                     // Exceptions will not be catched but these instructions will be executed anyway
@@ -738,6 +934,7 @@ namespace JetEntityFrameworkProvider
         }
 
         #endregion
+
 
 
     }
