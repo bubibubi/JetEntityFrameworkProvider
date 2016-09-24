@@ -3,18 +3,19 @@ using System.Collections.Generic;
 using System.Data.Entity.Core.Objects;
 using System.Linq;
 using System.Text;
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace JetEntityFrameworkProvider.Test.CodeFirst
 {
+    [TestClass]
     public class BuiltInFunctionsTest
     {
 
         internal const string MYSTRINGVALUE = " My current string with leading and trailing spaces ";
         internal const double MYDOUBLEVALUE = -123.456789;
 
-        [SetUp]
-        public void Init()
+        [TestInitialize]
+        public void Initialize()
         {
 
             Context context = new Context(SetUpCodeFirst.Connection);
@@ -35,7 +36,7 @@ namespace JetEntityFrameworkProvider.Test.CodeFirst
             context.Dispose();
         }
 
-        [Test]
+        [TestMethod]
         public void GroupByFunctions()
         {
 
@@ -55,7 +56,7 @@ namespace JetEntityFrameworkProvider.Test.CodeFirst
 
         }
 
-        [Test]
+        [TestMethod]
         public void StringFunctions()
         {
 

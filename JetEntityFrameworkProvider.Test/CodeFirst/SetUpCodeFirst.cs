@@ -1,25 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data.Common;
-using System.Data.Entity.Core.EntityClient;
-using System.Data.OleDb;
-using System.Data.SqlClient;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace JetEntityFrameworkProvider.Test.CodeFirst
 {
-    [SetUpFixture]
+    [TestClass]
     public class SetUpCodeFirst
     {
 
         public static DbConnection Connection;
 
-        [SetUp]
-        public void Init()
+        [AssemblyInitialize]
+        static public void AssemblyInitialize(TestContext testContext)
         {
 
             // This is the only reason why we include the Provider
@@ -42,8 +34,8 @@ namespace JetEntityFrameworkProvider.Test.CodeFirst
         }
 
 
-        [TearDown]
-        public void Dispose()
+        [AssemblyCleanup]
+        static public void AssemblyCleanup()
         {
             Connection.Dispose();
         }

@@ -1,18 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using NUnit.Framework;
+using JetEntityFrameworkProvider.Test.CodeFirst;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace JetEntityFrameworkProvider.Test.CodeFirst
+namespace JetEntityFrameworkProvider.Test
 {
-    [TestFixture]
+    [TestClass]
     public class DataTypesTest
     {
 
         const int MYINT = 23456;
 
-        [SetUp]
+        [TestInitialize]
         public void Init()
         {
 
@@ -34,7 +33,7 @@ namespace JetEntityFrameworkProvider.Test.CodeFirst
             context.Dispose();
         }
 
-        [Test]
+        [TestMethod]
         public void Booleans()
         {
 

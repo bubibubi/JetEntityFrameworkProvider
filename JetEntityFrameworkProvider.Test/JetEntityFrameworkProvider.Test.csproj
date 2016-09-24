@@ -10,6 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>JetEntityFrameworkProvider.Test</RootNamespace>
     <AssemblyName>JetEntityFrameworkProvider.Test</AssemblyName>
+    <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
@@ -79,9 +80,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
-    <Reference Include="nunit.framework, Version=2.6.3.13283, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
-      <HintPath>..\packages\NUnit.2.6.3\lib\nunit.framework.dll</HintPath>
-    </Reference>
+    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
@@ -89,10 +88,12 @@
     <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CodeFirst\BooleanMaterializationTest.cs" />
     <Compile Include="CodeFirst\BuiltInFunctionsTest.cs" />
     <Compile Include="CodeFirst\CanonicalFunctionsTest.cs" />
     <Compile Include="CodeFirst\DdlTest.cs" />
     <Compile Include="CodeFirst\DmlTest.cs" />
+    <Compile Include="CodeFirst\FunctionTest.cs" />
     <Compile Include="CodeFirst\Model\Context.cs" />
     <Compile Include="CodeFirst\Model\TableWithSeveralFieldsType.cs" />
     <Compile Include="CodeFirst\Model\Standard.cs" />

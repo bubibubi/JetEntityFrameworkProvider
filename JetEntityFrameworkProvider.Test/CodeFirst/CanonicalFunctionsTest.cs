@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data.Entity.Core.Objects;
 using System.Linq;
-using System.Text;
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace JetEntityFrameworkProvider.Test.CodeFirst
 {
+    [TestClass]
     public class CanonicalFunctionsTest
     {
 
@@ -14,8 +13,8 @@ namespace JetEntityFrameworkProvider.Test.CodeFirst
         internal const double MYDOUBLEVALUE = -123.456789;
         int insertedRecordId;
 
-        [SetUp]
-        public void Init()
+        [TestInitialize]
+        public void Initialize()
         {
 
             Context context = new Context(SetUpCodeFirst.Connection);
@@ -36,7 +35,7 @@ namespace JetEntityFrameworkProvider.Test.CodeFirst
 
         }
 
-        [Test]
+        [TestMethod]
         public void DateTimeFunction()
         {
 
@@ -63,7 +62,7 @@ namespace JetEntityFrameworkProvider.Test.CodeFirst
             return context.TableWithSeveralFieldsTypes.Where(c => c.Id == insertedRecordId);
         }
 
-        [Test]
+        [TestMethod]
         public void StringFunction()
         {
             Context context = new Context(SetUpCodeFirst.Connection);
@@ -80,7 +79,7 @@ namespace JetEntityFrameworkProvider.Test.CodeFirst
             context.Dispose();
         }
 
-        [Test]
+        [TestMethod]
         public void LikeFunction()
         {
             Context context = new Context(SetUpCodeFirst.Connection);
@@ -94,7 +93,7 @@ namespace JetEntityFrameworkProvider.Test.CodeFirst
             context.Dispose();
         }
 
-        [Test]
+        [TestMethod]
         public void ConcatFunction()
         {
             Context context = new Context(SetUpCodeFirst.Connection);
@@ -106,7 +105,7 @@ namespace JetEntityFrameworkProvider.Test.CodeFirst
             context.Dispose();
         }
 
-        [Test]
+        [TestMethod]
         public void FloatingPointFunctions()
         {
             Context context = new Context(SetUpCodeFirst.Connection);
@@ -120,7 +119,7 @@ namespace JetEntityFrameworkProvider.Test.CodeFirst
             context.Dispose();
         }
 
-        [Test]
+        [TestMethod]
         public void CastToBool()
         {
             Context context = new Context(SetUpCodeFirst.Connection);
@@ -128,11 +127,11 @@ namespace JetEntityFrameworkProvider.Test.CodeFirst
             context.Standards.Add(standard);
             context.SaveChanges();
 
-            Assert.Greater(context.Standards.Select(c => new {MyNewProperty = (bool)true }).ToList().Count, 0);
+            Assert.IsTrue(context.Standards.Select(c => new {MyNewProperty = (bool)true }).ToList().Count > 0);
             context.Dispose();
         }
 
-        [Test]
+        [TestMethod]
         public void InClause()
         {
             Context context = new Context(SetUpCodeFirst.Connection);
@@ -146,8 +145,8 @@ namespace JetEntityFrameworkProvider.Test.CodeFirst
             context.Students.Add(student);
             context.SaveChanges();
 
-            Assert.NotNull(context.Students.Where(s => context.Standards.Contains(s.Standard)).First());
-            Assert.NotNull(context.Students.Where(s => (new int[] {1,2,3,4}).Contains(s.StudentID)).First());
+            Assert.IsNotNull(context.Students.Where(s => context.Standards.Contains(s.Standard)).First());
+            Assert.IsNotNull(context.Students.Where(s => (new int[] {1,2,3,4}).Contains(s.StudentID)).First());
             context.Dispose();
         }
 

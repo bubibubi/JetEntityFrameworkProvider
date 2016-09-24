@@ -1,15 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace JetEntityFrameworkProvider.Test.CodeFirst
 {
-    [TestFixture]
+    [TestClass]
     public class DmlTest
     {
-        [Test]
+        [TestMethod]
         public void Insert()
         {
 
@@ -26,7 +24,7 @@ namespace JetEntityFrameworkProvider.Test.CodeFirst
 
         }
 
-        [Test]
+        [TestMethod]
         public void AddUpdateDelete()
         {
             Context context;
@@ -69,7 +67,7 @@ namespace JetEntityFrameworkProvider.Test.CodeFirst
 
         }
 
-        [Test]
+        [TestMethod]
         public void AddOnRelationAndList()
         {
             Context context = new Context(SetUpCodeFirst.Connection);

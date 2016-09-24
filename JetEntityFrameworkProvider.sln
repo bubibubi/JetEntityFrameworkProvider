@@ -11,8 +11,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JetEntityFrameworkProvider", "JetEntityFrameworkProvider\JetEntityFrameworkProvider.csproj", "{EBA0B8A0-6C00-44C2-A8F0-394069B9486B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JetEntityFrameworkProvider.Test.DbFirst", "JetEntityFrameworkProvider.Test.DbFirst\JetEntityFrameworkProvider.Test.DbFirst.csproj", "{BEC3D5F4-F6C9-4C6D-B7FA-7F67110012CA}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JetEntityFrameworkProvider.Utilities", "JetEntityFrameworkProvider.Utilities\JetEntityFrameworkProvider.Utilities.csproj", "{458B7E79-27A5-4060-9F16-6CFC0D55EB8B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JetDdexProvider", "JetDdexProvider\JetDdexProvider.csproj", "{42939E33-FC72-459C-9403-B62AB074635E}"
@@ -50,17 +48,6 @@ Global
 		{EBA0B8A0-6C00-44C2-A8F0-394069B9486B}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{EBA0B8A0-6C00-44C2-A8F0-394069B9486B}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{EBA0B8A0-6C00-44C2-A8F0-394069B9486B}.Release|x86.ActiveCfg = Release|Any CPU
-		{BEC3D5F4-F6C9-4C6D-B7FA-7F67110012CA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BEC3D5F4-F6C9-4C6D-B7FA-7F67110012CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BEC3D5F4-F6C9-4C6D-B7FA-7F67110012CA}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{BEC3D5F4-F6C9-4C6D-B7FA-7F67110012CA}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{BEC3D5F4-F6C9-4C6D-B7FA-7F67110012CA}.Debug|x86.ActiveCfg = Debug|x86
-		{BEC3D5F4-F6C9-4C6D-B7FA-7F67110012CA}.Debug|x86.Build.0 = Debug|x86
-		{BEC3D5F4-F6C9-4C6D-B7FA-7F67110012CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BEC3D5F4-F6C9-4C6D-B7FA-7F67110012CA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{BEC3D5F4-F6C9-4C6D-B7FA-7F67110012CA}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{BEC3D5F4-F6C9-4C6D-B7FA-7F67110012CA}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{BEC3D5F4-F6C9-4C6D-B7FA-7F67110012CA}.Release|x86.ActiveCfg = Release|Any CPU
 		{458B7E79-27A5-4060-9F16-6CFC0D55EB8B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{458B7E79-27A5-4060-9F16-6CFC0D55EB8B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{458B7E79-27A5-4060-9F16-6CFC0D55EB8B}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU

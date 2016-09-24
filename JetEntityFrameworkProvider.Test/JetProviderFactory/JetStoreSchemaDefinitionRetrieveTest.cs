@@ -1,32 +1,29 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data;
 using System.Data.Common;
-using System.Linq;
-using System.Text;
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 
 namespace JetEntityFrameworkProvider.Test.JetProviderFactory
 {
-    [TestFixture]
+    [TestClass]
     public class JetStoreSchemaDefinitionRetrieveTest
     {
 
         DbConnection _connection;
 
-        [SetUp]
-        public void Init()
+        [TestInitialize]
+        public void Initialize()
         {
             _connection = Helpers.GetConnection();
         }
 
-        [TearDown]
-        public void TearDown()
+        [TestCleanup]
+        public void Cleanup()
         {
             _connection.Dispose();
         }
 
-        [Test]
+        [TestMethod]
         public void Show()
         {
             Helpers.ShowDataReaderContent(_connection, "show tables");
@@ -45,26 +42,33 @@ namespace JetEntityFrameworkProvider.Test.JetProviderFactory
             Helpers.ShowDataReaderContent(_connection, "show viewforeignkeys");
         }
 
-        [Test]
+        [TestMethod]
         public void ShowWithWhere()
         {
             Helpers.ShowDataReaderContent(_connection, "show indexes where Name like 'PK*'");
             Helpers.ShowDataReaderContent(_connection, "show indexcolumns where index like 'PK*'");
         }
 
-        [Test]
+        [TestMethod]
         public void ShowWithWhereOrder()
         {
             Helpers.ShowDataReaderContent(_connection, "show indexes where Name like 'PK*' order by Name");
             Helpers.ShowDataReaderContent(_connection, "show indexcolumns where index like 'PK*' order by Index, Ordinal");
         }
 
-        [Test]
+        [TestMethod]
         public void ShowWithOrder()
         {
             Helpers.ShowDataReaderContent(_connection, "show indexes order by Name");
             Helpers.ShowDataReaderContent(_connection, "show indexcolumns order by Index, Ordinal");
         }
+
+        [TestMethod]
+        public void SelectStatement()
+        {
+            Helpers.ShowDataReaderContent(_connection, "select * from show tables");
+        }
+
 
     }
 }

@@ -31,31 +31,6 @@ namespace JetEntityFrameworkProvider.Test
             Context context = new Context(connection);
 
 
-            
-            Console.WriteLine("Schema test ======================================================================");
-
-            Helpers.ShowDataReaderContent(connection, "show tables");
-            Helpers.ShowDataReaderContent(connection, "show tablecolumns");
-            Helpers.ShowDataReaderContent(connection, "show views");
-            Helpers.ShowDataReaderContent(connection, "show viewcolumns");
-            Helpers.ShowDataReaderContent(connection, "show constraints");
-            Helpers.ShowDataReaderContent(connection, "show checkconstraints");
-            Helpers.ShowDataReaderContent(connection, "show constraintcolumns");
-            Helpers.ShowDataReaderContent(connection, "show foreignKeyconstraints");
-            Helpers.ShowDataReaderContent(connection, "show foreignKeys");
-            Helpers.ShowDataReaderContent(connection, "show viewconstraints");
-            Helpers.ShowDataReaderContent(connection, "show viewconstraintcolumns");
-            Helpers.ShowDataReaderContent(connection, "show viewforeignkeys");
-
-            Helpers.ShowDataReaderContent(connection, "select * from show tables");
-
-
-            Console.WriteLine("Schema test with where and order by ==============================================");
-
-            Helpers.ShowDataReaderContent(connection, "show tablecolumns where ParentId = 'Students'");
-            Helpers.ShowDataReaderContent(connection, "show indexcolumns where index like 'PK*' order by Index, Ordinal");
-
-
 
             Console.WriteLine("DB First ======================================================================");
 
@@ -122,33 +97,6 @@ namespace JetEntityFrameworkProvider.Test
 
             Console.WriteLine("Function test ======================================================================");
 
-            TableWithSeveralFieldsType table = new TableWithSeveralFieldsType()
-            {
-                MyInt = 10,
-                MyString = " My current string with leading and trailing spaces ",
-                MyDateTime = new DateTime(1969, 09, 15, 20, 03, 19)
-            };
-
-            context.TableWithSeveralFieldsTypes.Add(table);
-            context.SaveChanges();
-
-
-
-            Console.WriteLine(context.TableWithSeveralFieldsTypes.Select(c => new { c.MyDateTime.Day }).First().Day);
-            Console.WriteLine(context.TableWithSeveralFieldsTypes.Select(c => new { Date = EntityFunctions.AddDays(c.MyDateTime, 4) }).First());
-            Console.WriteLine(context.TableWithSeveralFieldsTypes.Select(c => new { ElapsedDays = EntityFunctions.DiffDays(c.MyDateTime, c.MyDateTime) }).First().ElapsedDays.Value);
-
-            Console.WriteLine(context.TableWithSeveralFieldsTypes.Select(c => c.MyString.IndexOf(CanonicalFunctionsTest.MYSTRINGVALUE.Substring(5, 4))).First());
-
-
-            Console.WriteLine(context.TableWithSeveralFieldsTypes.Where(c => c.MyString.Contains(CanonicalFunctionsTest.MYSTRINGVALUE.Substring(3, 5))).First());
-            Console.WriteLine(context.TableWithSeveralFieldsTypes.Where(c => c.MyString.StartsWith(CanonicalFunctionsTest.MYSTRINGVALUE.Substring(3, 5))).FirstOrDefault());
-            Console.WriteLine(context.TableWithSeveralFieldsTypes.Where(c => c.MyString.StartsWith(CanonicalFunctionsTest.MYSTRINGVALUE.Substring(0, 5))).First());
-            string stringEnd = CanonicalFunctionsTest.MYSTRINGVALUE.Substring(CanonicalFunctionsTest.MYSTRINGVALUE.Length - 5, 5);
-            //Console.WriteLine(context.TableWithSeveralFieldsTypes.Where(c => c.MyString.EndsWith(CanonicalFunctionsTest.MYSTRINGVALUE.Substring(CanonicalFunctionsTest.MYSTRINGVALUE.Length - 5, 5))).First());
-            Console.WriteLine(context.TableWithSeveralFieldsTypes.Where(c => c.MyString.EndsWith(stringEnd)).First());
-
-            context.Students.Where(s => !(new int[] { 1, 2, 3, 4 }).Contains(s.StudentID)).FirstOrDefault();
 
             /*           
             // Retrieve some oledb schema infos
@@ -172,8 +120,7 @@ namespace JetEntityFrameworkProvider.Test
 
 
             Console.WriteLine("Boolean materialization ===========================================================");
-            Console.WriteLine(context.Students.Select(c => new { MyNewProperty = (bool)true }).ToList().Count);
-            Console.WriteLine(context.TableWithSeveralFieldsTypes.Select(c => new { MyNewProperty = (bool)true }).ToList().Count);
+
 
 
 

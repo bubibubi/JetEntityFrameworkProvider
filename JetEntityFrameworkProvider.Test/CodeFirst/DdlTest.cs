@@ -1,15 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace JetEntityFrameworkProvider.Test.CodeFirst
 {
-    [TestFixture]
+    [TestClass]
     public class DdlTest
     {
-        [Test]
+        [TestMethod]
         public void CheckIfTablesExists()
         {
             bool exists = ((JetConnection)SetUpCodeFirst.Connection).TableExists("Students");

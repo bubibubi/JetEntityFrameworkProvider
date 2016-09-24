@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Linq;
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace JetEntityFrameworkProvider.Test.CodeFirst
 {
-    [TestFixture]
+    [TestClass]
     public class SqlJoinTest
     {
         const string THESTANDARD = "SqlJoinTest Standard";
 
-        [SetUp]
+        [TestInitialize]
         public void Init()
         {
             Context context = new Context(SetUpCodeFirst.Connection);
@@ -35,7 +35,7 @@ namespace JetEntityFrameworkProvider.Test.CodeFirst
             context.Dispose();
         }
 
-        [Test]
+        [TestMethod]
         public void JoinTest()
         {
             Context context = new Context(SetUpCodeFirst.Connection);
