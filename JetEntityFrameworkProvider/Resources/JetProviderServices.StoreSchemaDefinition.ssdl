@@ -364,6 +364,8 @@
       <PropertyRef Name="Id" />
     </Key>
     <Property Name="Id" Nullable="false" Type="varchar" MaxLength="255" />
+    <Property Name="ToTableId" Type="varchar" MaxLength="255" />
+    <Property Name="FromTableId" Type="varchar" MaxLength="255" />
     <Property Name="UpdateRule" Nullable="false" MaxLength="11" Type="varchar" />
     <Property Name="DeleteRule" Nullable="false" MaxLength="11" Type="varchar" />
   </EntityType>
@@ -377,6 +379,10 @@
     <Property Name="ConstraintId" Nullable="false" Type="varchar" MaxLength="255" />
     <Property Name="FromColumnId" Nullable="false" Type="varchar" MaxLength="255" />
     <Property Name="ToColumnId" Nullable="false" Type="varchar" MaxLength="255" />
+    <Property Name="FromTable" Type="varchar" MaxLength="255" />
+    <Property Name="FromColumn" Type="varchar" MaxLength="255" />
+    <Property Name="ToTable" Type="varchar" MaxLength="255" />
+    <Property Name="ToColumn" Type="varchar" MaxLength="255" />
   </EntityType>
 
   <EntityType Name="ViewConstraint">

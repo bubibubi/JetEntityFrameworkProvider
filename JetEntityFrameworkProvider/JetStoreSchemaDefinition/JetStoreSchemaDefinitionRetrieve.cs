@@ -50,7 +50,7 @@ namespace JetEntityFrameworkProvider
                 }
                 if (isSchemaTable)
                 {
-                    dataReader = GetDbDataReaderFromComplexStatement(command.Connection, command.CommandText);
+                    dataReader = GetDbDataReaderFromComplexStatement(command.Connection, command);
                     return true;
                 }
             }
@@ -59,8 +59,10 @@ namespace JetEntityFrameworkProvider
             return false;
         }
 
-        private static DbDataReader GetDbDataReaderFromComplexStatement(DbConnection connection, string commandText)
+        private static DbDataReader GetDbDataReaderFromComplexStatement(DbConnection connection, DbCommand command)
         {
+
+            string commandText = command.CommandText;
 
             ConnectionState oldConnectionState = connection.State;
 
@@ -85,9 +87,9 @@ namespace JetEntityFrameworkProvider
             {
                 try
                 {
-                    DbCommand command = connection.CreateCommand();
-                    command.CommandText = table.CreateStatement;
-                    command.ExecuteNonQuery();
+                    DbCommand createTableCommand = connection.CreateCommand();
+                    createTableCommand.CommandText = table.CreateStatement;
+                    createTableCommand.ExecuteNonQuery();
                 }
                 catch (Exception)
                 {
@@ -98,13 +100,15 @@ namespace JetEntityFrameworkProvider
 
                 foreach (DataRow row in dataTable.Rows)
                 {
-                    DbCommand command = connection.CreateCommand();
-                    command.CommandText = GetInsertStatement(table.TableName, row);
-                    command.ExecuteNonQuery();
+                    DbCommand insertCommand = connection.CreateCommand();
+                    insertCommand.CommandText = GetInsertStatement(table.TableName, row);
+                    insertCommand.ExecuteNonQuery();
                 }
             }
 
-            OleDbDataAdapter dataAdapter = new OleDbDataAdapter(commandText, (OleDbConnection) connection);
+
+            command.CommandText = commandText;
+            OleDbDataAdapter dataAdapter = new OleDbDataAdapter((OleDbCommand)command);
             DataSet dataSet = new DataSet();
             dataAdapter.Fill(dataSet);
             DataTable resultDataTable = dataSet.Tables[0];

@@ -2164,6 +2164,12 @@ namespace JetEntityFrameworkProvider
                 case DbExpressionKind.FullOuterJoin:
                 case DbExpressionKind.InnerJoin:
                 case DbExpressionKind.LeftOuterJoin:
+                    // It seems that Microsoft Access solves more join clauses if
+                    // we insert parenthesis in the ON clause.
+                    //    "<join> ON (<on_clause>)"
+                    // instead of 
+                    //    "<join> ON <on_clause>". 
+                    // but actually I don't know if it also changes the results
                     result.From.Append(" ON ");
                     isParentAJoinStack.Push(false);
                     result.From.Append(joinCondition.Accept(this));
