@@ -314,14 +314,14 @@ namespace JetEntityFrameworkProvider
             functionHandlers.Add("Hour", HandleFunctionDefaultCastToInt);
             functionHandlers.Add("Minute", HandleFunctionDefaultCastToInt);
             functionHandlers.Add("Second", HandleFunctionDefaultCastToInt);
-            
+
             functionHandlers.Add("CurrentDateTime", HandleCanonicalFunctionCurrentDateTime);
             functionHandlers.Add("CurrentUtcDateTime", HandleCanonicalFunctionCurrentDateTime); // No UTC support
-            
+
             functionHandlers.Add("CreateDateTime", HandleCanonicalFunctionCreateDateTime);
             functionHandlers.Add("CreateTime", HandleCanonicalFunctionCreateTime);
 
-            
+
             functionHandlers.Add("AddYears", HandleCanonicalFunctionDateAdd);
             functionHandlers.Add("AddMonths", HandleCanonicalFunctionDateAdd);
             functionHandlers.Add("AddDays", HandleCanonicalFunctionDateAdd);
@@ -844,7 +844,7 @@ namespace JetEntityFrameworkProvider
                 case PrimitiveTypeKind.Boolean:
                     return new SqlBuilder("CBool(IIf(IsNull(", argument, "),0,", argument, "))");
                 case PrimitiveTypeKind.Guid:
-                    // TODO: Guid - Cast
+                // TODO: Guid - Cast
                 case PrimitiveTypeKind.DateTimeOffset:
                 case PrimitiveTypeKind.Decimal:
                 case PrimitiveTypeKind.SByte:
@@ -2164,15 +2164,24 @@ namespace JetEntityFrameworkProvider
                 case DbExpressionKind.FullOuterJoin:
                 case DbExpressionKind.InnerJoin:
                 case DbExpressionKind.LeftOuterJoin:
+                    // Parenthesis to group ON clause and inversion of join condition added to fix test JoinErrorTest1
                     // It seems that Microsoft Access solves more join clauses if
                     // we insert parenthesis in the ON clause.
                     //    "<join> ON (<on_clause>)"
                     // instead of 
                     //    "<join> ON <on_clause>". 
-                    // but actually I don't know if it also changes the results
-                    result.From.Append(" ON ");
+                    result.From.Append(" ON (");
                     isParentAJoinStack.Push(false);
-                    result.From.Append(joinCondition.Accept(this));
+                    if (joinCondition is DbAndExpression)
+                    {
+                        // fix test JoinErrorTest1
+                        result.From.Append(VisitBinaryExpression(" AND ", ((DbAndExpression)joinCondition).Right, ((DbAndExpression)joinCondition).Left));
+                    }
+                    else
+                    {
+                        result.From.Append(joinCondition.Accept(this));
+                    }
+                    result.From.Append(")");
                     isParentAJoinStack.Pop();
                     break;
             }
@@ -3527,7 +3536,7 @@ namespace JetEntityFrameworkProvider
                         length = "max";
                     }
                     else
-                    { 
+                    {
                         length = maxLength.ToString(CultureInfo.InvariantCulture);
                         isFixedLength = type.GetIsFixedLength(false);
                         typeName = (isFixedLength ? "binary(" : "varbinary(") + length + ")";
@@ -3623,7 +3632,7 @@ namespace JetEntityFrameworkProvider
             if (e.ExpressionKind != DbExpressionKind.Constant)
                 throw new InvalidOperationException("DbLimitExpression and DbSkipExpression must be constants");
 
-            return Convert.ToInt32(((DbConstantExpression) e).Value);
+            return Convert.ToInt32(((DbConstantExpression)e).Value);
         }
 
         /// <summary>
