@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
 
-namespace JetEntityFrameworkProvider
+namespace JetEntityFrameworkProvider.Test.Model01
 {
     public class Standard
     {

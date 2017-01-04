@@ -88,22 +88,30 @@
     <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CodeFirst\BooleanMaterializationTest.cs" />
-    <Compile Include="CodeFirst\BuiltInFunctionsTest.cs" />
-    <Compile Include="CodeFirst\CanonicalFunctionsTest.cs" />
-    <Compile Include="CodeFirst\DdlTest.cs" />
-    <Compile Include="CodeFirst\DmlTest.cs" />
-    <Compile Include="CodeFirst\FunctionTest.cs" />
-    <Compile Include="CodeFirst\Model\Context.cs" />
-    <Compile Include="CodeFirst\Model\TableWithSeveralFieldsType.cs" />
-    <Compile Include="CodeFirst\Model\Standard.cs" />
-    <Compile Include="CodeFirst\Model\Student.cs" />
-    <Compile Include="CodeFirst\SetUpCodeFirst.cs" />
+    <Compile Include="BooleanMaterializationTest2.cs" />
+    <Compile Include="BooleanMaterializationTest1.cs" />
+    <Compile Include="BuiltInFunctionsTest.cs" />
+    <Compile Include="CanonicalFunctionsTest2.cs" />
+    <Compile Include="CanonicalFunctionsTest1.cs" />
+    <Compile Include="DdlTest.cs" />
+    <Compile Include="DmlTest.cs" />
+    <Compile Include="FunctionTest.cs" />
+    <Compile Include="JoinErrorTest1.cs" />
+    <Compile Include="Model01\Context.cs" />
+    <Compile Include="Model02\Context.cs" />
+    <Compile Include="Model02\TableWithSeveralFieldsType.cs" />
+    <Compile Include="Model01\Standard.cs" />
+    <Compile Include="Model01\Student.cs" />
+    <Compile Include="Model03\Context.cs" />
+    <Compile Include="Model03\PanelLookup.cs" />
+    <Compile Include="Model03\PanelTexture.cs" />
+    <Compile Include="Model03\Texture.cs" />
+    <Compile Include="SetUpCodeFirst.cs" />
     <Compile Include="Helpers.cs" />
     <Compile Include="JetProviderFactory\JetStoreSchemaDefinitionRetrieveTest.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="CodeFirst\SqlJoinTest.cs" />
+    <Compile Include="SqlJoinTest.cs" />
     <Compile Include="DataTypesTest.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -114,15 +122,17 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="packages.config" />
-    <None Include="Test.mdb">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\JetEntityFrameworkProvider\JetEntityFrameworkProvider.csproj">
       <Project>{eba0b8a0-6c00-44c2-a8f0-394069b9486b}</Project>
       <Name>JetEntityFrameworkProvider</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Empty.accdb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

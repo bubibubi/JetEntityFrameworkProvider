@@ -1,19 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
 
-namespace JetEntityFrameworkProvider
+namespace JetEntityFrameworkProvider.Test.Model01
 {
     public class Student
     {
-        public Student()
-        {
-        }
-
-        public int StudentID { get; set; }
+        public int StudentId { get; set; }
         
         [Required]
         [MaxLength(50)]
@@ -26,7 +19,7 @@ namespace JetEntityFrameworkProvider
 
         public override string ToString()
         {
-            return string.Format("{2}: {0} - {1}", StudentID, StudentName, base.ToString());
+            return string.Format("{2}: {0} - {1}", StudentId, StudentName, base.ToString());
         }
     }
 

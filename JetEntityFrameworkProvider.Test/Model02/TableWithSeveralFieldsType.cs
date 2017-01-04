@@ -1,18 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
 
-namespace JetEntityFrameworkProvider
+namespace JetEntityFrameworkProvider.Test.Model02
 {
     public class TableWithSeveralFieldsType
     {
-
-        public TableWithSeveralFieldsType()
-        {
-        }
-
         [Key]
         public int Id { get; set; }
         public int MyInt { get; set; }

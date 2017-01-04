@@ -1,18 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity.Core.Objects;
 using System.Linq;
-using System.Text;
+using JetEntityFrameworkProvider.Test.CodeFirst;
+using JetEntityFrameworkProvider.Test.Model02;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace JetEntityFrameworkProvider.Test.CodeFirst
+namespace JetEntityFrameworkProvider.Test
 {
     [TestClass]
     public class BuiltInFunctionsTest
     {
-
-        internal const string MYSTRINGVALUE = " My current string with leading and trailing spaces ";
-        internal const double MYDOUBLEVALUE = -123.456789;
+        private const string MYSTRINGVALUE = " My current string with leading and trailing spaces ";
+        private const double MYDOUBLEVALUE = -123.456789;
 
         [TestInitialize]
         public void Initialize()

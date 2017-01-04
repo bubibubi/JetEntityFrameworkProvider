@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using JetEntityFrameworkProvider.Test.Model01;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace JetEntityFrameworkProvider.Test.CodeFirst

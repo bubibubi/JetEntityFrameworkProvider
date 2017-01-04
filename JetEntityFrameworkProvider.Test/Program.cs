@@ -14,6 +14,7 @@ using System.Data;
 using System.IO;
 using System.Data.Entity.Migrations;
 using System.Data.Entity.Migrations.Infrastructure;
+using JetEntityFrameworkProvider.Test.Model01;
 
 namespace JetEntityFrameworkProvider.Test
 {

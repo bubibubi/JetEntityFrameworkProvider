@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using JetEntityFrameworkProvider.Test.Model01;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace JetEntityFrameworkProvider.Test.CodeFirst
@@ -36,13 +37,13 @@ namespace JetEntityFrameworkProvider.Test.CodeFirst
             student = new Student() { StudentName = "Student to update" };
             context.Students.Add(student);
             context.SaveChanges();
-            int studentId = student.StudentID;
+            int studentId = student.StudentId;
             context.Dispose();
 
             context = new Context(SetUpCodeFirst.Connection);
 
             // Retrieve the student
-            student = context.Students.Where(s => s.StudentID == studentId).First();
+            student = context.Students.Where(s => s.StudentId == studentId).First();
             
             // Update the student
             student.StudentName = "Student updated";
@@ -52,7 +53,7 @@ namespace JetEntityFrameworkProvider.Test.CodeFirst
             // Retrieve the student and check that is the right student
             context = new Context(SetUpCodeFirst.Connection);
             student = context.Students.Where(s => s.StudentName == "Student updated").First();
-            Assert.AreEqual(student.StudentID, studentId);
+            Assert.AreEqual(student.StudentId, studentId);
 
             // Delete the student
             context.Students.Remove(student);
@@ -61,7 +62,7 @@ namespace JetEntityFrameworkProvider.Test.CodeFirst
 
             // Try to retrieve the student
             context = new Context(SetUpCodeFirst.Connection);
-            student = context.Students.Where(s => s.StudentName == "Student updated" || s.StudentID == studentId).FirstOrDefault();
+            student = context.Students.Where(s => s.StudentName == "Student updated" || s.StudentId == studentId).FirstOrDefault();
             Assert.AreEqual(student, null);
 
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using JetEntityFrameworkProvider.Test.CodeFirst;
+using JetEntityFrameworkProvider.Test.Model02;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace JetEntityFrameworkProvider.Test
@@ -39,7 +40,8 @@ namespace JetEntityFrameworkProvider.Test
 
             Context context = new Context(SetUpCodeFirst.Connection);
 
-            context.TableWithSeveralFieldsTypes.Where(c => c.MyBool == true).Select(c => c.MyBool).First();
+            // ReSharper disable once ReturnValueOfPureMethodIsNotUsed
+            context.TableWithSeveralFieldsTypes.Where(c => c.MyBool).Select(c => c.MyBool).First();
 
             context.Dispose();
 
