@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using JetEntityFrameworkProvider.Test.CodeFirst;
 using JetEntityFrameworkProvider.Test.Model02;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

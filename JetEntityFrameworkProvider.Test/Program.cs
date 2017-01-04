@@ -1,19 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Data.OleDb;
-using System.Data.SqlClient;
-
-using JetEntityFrameworkProvider;
-using System.Data.Entity.Core.EntityClient;
-using System.Data.Entity;
-using System.Data.Entity.Core.Objects;
-using JetEntityFrameworkProvider.Test.CodeFirst;
 using System.Data.Common;
-using System.Data;
-using System.IO;
-using System.Data.Entity.Migrations;
-using System.Data.Entity.Migrations.Infrastructure;
 using JetEntityFrameworkProvider.Test.Model01;
 
 namespace JetEntityFrameworkProvider.Test
@@ -28,7 +14,7 @@ namespace JetEntityFrameworkProvider.Test
             // This is the only reason why we need to include the provider
             JetEntityFrameworkProvider.JetConnection.ShowSqlStatements = true;
 
-            DbConnection connection = Helpers.GetConnection();
+            DbConnection connection = Helpers.GetJetConnection();
             Context context = new Context(connection);
 
 

@@ -14,7 +14,7 @@ namespace JetEntityFrameworkProvider.Test.JetProviderFactory
         [TestInitialize]
         public void Initialize()
         {
-            _connection = Helpers.GetConnection();
+            _connection = Helpers.GetJetConnection();
         }
 
         [TestCleanup]

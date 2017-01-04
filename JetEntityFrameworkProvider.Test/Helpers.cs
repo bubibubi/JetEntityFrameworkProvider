@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using System.Data.OleDb;
-using System.Linq;
-using System.Text;
+using System.Data.SqlServerCe;
+using System.IO;
 
 namespace JetEntityFrameworkProvider.Test
 {
@@ -94,7 +93,7 @@ namespace JetEntityFrameworkProvider.Test
         }
 
 
-        public static DbConnection GetConnection()
+        public static DbConnection GetJetConnection()
         {
             // Take care because according to this article
             // http://msdn.microsoft.com/en-us/library/dd0w4a2z(v=vs.110).aspx
@@ -107,19 +106,67 @@ namespace JetEntityFrameworkProvider.Test
 
             DbConnection connection = new JetConnection();
 
-            connection.ConnectionString = GetConnectionString();
+            connection.ConnectionString = GetJetConnectionString();
             return connection;
 
         }
 
-        public static string GetConnectionString()
+        public static string GetJetConnectionString()
         {
+            // ReSharper disable once CollectionNeverUpdated.Local
             OleDbConnectionStringBuilder oleDbConnectionStringBuilder = new OleDbConnectionStringBuilder();
             //oleDbConnectionStringBuilder.Provider = "Microsoft.Jet.OLEDB.4.0";
             //oleDbConnectionStringBuilder.DataSource = @".\Empty.mdb";
             oleDbConnectionStringBuilder.Provider = "Microsoft.ACE.OLEDB.12.0";
             oleDbConnectionStringBuilder.DataSource = @".\Empty.accdb";
             return oleDbConnectionStringBuilder.ToString();
+        }
+
+
+        public static DbConnection GetSqlCeConnection()
+        {
+            // Take care because according to this article
+            // http://msdn.microsoft.com/en-us/library/dd0w4a2z(v=vs.110).aspx
+            // to make the following line work the provider must be installed in the GAC and we also need an entry in machine.config
+            /*
+            DbProviderFactory providerFactory = System.Data.Common.DbProviderFactories.GetFactory("JetEntityFrameworkProvider");
+            
+            DbConnection connection = providerFactory.CreateConnection();
+            */
+
+            DbConnection connection = new SqlCeConnection();
+
+            connection.ConnectionString = GetSqlCeConnectionString();
+            return connection;
+
+        }
+
+        public static string GetSqlCeConnectionString()
+        {
+            // ReSharper disable once CollectionNeverUpdated.Local
+            SqlCeConnectionStringBuilder sqlCeConnectionStringBuilder = new SqlCeConnectionStringBuilder();
+            //oleDbConnectionStringBuilder.Provider = "Microsoft.Jet.OLEDB.4.0";
+            //oleDbConnectionStringBuilder.DataSource = @".\Empty.mdb";
+            sqlCeConnectionStringBuilder.DataSource = GetSqlCeDatabaseFileName();
+            sqlCeConnectionStringBuilder.CaseSensitive = true;
+            return sqlCeConnectionStringBuilder.ToString();
+        }
+
+        private static string GetSqlCeDatabaseFileName()
+        {
+            return System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().GetName().CodeBase.Replace("file:///", "")) + "\\Data.sdf;";
+        }
+
+        public static void CreateSqlCeDatabase()
+        {
+            var sqlCeEngine = new SqlCeEngine(GetSqlCeConnectionString());
+            sqlCeEngine.CreateDatabase();
+        }
+
+        public static void DeleteSqlCeDatabase()
+        {
+            if (File.Exists(GetSqlCeDatabaseFileName()))            
+                File.Delete(GetSqlCeDatabaseFileName());
         }
 
     }

@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace JetEntityFrameworkProvider.Test.CodeFirst
+namespace JetEntityFrameworkProvider.Test
 {
     [TestClass]
     public class DdlTest

@@ -3,7 +3,7 @@ using System.Data.Common;
 using JetEntityFrameworkProvider.Test.Model01;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace JetEntityFrameworkProvider.Test.CodeFirst
+namespace JetEntityFrameworkProvider.Test
 {
     [TestClass]
     public class SetUpCodeFirst
@@ -18,7 +18,7 @@ namespace JetEntityFrameworkProvider.Test.CodeFirst
             // This is the only reason why we include the Provider
             JetEntityFrameworkProvider.JetConnection.ShowSqlStatements = true;
 
-            Connection = Helpers.GetConnection();
+            Connection = Helpers.GetJetConnection();
 
             Context context = new Context(SetUpCodeFirst.Connection);
 
