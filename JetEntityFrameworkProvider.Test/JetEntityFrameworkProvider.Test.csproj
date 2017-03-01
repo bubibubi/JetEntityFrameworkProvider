@@ -340,6 +340,10 @@
     <Compile Include="Model52_Requires_HasFalse_LogicalDelete\PanelLookup.cs" />
     <Compile Include="Model52_Requires_HasFalse_LogicalDelete\PanelTexture.cs" />
     <Compile Include="Model52_Requires_HasFalse_LogicalDelete\Texture.cs" />
+    <Compile Include="Model53_TableSplitting\Context.cs" />
+    <Compile Include="Model53_TableSplitting\JetTest.cs" />
+    <Compile Include="Model53_TableSplitting\Model.cs" />
+    <Compile Include="Model53_TableSplitting\Test.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="SetUpCodeFirst.cs" />
     <Compile Include="Helpers.cs" />
@@ -368,6 +372,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Model24_MultiTenantApp\Readme.txt" />
+    <Content Include="Model53_TableSplitting\readme.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
