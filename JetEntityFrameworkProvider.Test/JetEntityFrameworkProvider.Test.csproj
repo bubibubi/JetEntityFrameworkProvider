@@ -104,6 +104,10 @@
     <Compile Include="DdlTest.cs" />
     <Compile Include="DmlTest.cs" />
     <Compile Include="FunctionTest.cs" />
+    <Compile Include="Model54_MemoryLeakageTest\Context.cs" />
+    <Compile Include="Model54_MemoryLeakageTest\JetTest.cs" />
+    <Compile Include="Model54_MemoryLeakageTest\Standard.cs" />
+    <Compile Include="Model54_MemoryLeakageTest\Student.cs" />
     <Compile Include="Model11\SqlCeTest.cs" />
     <Compile Include="Model33_OneToOneDeleteCascade\Person.cs" />
     <Compile Include="Model44_CaseSensitivity\SqlCeTest.cs" />
@@ -344,6 +348,11 @@
     <Compile Include="Model53_TableSplitting\JetTest.cs" />
     <Compile Include="Model53_TableSplitting\Model.cs" />
     <Compile Include="Model53_TableSplitting\Test.cs" />
+    <Compile Include="Model54_MemoryLeakageTest\Test.cs" />
+    <Compile Include="Model55_Unicode\Context.cs" />
+    <Compile Include="Model55_Unicode\JetTest.cs" />
+    <Compile Include="Model55_Unicode\Model.cs" />
+    <Compile Include="Model55_Unicode\Test.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="SetUpCodeFirst.cs" />
     <Compile Include="Helpers.cs" />
