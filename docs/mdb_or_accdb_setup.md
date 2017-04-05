@@ -4,11 +4,27 @@ In order to make the provider work, the table
 ```MSysRelationships```  
 should be accessible from Administrator  
   
-**Version 1.1.2 update**  
-In order to work EF Provider need a DUAL table (see [https://en.wikipedia.org/wiki/DUAL_table](https://en.wikipedia.org/wiki/DUAL_table))  
-In previous versions the DUAL table was obtained using (SELECT COUNT(*) FROM MSysRelationships) query.  
-Since version 1.1.2 you can also setup a different DUAL table using JetConnection.DUAL static property.  
-You can use a generic table (Access since version 2003 has visible system tables) and make a count on it or you can create a DUAL table (single record table) on access database and just set the name of the table in JetConnection.DUAL property i.e.  
+In order to work EF Provider need a DUAL table (see [https://en.wikipedia.org/wiki/DUAL_table](https://en.wikipedia.org/wiki/DUAL_table)) 
+
+**mdb files***  
+By default, the table ```MSysRelationships``` must be accessible from Administrator in order to make the provider work.  
+After the ```MSysRelationships``` table is made accessible the configuration must be done setting the right dual table (very early in your code)     
+```c#
+JetConnection.DUAL = JetConnection.DUALForMdb;
+```
+If it's not possible to make the ```MSysRelationships``` table readable, it is possible to use another table (see below).  
+
+**accdb files***  
+This is the default configuration so no needs to make changes.  
+Access since version 2003 has visible system tables so no need to assign rights.  
+The configuration must be done setting the right dual table (very early in your code).
+```c#
+JetConnection.DUAL = JetConnection.DUALForAccdb;
+```
+
+**Use a custom table**  
+You can also setup a different DUAL table using JetConnection.DUAL static property.  
+You can use a generic table and make a count on it or you can create a DUAL table (single record table) on access database and just set the name of the table in JetConnection.DUAL property i.e.  
   
 ```sql
 CREATE TABLE Dual (id COUNTER CONSTRAINT pkey PRIMARY KEY)
