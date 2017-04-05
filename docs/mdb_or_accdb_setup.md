@@ -6,7 +6,7 @@ should be accessible from Administrator
   
 In order to work EF Provider need a DUAL table (see [https://en.wikipedia.org/wiki/DUAL_table](https://en.wikipedia.org/wiki/DUAL_table)) 
 
-**mdb files***  
+**mdb files**  
 By default, the table ```MSysRelationships``` must be accessible from Administrator in order to make the provider work.  
 After the ```MSysRelationships``` table is made accessible the configuration must be done setting the right dual table (very early in your code)     
 ```c#
@@ -14,7 +14,7 @@ JetConnection.DUAL = JetConnection.DUALForMdb;
 ```
 If it's not possible to make the ```MSysRelationships``` table readable, it is possible to use another table (see below).  
 
-**accdb files***  
+**accdb files**  
 This is the default configuration so no needs to make changes.  
 Access since version 2003 has visible system tables so no need to assign rights.  
 The configuration must be done setting the right dual table (very early in your code).
