@@ -4,7 +4,7 @@ In order to enable simple migration you need to do the following steps (as in SQ
 
 * The context should configured in this way
 
-```
+```c#
 using System.Data.Common;
 using System.Data.Entity;
 
@@ -26,7 +26,7 @@ namespace MyApp
 
 * We need a migration configuration
 
-```
+```c#
 using System.Data.Entity.Migrations;
 
 namespace MyApp.Migrations
@@ -44,7 +44,7 @@ namespace MyApp.Migrations
 
 * We need to use that migration configuration (with the connection that raised the migration). Somewhere, before context access, we need to insert the following statements.
 
-```
+```c#
 Database.SetInitializer(new MigrateDatabaseToLatestVersion<MyContext,MyContextMigrationConfiguration>(true));
 ```
 
