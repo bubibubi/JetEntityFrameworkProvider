@@ -12,6 +12,7 @@ I usually enable it from visual studio. You can also find a test key inside the 
   
 3. Register the ADO.Net provider for MS Access (JetEntityFrameworkProvider.dll) in the GAC. I usually do this inside visual studio (post build event) but you need to run Visual Studio as administrator to do this.  
 My Visual Studio events are:  
+  
 Pre-build:  
 "%ProgramFiles%\Microsoft SDKs\Windows\v8.0A\Bin\NETFX 4.0 Tools\gacutil.exe" /u "$(TargetName)"  
   
@@ -25,11 +26,11 @@ C:\Windows\Microsoft.NET\Framework\v4.0.30319\Config
 in configuration\system.data\DbProviderFactories  
 add this line  
   
-```
-     <add name="JetEntityFrameworkProvider" invariant="JetEntityFrameworkProvider" description="JetEntityFrameworkProvider" type="JetEntityFrameworkProvider.JetProviderFactory, JetEntityFrameworkProvider, Version=1.0.0.0, Culture=neutral, PublicKeyToken=756cf6beb8fe7b41" />
+```xml
+<add name="JetEntityFrameworkProvider" invariant="JetEntityFrameworkProvider" description="JetEntityFrameworkProvider" type="JetEntityFrameworkProvider.JetProviderFactory, JetEntityFrameworkProvider, Version=1.0.0.0, Culture=neutral, PublicKeyToken=756cf6beb8fe7b41" />
 ```
 
 5. Register DDEX provider (the Visual Studio provider).  
-To do it run install.cmd (as Administrator) inside JetDdexProvider directory  
+To do it run ```install.cmd``` (as Administrator) inside JetDdexProvider directory  
 
 
