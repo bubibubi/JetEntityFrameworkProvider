@@ -1,7 +1,7 @@
 # mdb or accdb setup  
   
 In order to make the provider work, the table  
-MSysRelationships  
+```MSysRelationships```
 should be accessible from Administrator  
   
 **Version 1.1.2 update**  
