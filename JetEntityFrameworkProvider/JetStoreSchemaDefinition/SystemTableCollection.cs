@@ -38,7 +38,7 @@ namespace JetEntityFrameworkProvider.JetStoreSchemaDefinition
                 Debug.Assert(entityTypeAttribute.StartsWith("Self."));
                 string entityType = entityTypeAttribute.Substring(5);
                 MethodInfo getDataTableMethodInfo = typeof(JetStoreSchemaDefinitionRetrieve).GetMethod("Get" + name, BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy);
-                Func<OleDbConnection, DataTable> getDataTableDelegate = (Func<OleDbConnection, DataTable>) getDataTableMethodInfo.CreateDelegate(typeof (Func<OleDbConnection, DataTable>));
+                Func<OleDbConnection, DataTable> getDataTableDelegate = (Func<OleDbConnection, DataTable>)Delegate.CreateDelegate(typeof(Func<OleDbConnection, DataTable>), getDataTableMethodInfo);
                 SystemTable systemTable = new SystemTable()
                 {
                     Name = name,
