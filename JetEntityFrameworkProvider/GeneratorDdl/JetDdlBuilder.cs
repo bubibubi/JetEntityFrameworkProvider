@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity.Core.Metadata.Edm;
-using System.Data.Entity.Migrations.Model;
-using System.Linq;
 using System.Text;
 
 namespace JetEntityFrameworkProvider
@@ -55,16 +53,10 @@ namespace JetEntityFrameworkProvider
 
         public void AppendType(EdmProperty column)
         {
-            AppendType(column.TypeUsage, column.Nullable, column.TypeUsage.GetIsIdentity(), column.DefaultValue.ToString());
+            AppendType(column.TypeUsage, column.Nullable, column.TypeUsage.GetIsIdentity(), Convert.ToString(column.DefaultValue));
         }
 
-        public void AppendType(ColumnModel column)
-        {
-            TypeUsage storeType = JetProviderManifest.Instance.GetStoreType(column.TypeUsage);
-            AppendType(storeType, column.IsNullable ?? true, column.IsIdentity, column.DefaultValueSql);
-        }
-
-        public void AppendType(TypeUsage typeUsage, bool isNullable, bool isIdentity, string defaultValue)
+        public void AppendType(TypeUsage typeUsage, bool isNullable, bool isIdentity, string defaultValueSql)
         {
             bool isTimestamp = false;
 
@@ -96,12 +88,14 @@ namespace JetEntityFrameworkProvider
 
             AppendSql(jetTypeName);
             AppendSql(jetLength);
-            if (!string.IsNullOrWhiteSpace(defaultValue))
-                AppendSql(" DEFAULT " + defaultValue);
+            if (!string.IsNullOrWhiteSpace(defaultValueSql))
+                AppendSql(" default " + defaultValueSql);
             AppendSql(isNullable ? " null" : " not null");
 
+            // ReSharper disable once ConditionIsAlwaysTrueOrFalse
             if (isTimestamp)
                 ;// nothing to generate for identity
+
             else if (isIdentity && jetTypeName == "guid")
                 AppendSql(" default GenGUID()");
             //AppendSql(" counter");
@@ -122,7 +116,8 @@ namespace JetEntityFrameworkProvider
         /// <summary>
         /// Appends raw SQL into the string builder.
         /// </summary>
-        /// <param name="text">Raw SQL string to append into the string builder.</param>
+        /// <param name="format">The format.</param>
+        /// <param name="p">The parameters.</param>
         public void AppendSql(string format, params object[] p)
         {
             stringBuilder.AppendFormat(format, p);
