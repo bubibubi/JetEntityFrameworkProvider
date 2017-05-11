@@ -407,5 +407,9 @@ namespace JetEntityFrameworkProvider
 
         #endregion
 
+        private string GenerateSqlStatementConcrete(SqlOperation migrationOperation)
+        {
+            return migrationOperation.Sql;
+        }
     }
 }
