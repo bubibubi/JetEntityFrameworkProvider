@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity.Core.Metadata.Edm;
+using System.Data.Entity.Migrations.Model;
 using System.Linq;
 using System.Text;
 
@@ -54,12 +55,17 @@ namespace JetEntityFrameworkProvider
 
         public void AppendType(EdmProperty column)
         {
-            AppendType(column.TypeUsage, column.Nullable, column.TypeUsage.GetIsIdentity());
+            AppendType(column.TypeUsage, column.Nullable, column.TypeUsage.GetIsIdentity(), column.DefaultValue.ToString());
         }
 
-        public void AppendType(TypeUsage typeUsage, bool isNullable, bool isIdentity)
+        public void AppendType(ColumnModel column)
         {
+            TypeUsage storeType = JetProviderManifest.Instance.GetStoreType(column.TypeUsage);
+            AppendType(storeType, column.IsNullable ?? true, column.IsIdentity, column.DefaultValueSql);
+        }
 
+        public void AppendType(TypeUsage typeUsage, bool isNullable, bool isIdentity, string defaultValue)
+        {
             bool isTimestamp = false;
 
             JetDataTypeAlias alias;
@@ -90,6 +96,8 @@ namespace JetEntityFrameworkProvider
 
             AppendSql(jetTypeName);
             AppendSql(jetLength);
+            if (!string.IsNullOrWhiteSpace(defaultValue))
+                AppendSql(" DEFAULT " + defaultValue);
             AppendSql(isNullable ? " null" : " not null");
 
             if (isTimestamp)

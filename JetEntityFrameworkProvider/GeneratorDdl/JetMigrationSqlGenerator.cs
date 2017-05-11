@@ -191,8 +191,7 @@ namespace JetEntityFrameworkProvider
 
             ddlBuilder.AppendIdentifier(column.Name);
             ddlBuilder.AppendSql(" ");
-            TypeUsage storeType = JetProviderManifest.Instance.GetStoreType(column.TypeUsage);
-            ddlBuilder.AppendType(storeType, column.IsNullable ?? true, column.IsIdentity);
+            ddlBuilder.AppendType(column);
             ddlBuilder.AppendNewLine();
 
 
@@ -224,8 +223,7 @@ namespace JetEntityFrameworkProvider
 
             ddlBuilder.AppendIdentifier(column.Name);
             ddlBuilder.AppendSql(" ");
-            TypeUsage storeType = JetProviderManifest.Instance.GetStoreType(column.TypeUsage);
-            ddlBuilder.AppendType(storeType, column.IsNullable ?? true, column.IsIdentity);
+            ddlBuilder.AppendType(column);
             ddlBuilder.AppendNewLine();
 
 
@@ -297,8 +295,7 @@ namespace JetEntityFrameworkProvider
 
                 ddlBuilder.AppendIdentifier(column.Name);
                 ddlBuilder.AppendSql(" ");
-                TypeUsage storeType = JetProviderManifest.Instance.GetStoreType(column.TypeUsage);
-                ddlBuilder.AppendType(storeType, column.IsNullable ?? true, column.IsIdentity);
+                ddlBuilder.AppendType(column);
                 ddlBuilder.AppendSql(BATCHTERMINATOR);
             }
 
@@ -325,8 +322,7 @@ namespace JetEntityFrameworkProvider
                 ddlBuilder.AppendSql(" ");
                 ddlBuilder.AppendIdentifier(column.Name);
                 ddlBuilder.AppendSql(" ");
-                TypeUsage storeTypeUsage = ProviderManifest.GetStoreType(column.TypeUsage);
-                ddlBuilder.AppendType(storeTypeUsage, column.IsNullable ?? true, column.IsIdentity);
+                ddlBuilder.AppendType(column);
                 ddlBuilder.AppendNewLine();
             }
 
