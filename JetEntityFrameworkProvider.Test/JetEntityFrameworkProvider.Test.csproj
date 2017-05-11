@@ -104,6 +104,13 @@
     <Compile Include="DdlTest.cs" />
     <Compile Include="DmlTest.cs" />
     <Compile Include="FunctionTest.cs" />
+    <Compile Include="MigrationUpDownTest\MigrationExtensions.cs" />
+    <Compile Include="MigrationUpDownTest\MigrationUpDownTest.cs" />
+    <Compile Include="MigrationUpDownTest\MigrationWithNumericDefaultValue.cs" />
+    <Compile Include="MigrationUpDownTest\MigrationWithNumericDefaultValueSql.cs" />
+    <Compile Include="MigrationUpDownTest\MigrationWithDefaultValueSql.cs" />
+    <Compile Include="MigrationUpDownTest\MigrationWithDefaultValue.cs" />
+    <Compile Include="MigrationUpDownTest\SimpleMigration.cs" />
     <Compile Include="Model54_MemoryLeakageTest\Context.cs" />
     <Compile Include="Model54_MemoryLeakageTest\JetTest.cs" />
     <Compile Include="Model54_MemoryLeakageTest\Standard.cs" />

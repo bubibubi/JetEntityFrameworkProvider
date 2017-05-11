@@ -57,6 +57,7 @@ namespace JetEntityFrameworkProvider
             return GenerateSqlStatementConcrete(concreteMigrationOperation);
         }
 
+        // ReSharper disable once UnusedParameter.Local
         private string GenerateSqlStatementConcrete(MigrationOperation migrationOperation)
         {
             Debug.Assert(false);
@@ -85,8 +86,10 @@ namespace JetEntityFrameworkProvider
                     case DbCommandTreeKind.Update:
                         ddlBuilder.AppendSql(JetDmlBuilder.GenerateUpdateSql((DbUpdateCommandTree)commandTree, out parameters, true));
                         break;
+                    // ReSharper disable RedundantCaseLabel
                     case DbCommandTreeKind.Function:
                     case DbCommandTreeKind.Query:
+                    // ReSharper restore RedundantCaseLabel
                     default:
                         throw new InvalidOperationException(string.Format("Command tree of type {0} not supported in migration of history operations", commandTree.CommandTreeKind));
                 }
@@ -101,11 +104,13 @@ namespace JetEntityFrameworkProvider
 
         #region Move operations (not supported by Jet)
 
+        // ReSharper disable once UnusedParameter.Local
         private string GenerateSqlStatementConcrete(MoveProcedureOperation migrationOperation)
         {
             throw new NotSupportedException("Move operations not supported by Jet (Jet does not support schemas at all)");
         }
 
+        // ReSharper disable once UnusedParameter.Local
         private string GenerateSqlStatementConcrete(MoveTableOperation migrationOperation)
         {
             throw new NotSupportedException("Move operations not supported by Jet (Jet does not support schemas at all)");
@@ -115,23 +120,27 @@ namespace JetEntityFrameworkProvider
 
 
         #region Procedure related operations (not supported by Jet)
+        // ReSharper disable once UnusedParameter.Local
         private string GenerateSqlStatementConcrete(AlterProcedureOperation migrationOperation)
         {
             throw new NotSupportedException("Procedures are not supported by Jet");
         }
 
+        // ReSharper disable once UnusedParameter.Local
         private string GenerateSqlStatementConcrete(CreateProcedureOperation migrationOperation)
         {
             throw new NotSupportedException("Procedures are not supported by Jet");
         }
 
 
+        // ReSharper disable once UnusedParameter.Local
         private string GenerateSqlStatementConcrete(DropProcedureOperation migrationOperation)
         {
             throw new NotSupportedException("Procedures are not supported by Jet");
         }
 
 
+        // ReSharper disable once UnusedParameter.Local
         private string GenerateSqlStatementConcrete(RenameProcedureOperation migrationOperation)
         {
             throw new NotSupportedException("Procedures are not supported by Jet");
@@ -143,16 +152,19 @@ namespace JetEntityFrameworkProvider
         #region Rename operations (not supported by Jet)
 
 
+        // ReSharper disable once UnusedParameter.Local
         private string GenerateSqlStatementConcrete(RenameColumnOperation migrationOperation)
         {
             throw new NotSupportedException("Cannot rename objects with Jet");
         }
 
+        // ReSharper disable once UnusedParameter.Local
         private string GenerateSqlStatementConcrete(RenameIndexOperation migrationOperation)
         {
             throw new NotSupportedException("Cannot rename objects with Jet");
         }
 
+        // ReSharper disable once UnusedParameter.Local
         private string GenerateSqlStatementConcrete(RenameTableOperation migrationOperation)
         {
             throw new NotSupportedException("Cannot rename objects with Jet");
@@ -191,7 +203,8 @@ namespace JetEntityFrameworkProvider
 
             ddlBuilder.AppendIdentifier(column.Name);
             ddlBuilder.AppendSql(" ");
-            ddlBuilder.AppendType(column);
+            TypeUsage storeType = JetProviderManifest.Instance.GetStoreType(column.TypeUsage);
+            ddlBuilder.AppendType(storeType, column.IsNullable ?? true, column.IsIdentity, column.DefaultValueSql);
             ddlBuilder.AppendNewLine();
 
 
@@ -223,7 +236,8 @@ namespace JetEntityFrameworkProvider
 
             ddlBuilder.AppendIdentifier(column.Name);
             ddlBuilder.AppendSql(" ");
-            ddlBuilder.AppendType(column);
+            TypeUsage storeType = JetProviderManifest.Instance.GetStoreType(column.TypeUsage);
+            ddlBuilder.AppendType(storeType, column.IsNullable ?? true, column.IsIdentity, column.DefaultValueSql);
             ddlBuilder.AppendNewLine();
 
 
@@ -295,7 +309,8 @@ namespace JetEntityFrameworkProvider
 
                 ddlBuilder.AppendIdentifier(column.Name);
                 ddlBuilder.AppendSql(" ");
-                ddlBuilder.AppendType(column);
+                TypeUsage storeType = JetProviderManifest.Instance.GetStoreType(column.TypeUsage);
+                ddlBuilder.AppendType(storeType, column.IsNullable ?? true, column.IsIdentity, column.DefaultValueSql);
                 ddlBuilder.AppendSql(BATCHTERMINATOR);
             }
 
@@ -322,7 +337,8 @@ namespace JetEntityFrameworkProvider
                 ddlBuilder.AppendSql(" ");
                 ddlBuilder.AppendIdentifier(column.Name);
                 ddlBuilder.AppendSql(" ");
-                ddlBuilder.AppendType(column);
+                TypeUsage storeType = JetProviderManifest.Instance.GetStoreType(column.TypeUsage);
+                ddlBuilder.AppendType(storeType, column.IsNullable ?? true, column.IsIdentity, column.DefaultValueSql);
                 ddlBuilder.AppendNewLine();
             }
 
@@ -403,9 +419,13 @@ namespace JetEntityFrameworkProvider
 
         #endregion
 
+        #region Direct SQL statements
+
         private string GenerateSqlStatementConcrete(SqlOperation migrationOperation)
         {
             return migrationOperation.Sql;
         }
+
+        #endregion
     }
 }
