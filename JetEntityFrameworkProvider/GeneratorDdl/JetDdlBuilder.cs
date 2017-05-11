@@ -89,8 +89,13 @@ namespace JetEntityFrameworkProvider
             AppendSql(jetTypeName);
             AppendSql(jetLength);
             if (!string.IsNullOrWhiteSpace(defaultValueSql))
+            {
                 AppendSql(" default " + defaultValueSql);
-            AppendSql(isNullable ? " null" : " not null");
+                if (!isNullable)
+                    AppendSql(" not null");
+            }
+            else
+                AppendSql(isNullable ? " null" : " not null");
 
             // ReSharper disable once ConditionIsAlwaysTrueOrFalse
             if (isTimestamp)
