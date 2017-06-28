@@ -7,12 +7,6 @@ namespace JetEntityFrameworkProvider.Test.Model44_CaseSensitivity
     [TestClass]
     public class Model44_CaseSensitivityCeTest : Test
     {
-        [TestInitialize]
-        public void Initialize()
-        {
-            Helpers.DeleteSqlCeDatabase();
-            Helpers.CreateSqlCeDatabase();
-        }
 
         [TestMethod]
         public override void Run()
@@ -25,12 +19,6 @@ namespace JetEntityFrameworkProvider.Test.Model44_CaseSensitivity
         protected override DbConnection GetConnection()
         {
             return Helpers.GetSqlCeConnection();
-        }
-
-        [TestCleanup]
-        public void CleanUp()
-        {
-            Helpers.DeleteSqlCeDatabase();
         }
 
     }

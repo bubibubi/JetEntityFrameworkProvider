@@ -154,7 +154,7 @@ namespace JetEntityFrameworkProvider.Test
 
         private static string GetSqlCeDatabaseFileName()
         {
-            return System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().GetName().CodeBase.Replace("file:///", "")) + "\\Data.sdf;";
+            return System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().GetName().CodeBase.Replace("file:///", "")) + "\\Data.sdf";
         }
 
         public static void CreateSqlCeDatabase()

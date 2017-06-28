@@ -37,11 +37,36 @@ namespace JetEntityFrameworkProvider.Test.Model56_SkipTake
                 }
             }
 
+            RemoveAllEntities();
+        }
+
+        private void RemoveAllEntities()
+        {
             using (var context = new Context(GetConnection()))
             {
                 context.Entities.RemoveRange(context.Entities.ToList());
                 context.SaveChanges();
             }
+        }
+
+        [TestMethod]
+        public virtual void SkipTakeDuplicatedDate()
+        {
+            using (var context = new Context(GetConnection()))
+            {
+                for (int i = 0; i < 30; i++)
+                    context.Entities.Add(new Entity() { Description = i.ToString(), Date = new DateTime(1969, 09, 15)});
+
+                context.SaveChanges();
+            }
+
+            using (var context = new Context(GetConnection()))
+            {
+                var entities = context.Entities.OrderBy(_ => _.Date).Skip(10).Take(5).ToList();
+                Assert.AreEqual(5, entities.Count);
+            }
+
+            RemoveAllEntities();
         }
 
         [TestMethod]
@@ -72,12 +97,33 @@ namespace JetEntityFrameworkProvider.Test.Model56_SkipTake
                 }
             }
 
+            RemoveAllEntities();
+        }
+
+
+
+        [TestMethod]
+        public void SkipTakeDuplicatedString()
+        {
             using (var context = new Context(GetConnection()))
             {
-                context.Entities.RemoveRange(context.Entities.ToList());
+                for (int i = 0; i < 30; i++)
+                    context.Entities.Add(new Entity() { Description = "This is the same old song" });
+
                 context.SaveChanges();
             }
+
+            using (var context = new Context(GetConnection()))
+            {
+                var entities = context.Entities.OrderBy(_ => _.Description).Skip(10).Take(5).ToList();
+                Assert.AreEqual(5, entities.Count);
+                foreach (Entity entity in context.Entities.ToList())
+                    Assert.AreEqual("This is the same old song", entity.Description);
+            }
+
+            RemoveAllEntities();
         }
+
 
         [TestMethod]
         public void SkipTakeDouble()
@@ -107,11 +153,7 @@ namespace JetEntityFrameworkProvider.Test.Model56_SkipTake
                 }
             }
 
-            using (var context = new Context(GetConnection()))
-            {
-                context.Entities.RemoveRange(context.Entities.ToList());
-                context.SaveChanges();
-            }
+            RemoveAllEntities();
         }
     }
 }

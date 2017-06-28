@@ -275,6 +275,21 @@ namespace JetEntityFrameworkProvider
                 }
                 #endregion
 
+
+                #region TOP clause
+
+                var indexOfTop = _WrappedCommand.CommandText.ToLower().IndexOf(" top ");
+                int topCount = 0;
+                if (indexOfTop != -1)
+                {
+                    int indexOfTopEnd = _WrappedCommand.CommandText.IndexOf(" ", indexOfTop + 1);
+                    string stringTopCount = _WrappedCommand.CommandText.Substring(indexOfTop + 4, indexOfTopEnd - indexOfTop).Trim();
+                    if (!int.TryParse(stringTopCount, out topCount))
+                        topCount = 0;
+                }
+
+                #endregion
+
                 #region SKIP clause
 
                 var indexOfSkip = _WrappedCommand.CommandText.ToLower().IndexOf(" skip ");
@@ -288,11 +303,15 @@ namespace JetEntityFrameworkProvider
                         DbCommand command;
                         command = (DbCommand)((ICloneable)this._WrappedCommand).Clone();
                         command.CommandText = _WrappedCommand.CommandText.Remove(indexOfSkip);
-                        return new JetDataReader(command.ExecuteReader(behavior), skipCount);
+                        return new JetDataReader(command.ExecuteReader(behavior), topCount - skipCount, skipCount);
                     }
                 }
 
                 #endregion
+
+                if (topCount != 0)
+                    return new JetDataReader(_WrappedCommand.ExecuteReader(behavior), topCount, 0);
+
             }
 
             

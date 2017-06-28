@@ -357,6 +357,7 @@
     <Compile Include="Model53_TableSplitting\Test.cs" />
     <Compile Include="Model54_MemoryLeakageTest\Test.cs" />
     <Compile Include="Model56_SkipTake\Context.cs" />
+    <Compile Include="Model56_SkipTake\SqlCeTest.cs" />
     <Compile Include="Model56_SkipTake\JetTest.cs" />
     <Compile Include="Model56_SkipTake\Model.cs" />
     <Compile Include="Model56_SkipTake\Test.cs" />
