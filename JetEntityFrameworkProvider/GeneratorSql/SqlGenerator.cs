@@ -6,7 +6,6 @@ using System.Data.Entity.Core.Common.CommandTrees;
 using System.Data.Entity.Core.Metadata.Edm;
 using System.Diagnostics;
 using System.Globalization;
-using System.Linq;
 using System.Text;
 
 namespace JetEntityFrameworkProvider
@@ -321,6 +320,7 @@ namespace JetEntityFrameworkProvider
             functionHandlers.Add("CreateDateTime", HandleCanonicalFunctionCreateDateTime);
             functionHandlers.Add("CreateTime", HandleCanonicalFunctionCreateTime);
 
+            functionHandlers.Add("TruncateTime", HandleCanonicalFunctionTruncateTime);
 
             functionHandlers.Add("AddYears", HandleCanonicalFunctionDateAdd);
             functionHandlers.Add("AddMonths", HandleCanonicalFunctionDateAdd);
@@ -2696,6 +2696,26 @@ namespace JetEntityFrameworkProvider
         {
             return sqlgen.HandleCanonicalFunctionDateTimeTypeCreation("datetime", e.Arguments, false, false);
         }
+
+
+        /// <summary>
+        /// Truncates time from a datetime value
+        /// </summary>
+        /// <param name="sqlgen"></param>
+        /// <param name="e"></param>
+        /// <returns></returns>
+        /// <exception cref="System.NotImplementedException"></exception>
+        private static ISqlFragment HandleCanonicalFunctionTruncateTime(SqlGenerator sqlgen, DbFunctionExpression e)
+        {
+            SqlBuilder result = new SqlBuilder();
+            result.Append("CDate(Int(");
+            sqlgen.HandleFunctionArgumentsDefault(e, result);
+            result.Append("))");
+
+            return result;
+        }
+
+
 
         /// <summary>
         /// Dump out an expression - optionally wrap it with parantheses if possible

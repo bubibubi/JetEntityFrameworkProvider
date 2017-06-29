@@ -1,8 +1,10 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace JetEntityFrameworkProvider.Test.Model56_SkipTake
 {
+    [Table("Model56Entity")]
     public class Entity
     {
         public int Id { get; set; }

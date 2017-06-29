@@ -42,7 +42,7 @@ namespace JetEntityFrameworkProvider.Utilities
             {
                 "STDEV", "STDEVP", "VAR", "VARP", "COUNT_BIG",
                 "Left", "Right", "Reverse", "GetTotalOffsetMinutes", 
-                "TruncateTime", "CreateDateTime",
+                "CreateDateTime",
                 "CreateDateTimeOffset", "CreateTime", "Add", "Diff",
                 "Truncate", "SYSDATETIME", "SYSUTCDATETIME", "SYSDATETIMEOFFSET",
                 "LEN", "LOWER", "UPPER", "NEWID", 
@@ -88,6 +88,7 @@ namespace JetEntityFrameworkProvider.Utilities
             sqlFunctionNames.Add("ISNULL", "IsNull");
             sqlFunctionNames.Add("SQRT", "SquareRoot");
             sqlFunctionNames.Add("STR", "StringConvert");
+            sqlFunctionNames.Add("TRUNCATETIME", "JetTruncateTime");
 
             return sqlFunctionNames;
         }

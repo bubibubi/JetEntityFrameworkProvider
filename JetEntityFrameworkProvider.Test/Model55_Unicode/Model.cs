@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace JetEntityFrameworkProvider.Test.Model55_Unicode
 {
+    [Table("Model55Entity")]
     public class Entity
     {
         public int Id { get; set; }

@@ -356,6 +356,10 @@
     <Compile Include="Model53_TableSplitting\Model.cs" />
     <Compile Include="Model53_TableSplitting\Test.cs" />
     <Compile Include="Model54_MemoryLeakageTest\Test.cs" />
+    <Compile Include="Model58_TruncateTime\Context.cs" />
+    <Compile Include="Model58_TruncateTime\JetTest.cs" />
+    <Compile Include="Model58_TruncateTime\Model.cs" />
+    <Compile Include="Model58_TruncateTime\Test.cs" />
     <Compile Include="Model57_StackOverflow\Context.cs" />
     <Compile Include="Model57_StackOverflow\JetTest.cs" />
     <Compile Include="Model57_StackOverflow\Model.cs" />
