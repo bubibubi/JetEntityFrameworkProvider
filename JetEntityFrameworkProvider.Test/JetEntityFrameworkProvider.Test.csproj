@@ -356,6 +356,10 @@
     <Compile Include="Model53_TableSplitting\Model.cs" />
     <Compile Include="Model53_TableSplitting\Test.cs" />
     <Compile Include="Model54_MemoryLeakageTest\Test.cs" />
+    <Compile Include="Model59_StackOverflow_TPT_TPH\Context.cs" />
+    <Compile Include="Model59_StackOverflow_TPT_TPH\JetTest.cs" />
+    <Compile Include="Model59_StackOverflow_TPT_TPH\Model.cs" />
+    <Compile Include="Model59_StackOverflow_TPT_TPH\Test.cs" />
     <Compile Include="Model58_TruncateTime\Context.cs" />
     <Compile Include="Model58_TruncateTime\JetTest.cs" />
     <Compile Include="Model58_TruncateTime\Model.cs" />
@@ -402,6 +406,9 @@
     </Content>
     <Content Include="Model24_MultiTenantApp\Readme.txt" />
     <Content Include="Model53_TableSplitting\readme.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="obj\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
