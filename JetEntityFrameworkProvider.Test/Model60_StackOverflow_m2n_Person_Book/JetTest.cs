@@ -2,10 +2,10 @@
 using System.Data.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace JetEntityFrameworkProvider.Test.Model59_StackOverflow_TPT_TPH
+namespace JetEntityFrameworkProvider.Test.Model60_StackOverflow_m2n_Person_Book
 {
     [TestClass]
-    public class Model59_StackOverflow_JetTest : Test
+    public class Model60_StackOverflow_JetTest : Test
     {
         protected override DbConnection GetConnection()
         {
