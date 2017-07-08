@@ -356,6 +356,10 @@
     <Compile Include="Model53_TableSplitting\Model.cs" />
     <Compile Include="Model53_TableSplitting\Test.cs" />
     <Compile Include="Model54_MemoryLeakageTest\Test.cs" />
+    <Compile Include="Model61_StackOverflow_Seed\Context.cs" />
+    <Compile Include="Model61_StackOverflow_Seed\JetTest.cs" />
+    <Compile Include="Model61_StackOverflow_Seed\Model.cs" />
+    <Compile Include="Model61_StackOverflow_Seed\Test.cs" />
     <Compile Include="Model60_StackOverflow_m2n_Person_Book\Context.cs" />
     <Compile Include="Model60_StackOverflow_m2n_Person_Book\JetTest.cs" />
     <Compile Include="Model60_StackOverflow_m2n_Person_Book\Model.cs" />
