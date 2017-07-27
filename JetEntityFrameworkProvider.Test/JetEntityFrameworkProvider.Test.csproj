@@ -360,6 +360,10 @@
     <Compile Include="Model60_StackOverflow_m2n_Person_Book\JetTest.cs" />
     <Compile Include="Model60_StackOverflow_m2n_Person_Book\Model.cs" />
     <Compile Include="Model60_StackOverflow_m2n_Person_Book\Test.cs" />
+    <Compile Include="Model63_Time\Context.cs" />
+    <Compile Include="Model63_Time\JetTest.cs" />
+    <Compile Include="Model63_Time\Model.cs" />
+    <Compile Include="Model63_Time\Test.cs" />
     <Compile Include="Model62_InnerQueryBug_DbInitializerSeed\Context.cs" />
     <Compile Include="Model62_InnerQueryBug_DbInitializerSeed\DbInitializer.cs" />
     <Compile Include="Model62_InnerQueryBug_DbInitializerSeed\JetTest.cs" />
