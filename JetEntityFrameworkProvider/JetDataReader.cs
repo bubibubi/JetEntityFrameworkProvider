@@ -86,6 +86,13 @@ namespace JetEntityFrameworkProvider
             return _wrappedDataReader.GetDateTime(ordinal);
         }
 
+        public virtual TimeSpan GetTimeSpan(int ordinal)
+        {
+            TimeSpan timeSpan = GetDateTime(ordinal) - JetConnection.TimeSpanOffset;
+
+            return timeSpan;
+        }
+
         public override decimal GetDecimal(int ordinal)
         {
             return _wrappedDataReader.GetDecimal(ordinal);

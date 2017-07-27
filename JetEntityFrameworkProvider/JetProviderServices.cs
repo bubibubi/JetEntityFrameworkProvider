@@ -375,7 +375,8 @@ namespace JetEntityFrameworkProvider
                     return OleDbType.TinyInt;
 
                 case PrimitiveTypeKind.Time:
-                    return OleDbType.Date;
+                    //return OleDbType.Date;
+                    return OleDbType.DBTime;
 
                 case PrimitiveTypeKind.DateTimeOffset:
                     return OleDbType.Date;

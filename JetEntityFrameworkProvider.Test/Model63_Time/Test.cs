@@ -16,21 +16,29 @@ namespace JetEntityFrameworkProvider.Test.Model63_Time
             Item item1;
             Item item2;
 
+            var timeSpan = new TimeSpan(15, 12, 6);
+
             using (var context = new Context(GetConnection()))
             {
                 context.Items.AddRange(
                     new[]
                     {
                         item1 = new Item() {TimeSpan = null},
-                        item2 = new Item() {TimeSpan = new TimeSpan(123456)}
+                        item2 = new Item() {TimeSpan = timeSpan}
                     });
                 context.SaveChanges();
             }
 
             using (var context = new Context(GetConnection()))
             {
+                context.Items.Count(_ => _.TimeSpan == timeSpan);
+            }
+
+            using (var context = new Context(GetConnection()))
+            {
                 Assert.IsNull(context.Items.Find(item1.Id).TimeSpan);
-                Assert.AreEqual(new TimeSpan(123456), context.Items.Find(item2.Id).TimeSpan);
+                var item = context.Items.Find(item2.Id);
+                Assert.AreEqual(timeSpan, item.TimeSpan);
             }
 
         }

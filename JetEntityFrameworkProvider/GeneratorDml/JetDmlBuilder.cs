@@ -585,7 +585,7 @@ namespace JetEntityFrameworkProvider
                             break;
 
                         case PrimitiveTypeKind.Time:
-                            result.Append(LiteralHelpers.SqlDayTime((System.DateTime)expressionValue));
+                            result.Append(LiteralHelpers.SqlDayTime((System.TimeSpan)expressionValue));
                             break;
 
                         case PrimitiveTypeKind.DateTimeOffset:

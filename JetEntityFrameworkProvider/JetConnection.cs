@@ -50,6 +50,8 @@ namespace JetEntityFrameworkProvider
         /// </value>
         public static bool AppendRandomNumberForForeignKeyNames = true;
 
+        public static DateTime TimeSpanOffset = new DateTime(1899, 12, 30);
+
         /// <summary>
         /// Gets or sets a value indicating whether show SQL statements.
         /// </summary>

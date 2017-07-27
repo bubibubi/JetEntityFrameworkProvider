@@ -64,21 +64,8 @@ namespace JetEntityFrameworkProvider
         /// <returns>The string that represents the today time, to include in a where clause</returns>
         public static string SqlDayTime(System.TimeSpan time)
         {
-            return string.Format("#{0:00}.{1:00}.{2:00}#", time.Hours, time.Minutes, time.Seconds);
+            return SqlDateTime(JetConnection.TimeSpanOffset + time);
         }
-
-        /// <summary>
-        /// Transform the given <see cref="System.TimeSpan"/> value in a string formatted in a valid Jet format, 
-        /// that represents the today time
-        /// </summary>
-        /// <param name="time">The <see cref="System.TimeSpan"/> value to format</param>
-        /// <returns>The string that represents the today time, to include in a where clause</returns>
-        public static string SqlDayTime(System.DateTime time)
-        {
-            return string.Format("#{0:00}.{1:00}.{2:00}#", time.Hour, time.Minute, time.Second);
-        }
-
-
 
 
     }
