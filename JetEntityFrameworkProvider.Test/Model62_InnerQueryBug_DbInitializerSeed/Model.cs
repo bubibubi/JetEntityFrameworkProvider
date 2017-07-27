@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace JetEntityFrameworkProvider.Test.Model62_InnerQueryBug_DbInitializerSeed
 {
-    [Table("Model62_Items")]
+    [Table("Items62")]
     public class Item
     {
         public int ItemId { get; set; }
