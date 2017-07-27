@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+// ReSharper disable VirtualMemberCallInConstructor
 
 namespace JetEntityFrameworkProvider.Test.Model60_StackOverflow_m2n_Person_Book
 {
 
+    [Table("Person60")]
     public class Person
     {
         public Person()
@@ -20,7 +22,7 @@ namespace JetEntityFrameworkProvider.Test.Model60_StackOverflow_m2n_Person_Book
         [MaxLength(50)]
         public string LastName { get; set; }
 
-        public ICollection<Book> OwnedBooks { get; set; }
+        public virtual ICollection<Book> OwnedBooks { get; set; }
     }
 
 
@@ -41,7 +43,7 @@ namespace JetEntityFrameworkProvider.Test.Model60_StackOverflow_m2n_Person_Book
         [MaxLength(50)]
         public string Author { get; set; }
 
-        public ICollection<Person> Owners { get; set; }
+        public virtual ICollection<Person> Owners { get; set; }
     }
 
 
