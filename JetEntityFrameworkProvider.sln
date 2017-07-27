@@ -6,7 +6,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JetEntityFrameworkProvider.
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{5A3D14AB-D27F-483D-9332-DA72A6F115B6}"
 	ProjectSection(SolutionItems) = preProject
-		..\..\..\APPDATA\LOCAL\MICROSOFT\VISUALSTUDIO\12.0\EXTENSIONS\MD1GRXWB.UIZ\description.html = ..\..\..\APPDATA\LOCAL\MICROSOFT\VISUALSTUDIO\12.0\EXTENSIONS\MD1GRXWB.UIZ\description.html
+		docs\Enabling_CodeFirst_simple_migration.md = docs\Enabling_CodeFirst_simple_migration.md
+		docs\Enabling_db_first.md = docs\Enabling_db_first.md
+		docs\license.md = docs\license.md
+		docs\mdb_or_accdb_setup.md = docs\mdb_or_accdb_setup.md
+		docs\README.md = docs\README.md
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JetEntityFrameworkProvider", "JetEntityFrameworkProvider\JetEntityFrameworkProvider.csproj", "{EBA0B8A0-6C00-44C2-A8F0-394069B9486B}"

@@ -145,6 +145,12 @@
   </Target>
   -->
   <PropertyGroup>
-    <PostBuildEvent>"$(ProjectDir)Install.cmd" /ranu /codebase "$(TargetDir)$(TargetFileName)"</PostBuildEvent>
+    <PostBuildEvent>"$(ProjectDir)Install.cmd" /ranu /codebase "$(TargetDir)$(TargetFileName)"
+call "$(DevEnvDir)..\Tools\vsvars32.bat"
+gacutil /i "$(TargetDir)JetEntityFrameworkProvider.dll" /f</PostBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PreBuildEvent>call "$(DevEnvDir)..\Tools\vsvars32.bat"
+gacutil /u JetEntityFrameworkProvider.dll</PreBuildEvent>
   </PropertyGroup>
 </Project>
