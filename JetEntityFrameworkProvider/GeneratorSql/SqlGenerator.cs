@@ -1227,9 +1227,12 @@ namespace JetEntityFrameworkProvider
             // so, we do not close it in between.
             RowType groupByType = MetadataHelpers.GetEdmType<RowType>(MetadataHelpers.GetEdmType<CollectionType>(e.ResultType).TypeUsage);
 
-            //Whenever there exists at least one aggregate with an argument that is not simply a PropertyExpression 
-            // over a VarRefExpression, we need a nested query in which we alias the arguments to the aggregates.
-            bool needsInnerQuery = NeedsInnerQuery(e.Aggregates);
+            // Jet does not support arbitrarily complex expressions inside aggregates, 
+            // and requires keys to have reference to the input scope, 
+            // so we check for the specific restrictions and if need we inject an inner query.
+            var needsInnerQuery = GroupByAggregatesNeedInnerQuery(e.Aggregates, e.Input.GroupVariableName) ||
+                                  GroupByKeysNeedInnerQuery(e.Keys, e.Input.VariableName);
+
 
             SqlSelectStatement result;
             if (needsInnerQuery)
@@ -2105,7 +2108,7 @@ namespace JetEntityFrameworkProvider
             if (!IsParentAJoin)
             {
                 result = new SqlSelectStatement();
-                result.AllJoinExtents = new List<Symbol>();
+                result.AllJoinExtents = new List<Symbol>(); 
                 selectStatementStack.Push(result);
             }
             else
@@ -3955,26 +3958,128 @@ namespace JetEntityFrameworkProvider
                 result.Append(JetProviderManifest.QuoteIdentifier(storeFunctionName));
         }
 
+        #region Group by helpers
+
         /// <summary>
         /// Helper method for the Group By visitor
         /// Returns true if at least one of the aggregates in the given list
-        /// has an argument that is not a <see cref="DbPropertyExpression"/> 
-        /// over <see cref="DbVariableReferenceExpression"/>
+        /// has an argument that is not a <see cref="DbConstantExpression" /> and is not
+        /// a <see cref="DbPropertyExpression" /> over <see cref="DbVariableReferenceExpression" />,
+        /// either potentially capped with a <see cref="DbCastExpression" />
+        /// This is really due to the following two limitations of Sql Server:
+        /// <list type="number">
+        ///     <item>
+        ///         If an expression being aggregated contains an outer reference, then that outer
+        ///         reference must be the only column referenced in the expression (SQLBUDT #488741)
+        ///     </item>
+        ///     <item>
+        ///         Sql Server cannot perform an aggregate function on an expression containing
+        ///         an aggregate or a subquery. (SQLBUDT #504600)
+        ///     </item>
+        /// </list>
+        /// Potentially, we could furhter optimize this.
         /// </summary>
-        /// <param name="aggregates"></param>
-        /// <returns></returns>
-        static bool NeedsInnerQuery(IList<DbAggregate> aggregates)
+        private static bool GroupByAggregatesNeedInnerQuery(IList<DbAggregate> aggregates, string inputVarRefName)
         {
-            foreach (DbAggregate aggregate in aggregates)
+            foreach (var aggregate in aggregates)
             {
                 Debug.Assert(aggregate.Arguments.Count == 1);
-                if (!IsPropertyOverVarRef(aggregate.Arguments[0]))
+                if (GroupByAggregateNeedsInnerQuery(aggregate.Arguments[0], inputVarRefName))
                 {
                     return true;
                 }
             }
             return false;
         }
+
+        /// <summary>
+        /// Returns true if the given expression is not a <see cref="DbConstantExpression" /> or a
+        /// <see cref="DbPropertyExpression" /> over  a <see cref="DbVariableReferenceExpression" />
+        /// referencing the given inputVarRefName, either
+        /// potentially capped with a <see cref="DbCastExpression" />.
+        /// </summary>
+        private static bool GroupByAggregateNeedsInnerQuery(DbExpression expression, string inputVarRefName)
+        {
+            return GroupByExpressionNeedsInnerQuery(expression, inputVarRefName, true);
+        }
+
+        /// <summary>
+        /// Helper method for the Group By visitor
+        /// Returns true if at least one of the expressions in the given list
+        /// is not <see cref="DbPropertyExpression" /> over <see cref="DbVariableReferenceExpression" />
+        /// referencing the given inputVarRefName potentially capped with a <see cref="DbCastExpression" />.
+        /// This is really due to the following limitation: Sql Server requires each GROUP BY expression
+        /// (key) to contain at least one column that is not an outer reference. (SQLBUDT #616523)
+        /// Potentially, we could further optimize this.
+        /// </summary>
+        private static bool GroupByKeysNeedInnerQuery(IList<DbExpression> keys, string inputVarRefName)
+        {
+            foreach (var key in keys)
+            {
+                if (GroupByKeyNeedsInnerQuery(key, inputVarRefName))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+
+
+
+        /// <summary>
+        /// Returns true if the given expression is not <see cref="DbPropertyExpression" /> over
+        /// <see cref="DbVariableReferenceExpression" /> referencing the given inputVarRefName
+        /// potentially capped with a <see cref="DbCastExpression" />.
+        /// This is really due to the following limitation: Sql Server requires each GROUP BY expression
+        /// (key) to contain at least one column that is not an outer reference. (SQLBUDT #616523)
+        /// Potentially, we could further optimize this.
+        /// </summary>
+        private static bool GroupByKeyNeedsInnerQuery(DbExpression expression, string inputVarRefName)
+        {
+            return GroupByExpressionNeedsInnerQuery(expression, inputVarRefName, false);
+        }
+
+
+        /// <summary>
+        /// Helper method for processing Group By keys and aggregates.
+        /// Returns true if the given expression is not a <see cref="DbConstantExpression" />
+        /// (and allowConstants is specified)or a <see cref="DbPropertyExpression" /> over
+        /// a <see cref="DbVariableReferenceExpression" /> referencing the given inputVarRefName,
+        /// either potentially capped with a <see cref="DbCastExpression" />.
+        /// </summary>
+        private static bool GroupByExpressionNeedsInnerQuery(DbExpression expression, string inputVarRefName, bool allowConstants)
+        {
+            //Skip a constant if constants are allowed
+            if (allowConstants && (expression.ExpressionKind == DbExpressionKind.Constant))
+            {
+                return false;
+            }
+
+            //Skip a cast expression
+            if (expression.ExpressionKind == DbExpressionKind.Cast)
+            {
+                var castExpression = (DbCastExpression)expression;
+                return GroupByExpressionNeedsInnerQuery(castExpression.Argument, inputVarRefName, allowConstants);
+            }
+
+            //Allow Property(Property(...)), needed when the input is a join
+            if (expression.ExpressionKind == DbExpressionKind.Property)
+            {
+                var propertyExpression = (DbPropertyExpression)expression;
+                return GroupByExpressionNeedsInnerQuery(propertyExpression.Instance, inputVarRefName, allowConstants);
+            }
+
+            if (expression.ExpressionKind == DbExpressionKind.VariableReference)
+            {
+                var varRefExpression = expression as DbVariableReferenceExpression;
+                return !varRefExpression.VariableName.Equals(inputVarRefName);
+            }
+
+            return true;
+        }
+
+        #endregion
 
         /// <summary>
         /// Determines whether the given expression is a <see cref="DbPropertyExpression"/> 

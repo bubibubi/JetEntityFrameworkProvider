@@ -169,5 +169,10 @@ namespace JetEntityFrameworkProvider.Test
                 File.Delete(GetSqlCeDatabaseFileName());
         }
 
+        public static DbConnection GetSqlServerConnection()
+        {
+            DbConnection connection = new System.Data.SqlClient.SqlConnection("Data Source=(local);Initial Catalog=JetEfProviderComparativeTest;Integrated Security=true");
+            return connection;
+        }
     }
 }
