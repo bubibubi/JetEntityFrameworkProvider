@@ -23,7 +23,7 @@ namespace JetEntityFrameworkProvider.Test.Model63_Time
                 context.Items.AddRange(
                     new[]
                     {
-                        item1 = new Item() {TimeSpan = null},
+                        item1 = new Item() {TimeSpan = null, DateTime = new DateTime(1969, 09, 15)},
                         item2 = new Item() {TimeSpan = timeSpan}
                     });
                 context.SaveChanges();
@@ -37,8 +37,8 @@ namespace JetEntityFrameworkProvider.Test.Model63_Time
             using (var context = new Context(GetConnection()))
             {
                 Assert.IsNull(context.Items.Find(item1.Id).TimeSpan);
-                // var item = context.Items.Find(item2.Id);
-                // Assert.AreEqual(timeSpan, item.TimeSpan);
+                var item = context.Items.Find(item2.Id);
+                Assert.AreEqual(timeSpan, item.TimeSpan);
             }
 
         }

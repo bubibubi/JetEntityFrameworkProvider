@@ -45,7 +45,7 @@ namespace JetEntityFrameworkProvider
 
         public override bool GetBoolean(int ordinal)
         {
-            object booleanObject = GetValue(ordinal);
+            object booleanObject = _wrappedDataReader.GetValue(ordinal);
             if (booleanObject == null)
                 throw new InvalidOperationException("Cannot cast null to boolean");
             if (booleanObject is bool)
@@ -174,7 +174,14 @@ namespace JetEntityFrameworkProvider
 
         public override object GetValue(int ordinal)
         {
-            return _wrappedDataReader.GetValue(ordinal);
+            object getValue = _wrappedDataReader.GetValue(ordinal);
+
+            // GetValue is called by EF on a DateTime only if the field is a TimeSpan
+            // otherwise EF calls GetDateTime.
+            // We can suppose that if the value is a DateTime then the EF type is a TimeSpan
+            if (getValue is DateTime)
+                return (DateTime) getValue - JetConnection.TimeSpanOffset;
+            return getValue;
         }
 
         public override int GetValues(object[] values)
@@ -196,7 +203,7 @@ namespace JetEntityFrameworkProvider
         {
             if (_wrappedDataReader.IsDBNull(ordinal))
                 return true;
-            if (JetConnection.IntegerNullValue != null && ((int)JetConnection.IntegerNullValue).Equals(GetValue(ordinal)))
+            if (JetConnection.IntegerNullValue != null && ((int)JetConnection.IntegerNullValue).Equals(_wrappedDataReader.GetValue(ordinal)))
                 return true;
             return false;
         }

@@ -8,5 +8,6 @@ namespace JetEntityFrameworkProvider.Test.Model63_Time
     {
         public int Id { get; set; }
         public TimeSpan? TimeSpan { get; set; }
+        public DateTime? DateTime { get; set; }
     }
 }
