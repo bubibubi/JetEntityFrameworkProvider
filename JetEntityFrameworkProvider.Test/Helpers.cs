@@ -154,7 +154,7 @@ namespace JetEntityFrameworkProvider.Test
 
         private static string GetSqlCeDatabaseFileName()
         {
-            return System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().GetName().CodeBase.Replace("file:///", "")) + "\\Data.sdf;";
+            return System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().GetName().CodeBase.Replace("file:///", "")) + "\\Data.sdf";
         }
 
         public static void CreateSqlCeDatabase()
@@ -169,5 +169,10 @@ namespace JetEntityFrameworkProvider.Test
                 File.Delete(GetSqlCeDatabaseFileName());
         }
 
+        public static DbConnection GetSqlServerConnection()
+        {
+            DbConnection connection = new System.Data.SqlClient.SqlConnection("Data Source=(local);Initial Catalog=JetEfProviderComparativeTest;Integrated Security=true");
+            return connection;
+        }
     }
 }

@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Data.Entity.Core.Objects;
+using System.Data.Entity;
 using System.Linq;
 using JetEntityFrameworkProvider.Test.Model02;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -51,10 +51,8 @@ namespace JetEntityFrameworkProvider.Test
             Assert.AreEqual(insertedRecord.Select(c => new { c.MyDateTime.Minute }).First().Minute, 3);
             Assert.AreEqual(insertedRecord.Select(c => new { c.MyDateTime.Second }).First().Second, 19);
 
-#pragma warning disable 618
-            Assert.AreEqual(insertedRecord.Select(c => new { Date = EntityFunctions.AddDays(c.MyDateTime, 4) }).First().Date.Value.Day, 19);
-            Assert.AreEqual(insertedRecord.Select(c => new { ElapsedDays = EntityFunctions.DiffDays(c.MyDateTime, c.MyDateTime) }).First().ElapsedDays.Value, 0);
-#pragma warning restore 618
+            Assert.AreEqual(insertedRecord.Select(c => new { Date = DbFunctions.AddDays(c.MyDateTime, 4) }).First().Date.Value.Day, 19);
+            Assert.AreEqual(insertedRecord.Select(c => new { ElapsedDays = DbFunctions.DiffDays(c.MyDateTime, c.MyDateTime) }).First().ElapsedDays.Value, 0);
 
             context.Dispose();
 

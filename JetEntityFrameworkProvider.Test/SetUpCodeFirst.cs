@@ -32,6 +32,10 @@ namespace JetEntityFrameworkProvider.Test
 
             context.Dispose();
 
+
+            Helpers.DeleteSqlCeDatabase();
+            Helpers.CreateSqlCeDatabase();
+
         }
 
 
@@ -39,6 +43,8 @@ namespace JetEntityFrameworkProvider.Test
         static public void AssemblyCleanup()
         {
             Connection.Dispose();
+
+            Helpers.DeleteSqlCeDatabase();
         }
 
 

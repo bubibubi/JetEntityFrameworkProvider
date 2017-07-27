@@ -356,6 +356,38 @@
     <Compile Include="Model53_TableSplitting\Model.cs" />
     <Compile Include="Model53_TableSplitting\Test.cs" />
     <Compile Include="Model54_MemoryLeakageTest\Test.cs" />
+    <Compile Include="Model60_StackOverflow_m2n_Person_Book\Context.cs" />
+    <Compile Include="Model60_StackOverflow_m2n_Person_Book\JetTest.cs" />
+    <Compile Include="Model60_StackOverflow_m2n_Person_Book\Model.cs" />
+    <Compile Include="Model60_StackOverflow_m2n_Person_Book\Test.cs" />
+    <Compile Include="Model62_InnerQueryBug_DbInitializerSeed\Context.cs" />
+    <Compile Include="Model62_InnerQueryBug_DbInitializerSeed\DbInitializer.cs" />
+    <Compile Include="Model62_InnerQueryBug_DbInitializerSeed\JetTest.cs" />
+    <Compile Include="Model62_InnerQueryBug_DbInitializerSeed\Model.cs" />
+    <Compile Include="Model62_InnerQueryBug_DbInitializerSeed\SqlCeTest.cs" />
+    <Compile Include="Model62_InnerQueryBug_DbInitializerSeed\SqlServerTest.cs" />
+    <Compile Include="Model62_InnerQueryBug_DbInitializerSeed\Test.cs" />
+    <Compile Include="Model61_StackOverflow_Seed\Context.cs" />
+    <Compile Include="Model61_StackOverflow_Seed\JetTest.cs" />
+    <Compile Include="Model61_StackOverflow_Seed\Model.cs" />
+    <Compile Include="Model61_StackOverflow_Seed\Test.cs" />
+    <Compile Include="Model59_StackOverflow_TPT_TPH\Context.cs" />
+    <Compile Include="Model59_StackOverflow_TPT_TPH\JetTest.cs" />
+    <Compile Include="Model59_StackOverflow_TPT_TPH\Model.cs" />
+    <Compile Include="Model59_StackOverflow_TPT_TPH\Test.cs" />
+    <Compile Include="Model58_TruncateTime\Context.cs" />
+    <Compile Include="Model58_TruncateTime\JetTest.cs" />
+    <Compile Include="Model58_TruncateTime\Model.cs" />
+    <Compile Include="Model58_TruncateTime\Test.cs" />
+    <Compile Include="Model57_StackOverflow\Context.cs" />
+    <Compile Include="Model57_StackOverflow\JetTest.cs" />
+    <Compile Include="Model57_StackOverflow\Model.cs" />
+    <Compile Include="Model57_StackOverflow\Test.cs" />
+    <Compile Include="Model56_SkipTake\Context.cs" />
+    <Compile Include="Model56_SkipTake\SqlCeTest.cs" />
+    <Compile Include="Model56_SkipTake\JetTest.cs" />
+    <Compile Include="Model56_SkipTake\Model.cs" />
+    <Compile Include="Model56_SkipTake\Test.cs" />
     <Compile Include="Model55_Unicode\Context.cs" />
     <Compile Include="Model55_Unicode\JetTest.cs" />
     <Compile Include="Model55_Unicode\Model.cs" />
@@ -389,6 +421,9 @@
     </Content>
     <Content Include="Model24_MultiTenantApp\Readme.txt" />
     <Content Include="Model53_TableSplitting\readme.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="obj\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

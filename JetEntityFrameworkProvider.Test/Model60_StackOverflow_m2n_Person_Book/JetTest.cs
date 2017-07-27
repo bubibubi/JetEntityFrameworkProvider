@@ -2,16 +2,14 @@
 using System.Data.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace JetEntityFrameworkProvider.Test.Model11
+namespace JetEntityFrameworkProvider.Test.Model60_StackOverflow_m2n_Person_Book
 {
     [TestClass]
-    public class Model11CeTest : Test
+    public class Model60_StackOverflow_JetTest : Test
     {
-
         protected override DbConnection GetConnection()
         {
-            return Helpers.GetSqlCeConnection();
+            return Helpers.GetJetConnection();
         }
-
     }
 }

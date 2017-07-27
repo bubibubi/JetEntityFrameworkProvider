@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data.Common;
-using System.Linq;
 using System.Text;
 
 namespace JetEntityFrameworkProvider
@@ -15,18 +13,20 @@ namespace JetEntityFrameworkProvider
             _wrappedDataReader = dataReader;
         }
 
-
-        public JetDataReader(DbDataReader dataReader, int skipCount)
+        public JetDataReader(DbDataReader dataReader, int topCount, int skipCount)
         {
             _wrappedDataReader = dataReader;
+            _topCount = topCount;
             for (int i = 0; i < skipCount; i++)
             {
                 _wrappedDataReader.Read();
             }
         }
 
-        private DbDataReader _wrappedDataReader;
 
+        private DbDataReader _wrappedDataReader;
+        private readonly int _topCount = 0;
+        private int _readCount = 0;
 
         public override void Close()
         {
@@ -48,9 +48,9 @@ namespace JetEntityFrameworkProvider
             object booleanObject = GetValue(ordinal);
             if (booleanObject == null)
                 throw new InvalidOperationException("Cannot cast null to boolean");
-            if (booleanObject.GetType() == typeof(bool))
+            if (booleanObject is bool)
                 return _wrappedDataReader.GetBoolean(ordinal);
-            else if (booleanObject.GetType() == typeof(short))
+            else if (booleanObject is short)
                 return ((short)booleanObject) != 0;
             else
                 throw new InvalidOperationException(string.Format("Cannot convert {0} to boolean", booleanObject.GetType()));
@@ -201,6 +201,10 @@ namespace JetEntityFrameworkProvider
 
         public override bool Read()
         {
+            _readCount++;
+            if (_topCount != 0 && _readCount > _topCount)
+                return false;
+
             return _wrappedDataReader.Read();
         }
 

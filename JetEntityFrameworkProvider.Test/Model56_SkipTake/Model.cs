@@ -2,14 +2,16 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace JetEntityFrameworkProvider.Test.Model55_Unicode
+namespace JetEntityFrameworkProvider.Test.Model56_SkipTake
 {
-    [Table("Model55Entity")]
+    [Table("Model56Entity")]
     public class Entity
     {
         public int Id { get; set; }
         [MaxLength(50)]
         public string Description { get; set; }
+        public DateTime? Date { get; set; }
+        public double? Value { get; set; }
     }
 
 }
