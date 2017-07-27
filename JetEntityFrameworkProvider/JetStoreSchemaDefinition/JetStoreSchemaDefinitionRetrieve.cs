@@ -799,6 +799,7 @@ namespace JetEntityFrameworkProvider
                 case OleDbType.DBDate:
                 case OleDbType.Date:
                 case OleDbType.DBTimeStamp:
+                case OleDbType.DBTime:
                     return "datetime";
                 case OleDbType.Decimal:
                 case OleDbType.Numeric:
@@ -835,7 +836,6 @@ namespace JetEntityFrameworkProvider
                 case OleDbType.VarWChar:
                 case OleDbType.VarNumeric:
                 case OleDbType.Error:
-                case OleDbType.DBTime:
                 case OleDbType.Empty:
                 case OleDbType.Filetime:
                 case OleDbType.IDispatch:
