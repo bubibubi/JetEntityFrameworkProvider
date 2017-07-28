@@ -4,6 +4,7 @@ using System.Data;
 using System.Data.Common;
 using System.Data.OleDb;
 using System.Diagnostics;
+using System.Linq;
 using System.Text.RegularExpressions;
 using JetEntityFrameworkProvider.JetStoreSchemaDefinition;
 
@@ -106,6 +107,32 @@ namespace JetEntityFrameworkProvider
                 }
             }
 
+            if (
+                tablesToCreate.Any(_ => _.Name == "Tables") &&
+                tablesToCreate.Any(_ => _.Name == "TableColumns") &&
+                tablesToCreate.Any(_ => _.Name == "ViewColumns") &&
+                commandText.Contains("'PRIMARY KEY'")
+            )
+            {
+                // Hack
+                string whereClause = GetAndFixWhereClause(commandText);
+                whereClause = whereClause.Replace("[Extent1]", "[#Tables]");
+                commandText = Properties.Resources.StoreSchemaDefinitionRetrieve_QueryHack1 + " " + whereClause;
+            }
+            else if (
+                tablesToCreate.Any(_ => _.Name == "Views") &&
+                tablesToCreate.Any(_ => _.Name == "TableColumns") &&
+                tablesToCreate.Any(_ => _.Name == "ViewColumns") &&
+                commandText.Contains("'PRIMARY KEY'")
+            )
+            {
+                // Hack
+                string whereClause = GetAndFixWhereClause(commandText);
+                whereClause = whereClause.Replace("[Extent1]", "[#Views]");
+                commandText = Properties.Resources.StoreSchemaDefinitionRetrieve_QueryHack2 + " " + whereClause;
+            }
+
+
 
             command.CommandText = commandText;
             OleDbDataAdapter dataAdapter = new OleDbDataAdapter((OleDbCommand)command);
@@ -118,6 +145,13 @@ namespace JetEntityFrameworkProvider
                 connection.Close();
 
             return resultDataTable.CreateDataReader();
+        }
+
+        private static string GetAndFixWhereClause(string commandText)
+        {
+            int whereClausePosition = commandText.LastIndexOf("WHERE ", StringComparison.CurrentCultureIgnoreCase);
+            string whereClause = commandText.Substring(whereClausePosition);
+            return whereClause;
         }
 
         private static string GetInsertStatement(string tableName, DataRow row)
@@ -437,10 +471,17 @@ namespace JetEntityFrameworkProvider
         {
             DataTable dataTable = (DataTable)XmlObjectSerializer.GetObject(Properties.Resources.StoreSchemaDefinition_Views, typeof(DataTable));
 
-            DataTable schemaTable = connection.GetSchema("Views");
+            DataTable schemaTable;
 
+            schemaTable = connection.GetSchema("Views");
             foreach (System.Data.DataRow table in schemaTable.Rows)
                 dataTable.Rows.Add(table["TABLE_NAME"], "Jet", "Jet", table["TABLE_NAME"], table["VIEW_DEFINITION"], table["IS_UPDATABLE"]);
+
+            schemaTable = connection.GetOleDbSchemaTable(
+                System.Data.OleDb.OleDbSchemaGuid.Procedures,
+                null);
+            foreach (System.Data.DataRow table in schemaTable.Rows)
+                dataTable.Rows.Add(table["PROCEDURE_NAME"], "Jet", "Jet", table["PROCEDURE_NAME"], table["PROCEDURE_DEFINITION"], false);
 
             dataTable.AcceptChanges();
 
@@ -523,7 +564,7 @@ namespace JetEntityFrameworkProvider
                 if (Convert.ToInt32(table["ORDINAL"]) == 1)
                     dataTable.Rows.Add(
                         table["FK_NAME"], // Id
-                        table["PK_TABLE_NAME"], // ParentId
+                        table["FK_TABLE_NAME"], // ParentId
                         table["FK_NAME"], // Name
                         "FOREIGN KEY", // ConstraintType
                         table["DEFERRABILITY"],  // IsDeferrable
@@ -664,14 +705,14 @@ namespace JetEntityFrameworkProvider
             foreach (System.Data.DataRow table in schemaTable.Rows)
                 dataTable.Rows.Add(
                     table["FK_NAME"] + "." + table["ORDINAL"], // Id
-                    table["PK_TABLE_NAME"] + "." + table["PK_COLUMN_NAME"], // ToColumnId
+                    table["ORDINAL"], // Ordinal
+                    table["FK_NAME"], // ConstraintId
                     table["FK_TABLE_NAME"] + "." + table["FK_COLUMN_NAME"], // FromColumnId
-                    table["PK_TABLE_NAME"], // ToTable
-                    table["PK_COLUMN_NAME"], // ToColumn
+                    table["PK_TABLE_NAME"] + "." + table["PK_COLUMN_NAME"], // ToColumnId
                     table["FK_TABLE_NAME"], // FromTable
                     table["FK_COLUMN_NAME"], // FromColumn
-                    table["FK_NAME"], // ConstraintId
-                    table["ORDINAL"] // Ordinal
+                    table["PK_TABLE_NAME"], // ToTable
+                    table["PK_COLUMN_NAME"] // ToColumn
                     );
 
 
@@ -749,10 +790,9 @@ namespace JetEntityFrameworkProvider
                         0,      //IsMultiSet
                         GetIsIdentity(connection, rowColumn), // IsIdentity
                         Convert.ToBoolean(rowColumn["COLUMN_HASDEFAULT"]) ? 1 : 0, // IsStoreGenerated
-                        rowColumn["COLUMN_DEFAULT"] // Default
+                        rowColumn["COLUMN_DEFAULT"], // Default
+                        GetIsKey(connection, rowColumn) // IsKey
                         );
-                    if (Convert.ToInt32(rowColumn["COLUMN_FLAGS"]) == 0x5a && Convert.ToInt32(rowColumn["DATA_TYPE"]) == 3)
-                        Console.WriteLine();
                 }
 
             dataTable.AcceptChanges();
@@ -858,9 +898,82 @@ namespace JetEntityFrameworkProvider
             if (Convert.ToInt32(rowColumn["COLUMN_FLAGS"]) != 0x5a || Convert.ToInt32(rowColumn["DATA_TYPE"]) != 3)
                 return false;
 
-            if (_lastTableName != (string)rowColumn["TABLE_NAME"])
+            DataRow fieldRow = GetFieldRow(connection, (string)rowColumn["TABLE_NAME"], (string)rowColumn["COLUMN_NAME"]);
+
+            if (fieldRow == null)
+                return false;
+
+            return (bool)fieldRow["IsAutoIncrement"];
+
+            /*
+             * This are all the types we can use
+                        c.Name = (string)fieldRow["ColumnName"];
+                        c.Length = (int)fieldRow["ColumnSize"];
+                        c.NumericPrecision = DBToShort(fieldRow["NumericPrecision"]);
+                        c.NumericScale = DBToShort(fieldRow["NumericScale"]);
+                        c.NetType = (System.Type)fieldRow["DataType"];
+                        c.ProviderType = fieldRow["ProviderType"];
+                        if (connection.DBType == DBType.SQLite)
+                            c.IsLong = c.Length > 65535;
+                        else
+                            c.IsLong = (bool)fieldRow["IsLong"];
+                        c.AllowDBNull = (bool)fieldRow["AllowDBNull"];
+                        c.IsUnique = (bool)fieldRow["IsUnique"];
+
+                        c.IsKey = (bool)fieldRow["IsKey"];
+
+                        c.SchemaName = DBToString(fieldRow["BaseSchemaName"]);
+
+                            c.CatalogName = DBToString(fieldRow["BaseCatalogName"]);
+
+                        c.ComputeSQLDataType();
+
+             */
+        }
+
+        private static bool GetIsKey(IDbConnection connection, DataRow rowColumn)
+        {
+            if (Convert.ToInt32(rowColumn["COLUMN_FLAGS"]) != 0x5a || Convert.ToInt32(rowColumn["DATA_TYPE"]) != 3)
+                return false;
+
+            DataRow fieldRow = GetFieldRow(connection, (string)rowColumn["TABLE_NAME"], (string)rowColumn["COLUMN_NAME"]);
+
+            if (fieldRow == null)
+                return false;
+
+            return (bool)fieldRow["IsKey"];
+
+            /*
+             * This are all the types we can use
+                        c.Name = (string)fieldRow["ColumnName"];
+                        c.Length = (int)fieldRow["ColumnSize"];
+                        c.NumericPrecision = DBToShort(fieldRow["NumericPrecision"]);
+                        c.NumericScale = DBToShort(fieldRow["NumericScale"]);
+                        c.NetType = (System.Type)fieldRow["DataType"];
+                        c.ProviderType = fieldRow["ProviderType"];
+                        if (connection.DBType == DBType.SQLite)
+                            c.IsLong = c.Length > 65535;
+                        else
+                            c.IsLong = (bool)fieldRow["IsLong"];
+                        c.AllowDBNull = (bool)fieldRow["AllowDBNull"];
+                        c.IsUnique = (bool)fieldRow["IsUnique"];
+
+                        c.IsKey = (bool)fieldRow["IsKey"];
+
+                        c.SchemaName = DBToString(fieldRow["BaseSchemaName"]);
+
+                            c.CatalogName = DBToString(fieldRow["BaseCatalogName"]);
+
+                        c.ComputeSQLDataType();
+
+             */
+        }
+
+        private static DataRow GetFieldRow(IDbConnection connection, string tableName, string columnName)
+        {
+            if (_lastTableName != tableName)
             {
-                _lastTableName = (string)rowColumn["TABLE_NAME"];
+                _lastTableName = tableName;
 
                 // This is the standard read column for DBMS
                 string sql = string.Empty;
@@ -893,48 +1006,18 @@ namespace JetEntityFrameworkProvider
 
                     if (dataReader != null)
                         dataReader.Dispose();
-
                 }
             }
-
-            string columnName = (string)rowColumn["COLUMN_NAME"];
 
             DataRow[] fieldRows = _lastStructureDataTable.Select(string.Format("ColumnName = '{0}'", columnName.Replace("'", "''")));
 
             if (fieldRows.Length != 1) // 0 columns or more column with that name
             {
                 Debug.Assert(false);
-                return false;
+                return null;
             }
 
-            DataRow fieldRow = fieldRows[0];
-
-            return (bool)fieldRow["IsAutoIncrement"];
-
-            /*
-             * This are all the types we can use
-                        c.Name = (string)fieldRow["ColumnName"];
-                        c.Length = (int)fieldRow["ColumnSize"];
-                        c.NumericPrecision = DBToShort(fieldRow["NumericPrecision"]);
-                        c.NumericScale = DBToShort(fieldRow["NumericScale"]);
-                        c.NetType = (System.Type)fieldRow["DataType"];
-                        c.ProviderType = fieldRow["ProviderType"];
-                        if (connection.DBType == DBType.SQLite)
-                            c.IsLong = c.Length > 65535;
-                        else
-                            c.IsLong = (bool)fieldRow["IsLong"];
-                        c.AllowDBNull = (bool)fieldRow["AllowDBNull"];
-                        c.IsUnique = (bool)fieldRow["IsUnique"];
-
-                        c.IsKey = (bool)fieldRow["IsKey"];
-
-                        c.SchemaName = DBToString(fieldRow["BaseSchemaName"]);
-
-                            c.CatalogName = DBToString(fieldRow["BaseCatalogName"]);
-
-                        c.ComputeSQLDataType();
-
-             */
+            return fieldRows[0];
         }
 
         #endregion

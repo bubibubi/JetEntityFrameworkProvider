@@ -8,14 +8,14 @@
             <xs:complexType>
               <xs:sequence>
                 <xs:element name="Id" type="xs:string" minOccurs="0" />
-                <xs:element name="ToColumnId" type="xs:string" minOccurs="0" />
-                <xs:element name="FromColumnId" type="xs:string" minOccurs="0" />
+                <xs:element name="Ordinal" type="xs:int" minOccurs="0" />
                 <xs:element name="ConstraintId" type="xs:string" minOccurs="0" />
-                <xs:element name="ToTable" type="xs:string" minOccurs="0" />
-                <xs:element name="ToColumn" type="xs:string" minOccurs="0" />
+                <xs:element name="FromColumnId" type="xs:string" minOccurs="0" />
+                <xs:element name="ToColumnId" type="xs:string" minOccurs="0" />
                 <xs:element name="FromTable" type="xs:string" minOccurs="0" />
                 <xs:element name="FromColumn" type="xs:string" minOccurs="0" />
-                <xs:element name="Ordinal" type="xs:int" minOccurs="0" />
+                <xs:element name="ToTable" type="xs:string" minOccurs="0" />
+                <xs:element name="ToColumn" type="xs:string" minOccurs="0" />
               </xs:sequence>
             </xs:complexType>
           </xs:element>

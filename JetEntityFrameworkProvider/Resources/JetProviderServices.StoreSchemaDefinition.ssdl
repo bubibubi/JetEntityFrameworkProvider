@@ -204,6 +204,7 @@
     <Property Name="IsIdentity" Nullable="false" Type="bit" />
     <Property Name="IsStoreGenerated" Nullable="false" Type="bit" />
     <Property Name="Default" Nullable="true" Type="text"/>
+    <Property Name="IsKey" Nullable="true" Type="bit" />
   </EntityType>
 
   <EntityType Name="View">
@@ -224,6 +225,7 @@
     </Key>
     <Property Name="Id" Nullable="false" Type="varchar" MaxLength="255"/>
     <Property Name="ParentId" Nullable="false" Type="varchar" MaxLength="255"/>
+    <Property Name="Table" Nullable="true" Type="varchar" MaxLength="255"/>
     <Property Name="Name" Nullable="false" Type="varchar" MaxLength="255"/>
     <Property Name="Ordinal" Nullable="false" Type="int" />
     <Property Name="IsNullable" Nullable="false" Type="bit" />
@@ -242,6 +244,7 @@
     <Property Name="IsIdentity" Nullable="false" Type="bit" />
     <Property Name="IsStoreGenerated" Nullable="false" Type="bit" />
     <Property Name="Default" Nullable="true" Type="text"/>
+    <Property Name="IsKey" Nullable="true" Type="bit" />
   </EntityType>
   
   <EntityType Name="Function">

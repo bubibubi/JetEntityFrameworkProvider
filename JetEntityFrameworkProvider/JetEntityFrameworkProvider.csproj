@@ -149,6 +149,8 @@
     <Content Include="Documentation\DbFirstImplementation.txt" />
     <Content Include="Documentation\JetSQL.txt" />
     <Content Include="Documentation\JetSQLFunctions.txt" />
+    <None Include="Resources\StoreSchemaDefinitionRetrieve_QueryHack2.txt" />
+    <None Include="Resources\StoreSchemaDefinitionRetrieve_QueryHack1.txt" />
     <None Include="packages.config" />
     <None Include="Resources\StoreSchemaDefinition.IndexColumns.xml" />
     <None Include="Resources\StoreSchemaDefinition.Indexes.xml" />

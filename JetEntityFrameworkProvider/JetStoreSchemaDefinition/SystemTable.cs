@@ -25,5 +25,9 @@ namespace JetEntityFrameworkProvider.JetStoreSchemaDefinition
             get { return "#" + Name; }
         }
 
+        public override string ToString()
+        {
+            return string.Format("Name: {0}", Name);
+        }
     }
 }
