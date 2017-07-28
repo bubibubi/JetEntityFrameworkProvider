@@ -21,6 +21,6 @@ Now you can download the library using NuGet. Search for JetEntityFrameworkProvi
 **Some tutorials**  
 [Using Entity Framework with JetEntityFrameworkProvider](https://www.youtube.com/watch?v=mI0un8jjqL8)  
 [WebAPI implemented using Entity Framework with JetEntityFrameworkProvider and IdentityManager](https://youtu.be/VVc__TkiH7Y)  
-
+[Entity Framework DbFirst with JetEntityFrameworkProvider](https://youtu.be/XHrpY_nMXrk)
 
 
