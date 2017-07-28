@@ -360,6 +360,10 @@
     <Compile Include="Model60_StackOverflow_m2n_Person_Book\JetTest.cs" />
     <Compile Include="Model60_StackOverflow_m2n_Person_Book\Model.cs" />
     <Compile Include="Model60_StackOverflow_m2n_Person_Book\Test.cs" />
+    <Compile Include="Model65_InMemoryObjects\Context.cs" />
+    <Compile Include="Model65_InMemoryObjects\JetTest.cs" />
+    <Compile Include="Model65_InMemoryObjects\Model.cs" />
+    <Compile Include="Model65_InMemoryObjects\Test.cs" />
     <Compile Include="Model64_Schema\Context.cs" />
     <Compile Include="Model64_Schema\JetTest.cs" />
     <Compile Include="Model64_Schema\Model.cs" />
