@@ -1,5 +1,7 @@
 # DB First
 
+You need to start from the source code to use DB First.
+
 DB First require a full provider setup (ADO.Net provider setup).
 ADO.Net provider setup for MS Access is included into Entity Framework Provider (you don't need an ADO.Net provider for MS Access if you use only MS Access with ADO.Net; in this case you can use OLEDB ADO.Net provider directly).  
   

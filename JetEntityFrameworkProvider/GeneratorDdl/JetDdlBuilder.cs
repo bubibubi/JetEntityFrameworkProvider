@@ -25,7 +25,13 @@ namespace JetEntityFrameworkProvider
         {
             string correctIdentifier;
 
-            correctIdentifier = identifier.ToLower().StartsWith("dbo.") ? identifier.Substring(4) : identifier;
+            if (identifier.ToLower().StartsWith("dbo.", StringComparison.CurrentCultureIgnoreCase)) 
+                correctIdentifier = identifier.Substring(4);
+            else if (identifier.ToLower().StartsWith("Jet.", StringComparison.CurrentCultureIgnoreCase))
+                correctIdentifier = identifier.Substring(4);
+            else
+                correctIdentifier = identifier;
+
 
             if (correctIdentifier.Length > JetProviderManifest.MaxObjectNameLength)
             {
@@ -140,10 +146,16 @@ namespace JetEntityFrameworkProvider
 
         public string CreateConstraintName(string constraint, string objectName)
         {
-            if (objectName.ToLower().StartsWith("dbo."))
-                objectName = objectName.Substring(4);
+            string correctIdentifier;
 
-            string name = string.Format("{0}_{1}", constraint, objectName);
+            if (objectName.ToLower().StartsWith("dbo.", StringComparison.CurrentCultureIgnoreCase))
+                correctIdentifier = objectName.Substring(4);
+            else if (objectName.ToLower().StartsWith("Jet.", StringComparison.CurrentCultureIgnoreCase))
+                correctIdentifier = objectName.Substring(4);
+            else
+                correctIdentifier = objectName;
+
+            string name = string.Format("{0}_{1}", constraint, correctIdentifier);
 
             if (JetConnection.AppendRandomNumberForForeignKeyNames)
             {

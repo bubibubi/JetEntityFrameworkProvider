@@ -255,7 +255,7 @@ namespace JetEntityFrameworkProvider
             ddlBuilder.AppendSql("ALTER TABLE ");
             ddlBuilder.AppendIdentifier(migrationOperation.DependentTable);
             ddlBuilder.AppendSql(" ADD CONSTRAINT ");
-            ddlBuilder.AppendIdentifier(migrationOperation.Name.Replace("dbo.", ""));
+            ddlBuilder.AppendIdentifier(migrationOperation.Name.Replace("dbo.", "").Replace("Jet.", ""));
             ddlBuilder.AppendSql(" FOREIGN KEY (");
             ddlBuilder.AppendIdentifierList(migrationOperation.DependentColumns);
             ddlBuilder.AppendSql(")");
