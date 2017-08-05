@@ -1,6 +1,6 @@
 **Some documents**  
 [Enabling CodeFirst simple migration](Enabling_CodeFirst_simple_migration.md)  
-[Enabling DB First](Enabling_db_First.md) 
+[Enabling DB First](Enabling_db_first.md)  
 [mdb or accdb setup](mdb_or_accdb_setup.md)  
   
   
