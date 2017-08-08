@@ -360,6 +360,10 @@
     <Compile Include="Model60_StackOverflow_m2n_Person_Book\JetTest.cs" />
     <Compile Include="Model60_StackOverflow_m2n_Person_Book\Model.cs" />
     <Compile Include="Model60_StackOverflow_m2n_Person_Book\Test.cs" />
+    <Compile Include="Model70_InMemoryObjectPartialUpdate\Context.cs" />
+    <Compile Include="Model70_InMemoryObjectPartialUpdate\JetTest.cs" />
+    <Compile Include="Model70_InMemoryObjectPartialUpdate\Model.cs" />
+    <Compile Include="Model70_InMemoryObjectPartialUpdate\Test.cs" />
     <Compile Include="Model69_PrivateBackingField\Context.cs" />
     <Compile Include="Model69_PrivateBackingField\JetTest.cs" />
     <Compile Include="Model69_PrivateBackingField\Model.cs" />
