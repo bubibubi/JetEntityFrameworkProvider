@@ -279,6 +279,8 @@ namespace JetEntityFrameworkProvider
                 #region TOP clause
 
                 var indexOfTop = _WrappedCommand.CommandText.ToLower().IndexOf(" top ");
+                if (indexOfTop > 12)
+                    indexOfTop = -1;
                 int topCount = 0;
                 if (indexOfTop != -1)
                 {
