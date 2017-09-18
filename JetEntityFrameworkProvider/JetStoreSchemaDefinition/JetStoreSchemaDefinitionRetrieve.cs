@@ -978,12 +978,10 @@ namespace JetEntityFrameworkProvider
                 // This is the standard read column for DBMS
                 string sql = string.Empty;
 
-                sql += "Select ";
+                sql += "Select Top 1";
                 sql += "    * ";
                 sql += "From ";
                 sql += string.Format("    {0} ", JetProviderManifest.QuoteIdentifier(_lastTableName));
-                sql += "Where ";
-                sql += "    1 = 2 ";
 
                 IDbCommand command = null;
                 IDataReader dataReader = null;

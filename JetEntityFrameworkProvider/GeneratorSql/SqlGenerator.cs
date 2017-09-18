@@ -1393,7 +1393,7 @@ namespace JetEntityFrameworkProvider
         /// <returns>A <see cref="SqlSelectStatement"/>.</returns>
         public override ISqlFragment Visit(DbCrossJoinExpression e)
         {
-            return VisitJoinExpression(e.Inputs, e.ExpressionKind, "CROSS JOIN", null);
+            return VisitJoinExpression(e.Inputs, e.ExpressionKind, ", ", null);
         }
 
         /// <summary>
