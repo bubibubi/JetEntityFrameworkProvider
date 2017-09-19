@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<configuration xmlns:xdt="http://schemas.microsoft.com/XML-Document-Transform">
+  <system.data xdt:Transform="InsertIfMissing">
+    <DbProviderFactories xdt:Transform="InsertIfMissing">
+      <remove invariant="JetEntityFrameworkProvider" xdt:Transform="InsertIfMissing" xdt:Locator="Match(invariant)"/>
+      <add invariant="JetEntityFrameworkProvider" name="Jet Entity Framework Provider" description="Jet Entity Framework Provider" type="JetEntityFrameworkProvider.JetProviderFactory, JetEntityFrameworkProvider" xdt:Transform="InsertIfMissing" xdt:Locator="Match(invariant)"/>
+    </DbProviderFactories>
+  </system.data>
+  <entityFramework xdt:Transform="InsertIfMissing">
+    <providers xdt:Transform="InsertIfMissing">
+      <provider invariantName="JetEntityFrameworkProvider" type="JetEntityFrameworkProvider.JetProviderServices, JetEntityFrameworkProvider" xdt:Transform="InsertIfMissing" xdt:Locator="Match(invariantName)"/>
+    </providers>
+  </entityFramework>
+</configuration>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<configuration xmlns:xdt="http://schemas.microsoft.com/XML-Document-Transform">
+  <system.data>
+    <DbProviderFactories>
+      <remove invariant="JetEntityFrameworkProvider" xdt:Transform="Remove" xdt:Locator="Match(invariant)" />
+      <add invariant="JetEntityFrameworkProvider" name="Jet Entity Framework Provider" description="Jet Entity Framework Provider" type="JetEntityFrameworkProvider.JetProviderFactory, JetEntityFrameworkProvider" xdt:Transform="Remove" xdt:Locator="Match(invariant)" />
+    </DbProviderFactories>
+  </system.data>
+  <entityFramework>
+    <providers>
+      <provider invariantName="JetEntityFrameworkProvider" type="JetEntityFrameworkProvider.JetProviderServices, JetEntityFrameworkProvider" xdt:Transform="Remove" xdt:Locator="Match(invariantName)" />
+    </providers>
+  </entityFramework>
+</configuration>

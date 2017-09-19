@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+    <metadata>
+        <id>JetEntityFrameworkProvider</id>
+        <version>1.0.0</version>
+        <title>JetEntityFrameworkProvider</title>
+        <authors>Bubi</authors>
+        <projectUrl>https://github.com/bubibubi/JetEntityFrameworkProvider</projectUrl>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>Entity framework 6.x provider for Microsoft Access (Jet) files</description>
+        <tags>EntityFramework EF Microsoft Access Jet Database Data O/RM ADO.NET</tags>
+        <dependencies>
+            <dependency id="EntityFramework" version="6.1.3" />
+        </dependencies>
+    </metadata>
+    <files>
+        <file src="App.config.uninstall.xdt" target="content\App.config.uninstall.xdt" />
+        <file src="App.config.install.xdt" target="content\App.config.install.xdt" />
+        <file src="..\Debug\JetEntityFrameworkProvider.dll" target="lib\JetEntityFrameworkProvider.dll" />
+    </files>
+</package>

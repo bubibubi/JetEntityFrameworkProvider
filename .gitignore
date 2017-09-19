@@ -156,4 +156,4 @@ $RECYCLE.BIN/
 .DS_Store
 /_External_Dependencies
 /packages
-/NuGet.Packager
+/NuGet.Packager/lib
