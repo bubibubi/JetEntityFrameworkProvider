@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using JetEntityFrameworkProvider.Test.Model02;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -50,6 +49,7 @@ namespace JetEntityFrameworkProvider.Test.MigrationUpDownTest
                 context.RunMigration(migration);
             }
         }
+
         [TestMethod]
         public void MigrationWithNumericDefaultValueSql()
         {
@@ -61,6 +61,15 @@ namespace JetEntityFrameworkProvider.Test.MigrationUpDownTest
             }
         }
 
-
+        [TestMethod]
+        public void MigrationMakeNullable()
+        {
+            using (var context = new Context(SetUpCodeFirst.Connection))
+            {
+                var migration = new MigrationMakeNullable();
+                migration.Up(); // or migration.Down();                
+                context.RunMigration(migration);
+            }
+        }
     }
 }

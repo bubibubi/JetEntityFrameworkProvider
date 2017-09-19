@@ -113,6 +113,7 @@
     <Compile Include="MigrationUpDownTest\MigrationWithNumericDefaultValueSql.cs" />
     <Compile Include="MigrationUpDownTest\MigrationWithDefaultValueSql.cs" />
     <Compile Include="MigrationUpDownTest\MigrationWithDefaultValue.cs" />
+    <Compile Include="MigrationUpDownTest\MigrationMakeNullable.cs" />
     <Compile Include="MigrationUpDownTest\SimpleMigration.cs" />
     <Compile Include="Model54_MemoryLeakageTest\Context.cs" />
     <Compile Include="Model54_MemoryLeakageTest\JetTest.cs" />

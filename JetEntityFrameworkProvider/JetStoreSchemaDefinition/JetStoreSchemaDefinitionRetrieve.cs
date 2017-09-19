@@ -774,7 +774,7 @@ namespace JetEntityFrameworkProvider
                         rowColumn["TABLE_NAME"], // Table
                         rowColumn["COLUMN_NAME"], // Name
                         rowColumn["ORDINAL_POSITION"],  // Ordinal
-                        Convert.ToBoolean(rowColumn["IS_NULLABLE"]) ? 1 : 0, // IsNullable
+                        GetIsNullable(connection, rowColumn) ? 1 : 0, // IsNullable
                         ConvertToJetDataType(Convert.ToInt32(rowColumn["DATA_TYPE"]), Convert.ToInt32(rowColumn["COLUMN_FLAGS"])), // TypeName
                         rowColumn["CHARACTER_MAXIMUM_LENGTH"], // Max length
                         rowColumn["NUMERIC_PRECISION"], // Precision
@@ -967,6 +967,16 @@ namespace JetEntityFrameworkProvider
                         c.ComputeSQLDataType();
 
              */
+        }
+
+        private static bool GetIsNullable(IDbConnection connection, DataRow rowColumn)
+        {
+            DataRow fieldRow = GetFieldRow(connection, (string)rowColumn["TABLE_NAME"], (string)rowColumn["COLUMN_NAME"]);
+
+            if (fieldRow == null)
+                return Convert.ToBoolean(rowColumn["IS_NULLABLE"]);
+
+            return (bool)fieldRow["AllowDBNull"] && Convert.ToBoolean(rowColumn["IS_NULLABLE"]);
         }
 
         private static DataRow GetFieldRow(IDbConnection connection, string tableName, string columnName)

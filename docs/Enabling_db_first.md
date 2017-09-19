@@ -40,7 +40,7 @@ in configuration\system.data\DbProviderFactories
 add this line (please check version first)  
   
 ```xml
-<add name="JetEntityFrameworkProvider" invariant="JetEntityFrameworkProvider" description="JetEntityFrameworkProvider" type="JetEntityFrameworkProvider.JetProviderFactory, JetEntityFrameworkProvider, Version=1.0.0.0, Culture=neutral, PublicKeyToken=756cf6beb8fe7b41" />
+<add name="JetEntityFrameworkProvider" invariant="JetEntityFrameworkProvider" description="JetEntityFrameworkProvider" type="JetEntityFrameworkProvider.JetProviderFactory, JetEntityFrameworkProvider, Version=6.0.0.0, Culture=neutral, PublicKeyToken=756cf6beb8fe7b41" />
 ```
 
 **Register DDEX provider (the Visual Studio provider).**   
