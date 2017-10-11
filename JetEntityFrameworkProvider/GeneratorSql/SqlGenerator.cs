@@ -977,8 +977,9 @@ namespace JetEntityFrameworkProvider
                     case PrimitiveTypeKind.String:
                         result.Append(LiteralHelpers.ToSqlString(expressionValue as string));
                         break;
-
                     case PrimitiveTypeKind.Guid:
+                        result.Append(LiteralHelpers.ToSqlString((Guid)expressionValue));
+                        break;
                     default:
                         // all known scalar types should been handled already.
                         throw new NotSupportedException("Primitive type kind " + typeKind + " is not supported by the Jet Provider");

@@ -42,7 +42,7 @@ namespace JetEntityFrameworkProvider
         public static string ToSqlString(Guid value)
         {
             // In Jet everything's unicode
-            return "'P" + value.ToString() + "'";
+            return "{" + value.ToString() + "}";
         }
 
         /// <summary>

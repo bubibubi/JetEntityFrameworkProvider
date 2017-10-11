@@ -115,6 +115,10 @@
     <Compile Include="MigrationUpDownTest\MigrationWithDefaultValue.cs" />
     <Compile Include="MigrationUpDownTest\MigrationMakeNullable.cs" />
     <Compile Include="MigrationUpDownTest\SimpleMigration.cs" />
+    <Compile Include="Model73_Guid_issue20\Car.cs" />
+    <Compile Include="Model73_Guid_issue20\CarsContext.cs" />
+    <Compile Include="Model73_Guid_issue20\JetTest.cs" />
+    <Compile Include="Model73_Guid_issue20\Test.cs" />
     <Compile Include="Model54_MemoryLeakageTest\Context.cs" />
     <Compile Include="Model54_MemoryLeakageTest\JetTest.cs" />
     <Compile Include="Model54_MemoryLeakageTest\Standard.cs" />
@@ -434,6 +438,10 @@
     <Compile Include="Model55_Unicode\JetTest.cs" />
     <Compile Include="Model55_Unicode\Model.cs" />
     <Compile Include="Model55_Unicode\Test.cs" />
+    <Compile Include="Model72_ComplexTypeWNavyProp\Context.cs" />
+    <Compile Include="Model72_ComplexTypeWNavyProp\JetTest.cs" />
+    <Compile Include="Model72_ComplexTypeWNavyProp\Model.cs" />
+    <Compile Include="Model72_ComplexTypeWNavyProp\Test.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="SetUpCodeFirst.cs" />
     <Compile Include="Helpers.cs" />
