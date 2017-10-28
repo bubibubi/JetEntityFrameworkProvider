@@ -41,7 +41,6 @@ namespace JetEntityFrameworkProvider
 
         public static string ToSqlString(Guid value)
         {
-            // In Jet everything's unicode
             return "{" + value.ToString() + "}";
         }
 
