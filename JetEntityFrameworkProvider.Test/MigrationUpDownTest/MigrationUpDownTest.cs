@@ -71,5 +71,18 @@ namespace JetEntityFrameworkProvider.Test.MigrationUpDownTest
                 context.RunMigration(migration);
             }
         }
+
+
+        [TestMethod]
+        public void MigrationOnDeleteStar()
+        {
+            using (var context = new Context(SetUpCodeFirst.Connection))
+            {
+                var migration = new MigrationOnDeleteStar();
+                migration.Up(); // or migration.Down();                
+                context.RunMigration(migration);
+            }
+        }
+
     }
 }
