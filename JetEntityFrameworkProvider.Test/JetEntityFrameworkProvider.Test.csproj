@@ -108,6 +108,7 @@
     <Compile Include="DmlTest.cs" />
     <Compile Include="FunctionTest.cs" />
     <Compile Include="MigrationUpDownTest\MigrationExtensions.cs" />
+    <Compile Include="MigrationUpDownTest\MigrationOnDeleteStar.cs" />
     <Compile Include="MigrationUpDownTest\MigrationUpDownTest.cs" />
     <Compile Include="MigrationUpDownTest\MigrationWithNumericDefaultValue.cs" />
     <Compile Include="MigrationUpDownTest\MigrationWithNumericDefaultValueSql.cs" />

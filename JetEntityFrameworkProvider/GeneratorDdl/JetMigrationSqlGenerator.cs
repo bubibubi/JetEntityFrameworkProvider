@@ -265,6 +265,10 @@ namespace JetEntityFrameworkProvider
             ddlBuilder.AppendIdentifierList(migrationOperation.PrincipalColumns);
             ddlBuilder.AppendSql(")");
 
+            if (migrationOperation.CascadeDelete)
+                ddlBuilder.AppendSql(" ON DELETE CASCADE");
+
+
             return ddlBuilder.GetCommandText();
         }
 

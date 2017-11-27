@@ -30,8 +30,10 @@ namespace JetEntityFrameworkProvider.Test.MigrationUpDownTest
                         parentId = c.Int(nullable: false),
                     })
                 .PrimaryKey(t => t.childId)
-                .ForeignKey("dbo.Parents", t => t.parentId, cascadeDelete: true)
+                //.ForeignKey("dbo.Parents", t => t.parentId, cascadeDelete: true)
                 .Index(t => t.parentId);
+
+            AddForeignKey("dbo.Children", "ParentId", "dbo.Parents", "ParentId", true);
 
         }
 
