@@ -55,7 +55,7 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>..\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
@@ -116,6 +116,10 @@
     <Compile Include="MigrationUpDownTest\MigrationWithDefaultValue.cs" />
     <Compile Include="MigrationUpDownTest\MigrationMakeNullable.cs" />
     <Compile Include="MigrationUpDownTest\SimpleMigration.cs" />
+    <Compile Include="Model74_Decimal_issue27\Context.cs" />
+    <Compile Include="Model74_Decimal_issue27\JetTest.cs" />
+    <Compile Include="Model74_Decimal_issue27\Model.cs" />
+    <Compile Include="Model74_Decimal_issue27\Test.cs" />
     <Compile Include="Model73_Guid_issue20\Car.cs" />
     <Compile Include="Model73_Guid_issue20\CarsContext.cs" />
     <Compile Include="Model73_Guid_issue20\JetTest.cs" />
