@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 
 [assembly: AssemblyCompany("Bubi")]
 [assembly: AssemblyProduct("JetEntityFrameworkProvider")]
-[assembly: AssemblyCopyright("Copyright © 2017 - Bubi")]
+[assembly: AssemblyCopyright("Copyright © 2015-2018 - Bubi")]
 [assembly: AssemblyTrademark("Before use any of the trademarks, check if they are registered")]
 [assembly: AssemblyCulture("")]
 
@@ -19,4 +19,4 @@ using System.Runtime.InteropServices;
 
 [assembly: AssemblyVersion("6.0.0")]
 [assembly: AssemblyFileVersion("6.0.0.0")]
-[assembly: AssemblyInformationalVersion("6.1.5-rc1")]
+[assembly: AssemblyInformationalVersion("6.1.5-rc2")]

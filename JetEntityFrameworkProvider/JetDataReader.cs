@@ -100,7 +100,15 @@ namespace JetEntityFrameworkProvider
 
         public override double GetDouble(int ordinal)
         {
-            return _wrappedDataReader.GetDouble(ordinal);
+            object value = _wrappedDataReader.GetValue(ordinal);
+            if (value is string)
+            {
+                byte[] buffer = Encoding.Unicode.GetBytes((string)value);
+                double doubleValue= BitConverter.ToDouble(buffer, 0);
+                return doubleValue;
+            }
+            else
+                return _wrappedDataReader.GetDouble(ordinal);
         }
 
         public override System.Collections.IEnumerator GetEnumerator()
@@ -115,7 +123,15 @@ namespace JetEntityFrameworkProvider
 
         public override float GetFloat(int ordinal)
         {
-            return _wrappedDataReader.GetFloat(ordinal);
+            object value = _wrappedDataReader.GetValue(ordinal);
+            if (value is string)
+            {
+                byte[] buffer = Encoding.Unicode.GetBytes((string)value);
+                float singleValue = BitConverter.ToSingle(buffer, 0);
+                return singleValue;
+            }
+            else
+                return _wrappedDataReader.GetFloat(ordinal);
         }
 
         public override Guid GetGuid(int ordinal)
@@ -180,7 +196,7 @@ namespace JetEntityFrameworkProvider
             // otherwise EF calls GetDateTime.
             // We can suppose that if the value is a DateTime then the EF type is a TimeSpan
             if (getValue is DateTime)
-                return (DateTime) getValue - JetConnection.TimeSpanOffset;
+                return (DateTime)getValue - JetConnection.TimeSpanOffset;
             return getValue;
         }
 

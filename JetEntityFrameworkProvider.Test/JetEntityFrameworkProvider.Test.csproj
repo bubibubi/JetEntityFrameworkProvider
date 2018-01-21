@@ -116,6 +116,10 @@
     <Compile Include="MigrationUpDownTest\MigrationWithDefaultValue.cs" />
     <Compile Include="MigrationUpDownTest\MigrationMakeNullable.cs" />
     <Compile Include="MigrationUpDownTest\SimpleMigration.cs" />
+    <Compile Include="Model75_Include_issue28\Context.cs" />
+    <Compile Include="Model75_Include_issue28\JetTest.cs" />
+    <Compile Include="Model75_Include_issue28\Model.cs" />
+    <Compile Include="Model75_Include_issue28\Test.cs" />
     <Compile Include="Model74_Decimal_issue27\Context.cs" />
     <Compile Include="Model74_Decimal_issue27\JetTest.cs" />
     <Compile Include="Model74_Decimal_issue27\Model.cs" />

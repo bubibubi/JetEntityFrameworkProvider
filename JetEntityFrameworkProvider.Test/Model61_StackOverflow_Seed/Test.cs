@@ -33,8 +33,8 @@ namespace JetEntityFrameworkProvider.Test.Model61_StackOverflow_Seed
                     new ClassSchedule
                     {
                         ScheduleName = "Yippie red class",
-                        StartTime = DateTime.Parse("2017-09-17T18:00:00"),
-                        EndTime = DateTime.Parse("2017-09-17T20:00:00"),
+                        StartTime = DateTime.Parse("2018-09-17T18:00:00"),
+                        EndTime = DateTime.Parse("2018-09-17T20:00:00"),
                         ClassRooms = context.ClassRooms.FirstOrDefault(x => x.ClassRoomName == "Cherry")
                     }
                 );
