@@ -19,6 +19,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JetEntityFrameworkProvider.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JetDdexProvider", "JetDdexProvider\JetDdexProvider.csproj", "{42939E33-FC72-459C-9403-B62AB074635E}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{93F52646-A6CF-4E1A-8E9E-39EB1E1CF43E}"
+	ProjectSection(SolutionItems) = preProject
+		Build\GlobalAssemblyInfo.cs = Build\GlobalAssemblyInfo.cs
+		Build\Key.snk = Build\Key.snk
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

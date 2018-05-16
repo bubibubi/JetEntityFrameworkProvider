@@ -73,15 +73,15 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="EntityFramework.SqlServerCompact, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.SqlServerCompact.6.1.3\lib\net45\EntityFramework.SqlServerCompact.dll</HintPath>
+      <HintPath>..\packages\EntityFramework.SqlServerCompact.6.2.0\lib\net45\EntityFramework.SqlServerCompact.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
@@ -116,6 +116,18 @@
     <Compile Include="MigrationUpDownTest\MigrationWithDefaultValue.cs" />
     <Compile Include="MigrationUpDownTest\MigrationMakeNullable.cs" />
     <Compile Include="MigrationUpDownTest\SimpleMigration.cs" />
+    <Compile Include="Model79_Like\Context.cs" />
+    <Compile Include="Model79_Like\JetTest.cs" />
+    <Compile Include="Model79_Like\Model.cs" />
+    <Compile Include="Model79_Like\Test.cs" />
+    <Compile Include="Model78_SimpleSample\Context.cs" />
+    <Compile Include="Model78_SimpleSample\JetTest.cs" />
+    <Compile Include="Model78_SimpleSample\Model.cs" />
+    <Compile Include="Model78_SimpleSample\Test.cs" />
+    <Compile Include="Model76_Contains\Context.cs" />
+    <Compile Include="Model76_Contains\JetTest.cs" />
+    <Compile Include="Model76_Contains\Model.cs" />
+    <Compile Include="Model76_Contains\Test.cs" />
     <Compile Include="Model75_Include_issue28\Context.cs" />
     <Compile Include="Model75_Include_issue28\JetTest.cs" />
     <Compile Include="Model75_Include_issue28\Model.cs" />
@@ -451,6 +463,12 @@
     <Compile Include="Model72_ComplexTypeWNavyProp\JetTest.cs" />
     <Compile Include="Model72_ComplexTypeWNavyProp\Model.cs" />
     <Compile Include="Model72_ComplexTypeWNavyProp\Test.cs" />
+    <Compile Include="Model77_RepoModel\Context.cs" />
+    <Compile Include="Model77_RepoModel\JetTest.cs" />
+    <Compile Include="Model77_RepoModel\Model.cs" />
+    <Compile Include="Model77_RepoModel\Repository.cs" />
+    <Compile Include="Model77_RepoModel\RepositoryModel.cs" />
+    <Compile Include="Model77_RepoModel\Test.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="SetUpCodeFirst.cs" />
     <Compile Include="Helpers.cs" />
